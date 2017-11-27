@@ -35,6 +35,9 @@ namespace SocialNetwork.Web
                 .AddEntityFrameworkStores<SocialNetworkDbContext>()
                 .AddDefaultTokenProviders();
 
+            //register custom services
+            services.AddDomainServices();
+
             services.AddMvc();
         }
 
