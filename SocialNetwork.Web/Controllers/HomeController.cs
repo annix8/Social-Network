@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.Web.Models;
+using SocialNetwork.DataModel;
 
 namespace SocialNetwork.Web.Controllers
 {
@@ -12,11 +13,10 @@ namespace SocialNetwork.Web.Controllers
     {
         public IActionResult Index()
         {
-            // TODO: think of a way for this to happen via filter
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Home", new { area = "User" });
-            }
+                if (User.Identity.IsAuthenticated)
+                {
+                    return RedirectToAction("Index", "Home", new { area = "User" });
+                }
 
             return View();
         }

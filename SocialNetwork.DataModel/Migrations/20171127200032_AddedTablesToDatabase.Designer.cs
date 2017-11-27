@@ -12,9 +12,10 @@ using System;
 namespace SocialNetwork.DataModel.Migrations
 {
     [DbContext(typeof(SocialNetworkDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171127200032_AddedTablesToDatabase")]
+    partial class AddedTablesToDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -367,12 +368,12 @@ namespace SocialNetwork.DataModel.Migrations
                     b.HasOne("SocialNetwork.DataModel.Models.User", "Friend")
                         .WithMany("FriendRequestsAccepted")
                         .HasForeignKey("FriendId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SocialNetwork.DataModel.Models.User", "User")
                         .WithMany("FriendRequestsMade")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("SocialNetwork.DataModel.Models.Picture", b =>
