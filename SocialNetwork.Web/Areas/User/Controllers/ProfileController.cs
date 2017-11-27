@@ -32,7 +32,14 @@ namespace SocialNetwork.Web.Areas.User.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadProfilePicture(IFormFile file)
         {
-            await _pictureService.UploadProfilePictureAsync(User.Identity.Name, file);
+            if (file == null || file.Length < 0)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                await _pictureService.UploadProfilePictureAsync(User.Identity.Name, file);
+            }
 
             return RedirectToAction(nameof(MyProfile));
         }

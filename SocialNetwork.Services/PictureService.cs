@@ -27,9 +27,10 @@ namespace SocialNetwork.Services
 
         public async Task<bool> UploadProfilePictureAsync(string username, IFormFile picture)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            var user = await _db.Users
+                .FirstOrDefaultAsync(u => u.UserName == username);
 
-            if(user == null)
+            if (user == null)
             {
                 return false;
             }
@@ -39,8 +40,18 @@ namespace SocialNetwork.Services
                 await picture.CopyToAsync(stream);
                 var imageData = stream.ToArray();
 
-                var pic = new Picture { ImageData = imageData };
+                Picture pic = null;
 
+                if (user.ProfilePictureId != null)
+                {
+                    pic = _db.Pictures.Find(user.ProfilePictureId);
+                    pic.ImageData = imageData;
+                }
+                else
+                {
+                    pic = new Picture { ImageData = imageData };
+                }
+                
                 user.ProfilePicture = pic;
 
                 await _db.SaveChangesAsync();
