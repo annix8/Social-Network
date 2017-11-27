@@ -9,7 +9,8 @@
     <header class="jumbotron my-4">
         <h1 class="display-3">Greetings, adventurer!</h1>
         <p class="lead">Welcome to the Social Network. Here you can find new friends, share posts or photos. Have fun!</p>
-        <a href="#" class="btn btn-primary btn-lg">Login</a>
+        <a asp-area="" asp-controller="Account" asp-action="Login" class="btn btn-primary btn-lg">Login</a>
+        <p style="margin-top:15px;">Don't have an account? <a asp-area="" asp-controller="Account" asp-action="Register">Register here</a></p>
     </header>
 
     <!-- Page Features -->
