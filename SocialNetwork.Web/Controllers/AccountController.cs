@@ -217,7 +217,9 @@ namespace SocialNetwork.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.Username, Email = model.Email };
+                var user = new User { UserName = model.Username, Email = model.Email, FirstName = model.FirstName,
+                    MiddleName = model.MiddleName, LastName = model.LastName };
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

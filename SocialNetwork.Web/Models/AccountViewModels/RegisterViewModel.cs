@@ -13,6 +13,17 @@ namespace SocialNetwork.Web.Models.AccountViewModels
         public string Username { get; set; }
 
         [Required]
+        [Display(Name = "First name")]
+        public string FirstName { get; set; }
+        
+        [Display(Name = "Middle name")]
+        public string MiddleName { get; set; }
+
+        [Required]
+        [Display(Name = "Last name")]
+        public string LastName { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
