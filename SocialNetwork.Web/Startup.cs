@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SocialNetwork.DataModel;
 using SocialNetwork.DataModel.Models;
+using SocialNetwork.Web.Infrastructure.Extensions;
 
 namespace SocialNetwork.Web
 {
@@ -50,6 +51,8 @@ namespace SocialNetwork.Web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            
+            app.MigrateDatabase();
 
             app.UseStaticFiles();
 
