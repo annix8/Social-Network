@@ -16,7 +16,7 @@ Initial draft (1.0)
 
 ## Authors
 
-* **Mario Yordanov** - *Initial work* - [PurpleBooth](https://github.com/annix8)
+* **Mario Yordanov** - *Entire work* - [Profile](https://github.com/annix8)
 
 ## License
 
