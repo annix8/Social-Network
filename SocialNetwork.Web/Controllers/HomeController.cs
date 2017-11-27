@@ -12,6 +12,7 @@ namespace SocialNetwork.Web.Controllers
     {
         public IActionResult Index()
         {
+            // TODO: think of a way for this to happen via filter
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home", new { area = "User" });
