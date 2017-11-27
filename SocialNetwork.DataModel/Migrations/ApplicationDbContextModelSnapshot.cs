@@ -367,12 +367,12 @@ namespace SocialNetwork.DataModel.Migrations
                     b.HasOne("SocialNetwork.DataModel.Models.User", "Friend")
                         .WithMany("FriendRequestsAccepted")
                         .HasForeignKey("FriendId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SocialNetwork.DataModel.Models.User", "User")
                         .WithMany("FriendRequestsMade")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("SocialNetwork.DataModel.Models.Picture", b =>
@@ -390,7 +390,7 @@ namespace SocialNetwork.DataModel.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SocialNetwork.DataModel.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Posts")
                         .HasForeignKey("UserId");
                 });
 

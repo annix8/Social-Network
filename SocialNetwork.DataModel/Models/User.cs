@@ -17,6 +17,7 @@ namespace SocialNetwork.DataModel.Models
         [MaxLength(50)]
         public string LastName { get; set; }
         public ICollection<Album> Albums { get; set; } = new HashSet<Album>();
+        public ICollection<Post> Posts { get; set; } = new HashSet<Post>();
         public ICollection<Friendship> FriendRequestsMade { get; set; } = new HashSet<Friendship>();
         public ICollection<Friendship> FriendRequestsAccepted { get; set; } = new HashSet<Friendship>();
         [Required]
