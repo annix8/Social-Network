@@ -7,8 +7,10 @@ namespace SocialNetwork.Web.Areas.User.Controllers
     using DataModel.Models;
     using Microsoft.AspNetCore.Http;
     using SocialNetwork.Services.Contracts;
+    using SocialNetwork.Web.Infrastructure;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
 
     [Authorize]
@@ -32,6 +34,7 @@ namespace SocialNetwork.Web.Areas.User.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadProfilePicture(IFormFile file)
         {
+            // TODO: check file extension and log errors
             if (file == null || file.Length < 0)
             {
                 return BadRequest();

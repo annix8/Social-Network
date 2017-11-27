@@ -7,6 +7,13 @@ namespace SocialNetwork.Web.Infrastructure
 {
     public class GlobalConstants
     {
+        public static string[] PictureFileNameExtensions => new string[]
+        {
+            "jpeg",
+            "jpg",
+            "png"
+        };
+
         public static List<string> UserRoles => new List<string>
         {
             UserRole.User,
