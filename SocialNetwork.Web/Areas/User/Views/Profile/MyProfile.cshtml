@@ -47,8 +47,20 @@
         <div class="col-md-4">
             <!-- Side Widget -->
             <div class="card my-4">
-                <h5 class="card-header">Profile photo <a href="" style="float:right;">Upload new</a></h5>
-                
+                <h5 class="card-header">Profile photo</h5>
+                <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="UploadProfilePicture">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <p>Upload one or more files using this form:</p>
+                            <input type="file" name="file" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <input type="submit" value="Upload" />
+                        </div>
+                    </div>
+                </form>
                 <div class="card-body">
                     @if (Model.ProfilePicture == null)
                     {
@@ -56,8 +68,7 @@
                     }
                     else
                     {
-
-
+                        <img src="/api/Image/@Model.ProfilePictureId" style="width:70%;height:70%;" />
                     }
                 </div>
             </div>

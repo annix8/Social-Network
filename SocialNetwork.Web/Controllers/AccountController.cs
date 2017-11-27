@@ -228,7 +228,7 @@ namespace SocialNetwork.Web.Controllers
                     var userExists = await _userManager.FindByNameAsync(model.Username);
                     var roleAssignResult = await _userManager.AddToRoleAsync(userExists, GlobalConstants.UserRole.User);
 
-                    if (await _userService.Count() == 1)
+                    if (await _userService.CountAsync() == 1)
                     {
                         var adminAssingResult = await _userManager.AddToRoleAsync(userExists, GlobalConstants.UserRole.Administrator);
                     }

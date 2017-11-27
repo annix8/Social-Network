@@ -9,7 +9,6 @@ using SocialNetwork.Services.Contracts;
 
 namespace SocialNetwork.Web.Controllers
 {
-    [Produces("application/json")]
     [Route("api/Image")]
     public class PictureController : Controller
     {
@@ -20,9 +19,10 @@ namespace SocialNetwork.Web.Controllers
             _pictureService = pictureService;
         }
 
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            Picture image = await _pictureService.ById(id);
+            Picture image = await _pictureService.ByIdAsync(id);
 
             byte[] imageInBinary = image.ImageData;
 

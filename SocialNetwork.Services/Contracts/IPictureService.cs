@@ -1,4 +1,5 @@
-﻿using SocialNetwork.DataModel.Models;
+﻿using Microsoft.AspNetCore.Http;
+using SocialNetwork.DataModel.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +9,7 @@ namespace SocialNetwork.Services.Contracts
 {
     public interface IPictureService
     {
-        Task<Picture> ById(int id);
+        Task<Picture> ByIdAsync(int id);
+        Task<bool> UploadProfilePictureAsync(string username, IFormFile picture);
     }
 }

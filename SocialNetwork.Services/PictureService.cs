@@ -5,6 +5,9 @@ using System.Text;
 using SocialNetwork.DataModel.Models;
 using System.Threading.Tasks;
 using SocialNetwork.DataModel;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace SocialNetwork.Services
 {
@@ -17,9 +20,33 @@ namespace SocialNetwork.Services
             _db = db;
         }
 
-        public async Task<Picture> ById(int id)
+        public async Task<Picture> ByIdAsync(int id)
         {
             return await _db.Pictures.FindAsync(id);
+        }
+
+        public async Task<bool> UploadProfilePictureAsync(string username, IFormFile picture)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.UserName == username);
+
+            if(user == null)
+            {
+                return false;
+            }
+
+            using (var stream = new MemoryStream())
+            {
+                await picture.CopyToAsync(stream);
+                var imageData = stream.ToArray();
+
+                var pic = new Picture { ImageData = imageData };
+
+                user.ProfilePicture = pic;
+
+                await _db.SaveChangesAsync();
+            }
+
+            return true;
         }
     }
 }

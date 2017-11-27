@@ -18,14 +18,15 @@ namespace SocialNetwork.Services
             _db = db;
         }
 
-        public async Task<User> ByUsername(string username)
+        public async Task<User> ByUsernameAsync(string username)
         {
             return await _db.Users
                 .Include(u => u.Posts)
+                .Include(u => u.ProfilePicture)
                 .FirstOrDefaultAsync(u => u.UserName == username);
         }
 
-        public async Task<int> Count()
+        public async Task<int> CountAsync()
         {
             return await _db.Users.CountAsync();
         }
