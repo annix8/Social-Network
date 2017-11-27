@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,7 +40,10 @@ namespace SocialNetwork.Web
             //register custom services
             services.AddDomainServices();
 
-            services.AddMvc();
+            services.AddMvc(opts =>
+            {
+                opts.Filters.Add(typeof(ValidateAntiForgeryTokenAttribute));
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

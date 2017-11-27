@@ -13,10 +13,10 @@ namespace SocialNetwork.Web.Controllers
     {
         public IActionResult Index()
         {
-                if (User.Identity.IsAuthenticated)
-                {
-                    return RedirectToAction("Index", "Home", new { area = "User" });
-                }
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home", new { area = "User" });
+            }
 
             return View();
         }

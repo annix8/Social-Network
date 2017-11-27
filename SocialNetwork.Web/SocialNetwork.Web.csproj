@@ -5,6 +5,13 @@
     <UserSecretsId>aspnet-SocialNetwork.Web-6D008D9F-B410-4F8C-BFF9-10F76711B1F2</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Areas\User\Data\**" />
+    <Content Remove="Areas\User\Data\**" />
+    <EmbeddedResource Remove="Areas\User\Data\**" />
+    <None Remove="Areas\User\Data\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
@@ -21,11 +28,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SocialNetwork.DataModel\SocialNetwork.DataModel.csproj" />
     <ProjectReference Include="..\SocialNetwork.Services\SocialNetwork.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\User\Data\" />
-    <Folder Include="Areas\User\Models\" />
   </ItemGroup>
 
 </Project>
