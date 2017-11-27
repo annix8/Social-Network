@@ -9,5 +9,7 @@ namespace SocialNetwork.Services.Contracts
     public interface IUserService
     {
         Task<User> ByUsername(string username);
+
+        Task<int> Count();
     }
 }

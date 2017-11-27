@@ -24,5 +24,10 @@ namespace SocialNetwork.Services
                 .Include(u => u.Posts)
                 .FirstOrDefaultAsync(u => u.UserName == username);
         }
+
+        public async Task<int> Count()
+        {
+            return await _db.Users.CountAsync();
+        }
     }
 }
