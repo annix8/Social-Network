@@ -18,8 +18,7 @@ namespace SocialNetwork.Web
         }
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<SocialNetworkDbContext>(options =>
@@ -31,6 +30,8 @@ namespace SocialNetwork.Web
                 opts.Password.RequireLowercase = false;
                 opts.Password.RequireNonAlphanumeric = false;
                 opts.Password.RequireUppercase = false;
+
+                opts.User.RequireUniqueEmail = true;
             })
                 .AddEntityFrameworkStores<SocialNetworkDbContext>()
                 .AddDefaultTokenProviders();
@@ -40,8 +41,7 @@ namespace SocialNetwork.Web
 
             services.AddMvc();
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -55,6 +55,7 @@ namespace SocialNetwork.Web
                 app.UseExceptionHandler("/Home/Error");
             }
             
+            // uses the custom-made method for migrating the database to latest version
             app.MigrateDatabase();
 
             app.UseStaticFiles();
