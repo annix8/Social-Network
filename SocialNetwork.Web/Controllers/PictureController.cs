@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.DataModel.Models;
 using SocialNetwork.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SocialNetwork.Web.Controllers
 {
+    [Authorize]
     [Route("api/Image")]
     public class PictureController : Controller
     {

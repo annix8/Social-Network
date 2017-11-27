@@ -8,43 +8,57 @@
         <!-- Blog Entries Column -->
         <div class="col-md-8">
             <h1 class="my-4">
-                My posts
-                <small>Shows recent posts</small>
+                My posts<br />
+                <small>Something on your mind? <a href="">Create new post</a></small>
             </h1>
-
-            @foreach (var post in Model.Posts)
+            @if (Model.Posts.Any())
             {
+                @foreach (var post in Model.Posts)
+                {
                 <!-- Blog Post -->
-                <div class="card mb-4">
-                    @if (post.Picture != null)
+                    <div class="card mb-4">
+                        @if (post.Picture != null)
                     {
-                        <img class="card-img-top" src="/api/Image/@post.PictureId" alt="Card image cap">
-                    }
-                    <div class="card-body">
-                        <h2 class="card-title">@post.Title</h2>
-                        <p class="card-text">@post.Content<p>
-                        <a href="#" class="btn btn-primary">Read More &rarr;</a>
+                            <img class="card-img-top" src="/api/Image/@post.PictureId" alt="Card image cap">
+                        }
+                        <div class="card-body">
+                            <h2 class="card-title">@post.Title</h2>
+                            <p class="card-text">@post.Content<p>
+                                <a href="#" class="btn btn-primary">Read More &rarr;</a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <img src="/api/Image/@Model.ProfilePictureId" alt="Card image cap" width="60" height="60">
+                            Posted on @post.PublishedOn.ToString("dd-MMM-yyyy", new CultureInfo("en-US")) by
+                            <a href="#">@Model.UserName</a>
+                        </div>
                     </div>
-                    <div class="card-footer text-muted">
-                        <img src="/api/Image/@Model.ProfilePictureId" alt="Card image cap" width="60" height="60">
-                        Posted on @post.PublishedOn.ToString("dd-MMM-yyyy",new CultureInfo("en-US")) by
-                        <a href="#">@Model.UserName</a>
-                    </div>
-                </div>
-            }
+                }
 
             <!-- Pagination -->
-            <ul class="pagination justify-content-center mb-4">
-                <li class="page-item">
-                    <a class="page-link" href="#">&larr; Older</a>
-                </li>
-                <li class="page-item disabled">
-                    <a class="page-link" href="#">Newer &rarr;</a>
-                </li>
-            </ul>
+                <ul class="pagination justify-content-center mb-4">
+                    <li class="page-item">
+                        <a class="page-link" href="#">&larr; Older</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Newer &rarr;</a>
+                    </li>
+                </ul>
+            }
+            else
+            {
+                <p>You haven't posted anything yet :(</p>
+            }
+
+
         </div>
         <!-- Sidebar Widgets Column -->
         <div class="col-md-4">
+            <div class="card my-4">
+                <h5 class="card-header">@Model.FirstName @Model.LastName</h5>
+                <div class="card-body">
+                    <p>@Model.Email</p>
+                </div>
+            </div>
             <!-- Side Widget -->
             <div class="card my-4">
                 <h5 class="card-header">Profile photo</h5>
@@ -98,20 +112,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Search Widget -->
-            <div class="card my-4">
-                <h5 class="card-header">Search</h5>
-                <div class="card-body">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-secondary" type="button">Go!</button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            
-            
         </div>
     </div>
     <!-- /.row -->
