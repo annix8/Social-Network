@@ -12,7 +12,7 @@ namespace SocialNetwork.DataModel.Models
         [Required]
         public string Content { get; set; }
         public Picture Picture { get; set; }
-        public int PictureId { get; set; }
+        public int? PictureId { get; set; }
         public User User { get; set; }
         public string UserId { get; set; }
         [Required]

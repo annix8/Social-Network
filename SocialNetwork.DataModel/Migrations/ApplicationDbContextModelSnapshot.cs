@@ -213,7 +213,7 @@ namespace SocialNetwork.DataModel.Migrations
 
                     b.Property<DateTime?>("EditedOn");
 
-                    b.Property<int>("PictureId");
+                    b.Property<int?>("PictureId");
 
                     b.Property<DateTime>("PublishedOn");
 
@@ -274,7 +274,7 @@ namespace SocialNetwork.DataModel.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<int>("ProfilePictureId");
+                    b.Property<int?>("ProfilePictureId");
 
                     b.Property<string>("SecurityStamp");
 
@@ -386,8 +386,7 @@ namespace SocialNetwork.DataModel.Migrations
                 {
                     b.HasOne("SocialNetwork.DataModel.Models.Picture", "Picture")
                         .WithMany()
-                        .HasForeignKey("PictureId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PictureId");
 
                     b.HasOne("SocialNetwork.DataModel.Models.User", "User")
                         .WithMany("Posts")
@@ -398,8 +397,7 @@ namespace SocialNetwork.DataModel.Migrations
                 {
                     b.HasOne("SocialNetwork.DataModel.Models.Picture", "ProfilePicture")
                         .WithMany()
-                        .HasForeignKey("ProfilePictureId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ProfilePictureId");
                 });
 #pragma warning restore 612, 618
         }

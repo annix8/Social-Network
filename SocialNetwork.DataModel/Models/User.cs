@@ -23,6 +23,6 @@ namespace SocialNetwork.DataModel.Models
         [Required]
         public bool IsPublic { get; set; }
         public Picture ProfilePicture { get; set; }
-        public int ProfilePictureId { get; set; }
+        public int? ProfilePictureId { get; set; }
     }
 }
