@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.Web", "SocialNetwork.Web\SocialNetwork.Web.csproj", "{0C81A2D0-54F7-4259-AB0C-C44ED5FF6183}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.Web", "SocialNetwork.Web\SocialNetwork.Web.csproj", "{0C81A2D0-54F7-4259-AB0C-C44ED5FF6183}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.DataModel", "SocialNetwork.DataModel\SocialNetwork.DataModel.csproj", "{8653074C-ECF3-410E-8F7F-7FDAB81821E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.DataModel", "SocialNetwork.DataModel\SocialNetwork.DataModel.csproj", "{8653074C-ECF3-410E-8F7F-7FDAB81821E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.Services", "SocialNetwork.Services\SocialNetwork.Services.csproj", "{A5F1497B-5B4D-41DF-AD45-F3A598C9A43B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{8653074C-ECF3-410E-8F7F-7FDAB81821E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8653074C-ECF3-410E-8F7F-7FDAB81821E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8653074C-ECF3-410E-8F7F-7FDAB81821E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5F1497B-5B4D-41DF-AD45-F3A598C9A43B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5F1497B-5B4D-41DF-AD45-F3A598C9A43B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5F1497B-5B4D-41DF-AD45-F3A598C9A43B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5F1497B-5B4D-41DF-AD45-F3A598C9A43B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
