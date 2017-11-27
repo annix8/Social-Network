@@ -18,7 +18,7 @@ namespace SocialNetwork.Web
         }
 
         public IConfiguration Configuration { get; }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<SocialNetworkDbContext>(options =>
@@ -41,7 +41,7 @@ namespace SocialNetwork.Web
 
             services.AddMvc();
         }
-        
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -54,7 +54,7 @@ namespace SocialNetwork.Web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            
+
             // uses the custom-made method for migrating the database to latest version
             app.MigrateDatabase();
 
@@ -64,6 +64,11 @@ namespace SocialNetwork.Web
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                  name: "UserArea",
+                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
