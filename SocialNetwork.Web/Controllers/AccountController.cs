@@ -224,15 +224,9 @@ namespace SocialNetwork.Web.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
-                    var userExists = await _userManager.FindByNameAsync(model.Username);
-                    var roleAssignResult = await _userManager.AddToRoleAsync(userExists, GlobalConstants.UserRole.User);
-
-                    if (await _userService.CountAsync() == 1)
-                    {
-                        var adminAssingResult = await _userManager.AddToRoleAsync(userExists, GlobalConstants.UserRole.Administrator);
-                    }
-
+                    
+                    var roleAssignResult = await _userManager.AddToRoleAsync(user, GlobalConstants.UserRole.User);
+                    
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
 

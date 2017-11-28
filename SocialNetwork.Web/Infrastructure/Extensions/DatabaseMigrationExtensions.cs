@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SocialNetwork.DataModel;
+using SocialNetwork.DataModel.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace SocialNetwork.Web.Infrastructure.Extensions
                 serviceScope.ServiceProvider.GetService<SocialNetworkDbContext>().Database.Migrate();
 
                 var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
+                var userManager = serviceScope.ServiceProvider.GetService<UserManager<User>>();
 
                 Task.Run(async () =>
                 {
@@ -34,10 +36,29 @@ namespace SocialNetwork.Web.Infrastructure.Extensions
                             });
                         }
                     }
+
+                    var adminEmail = "admin@admin.com";
+                    var adminUsername = "admin";
+                    var adminExists = await userManager.FindByEmailAsync(adminEmail);
+
+                    if (adminExists == null)
+                    {
+                        var admin = new User
+                        {
+                            Email = adminEmail,
+                            UserName = adminUsername,
+                            FirstName = "John",
+                            LastName = "Doe"
+                        };
+
+                        await userManager.CreateAsync(admin, "pass123");
+                        await userManager.AddToRoleAsync(admin, GlobalConstants.UserRole.Administrator);
+                    }
+
                 }).Wait();
             }
-            
-            
+
+
             return app;
         }
     }
