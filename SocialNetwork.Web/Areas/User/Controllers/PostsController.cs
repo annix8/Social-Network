@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.Services.Contracts;
 using SocialNetwork.Web.Areas.User.Models;
+using SocialNetwork.Web.Areas.User.Models.Posts;
 using System.Threading.Tasks;
 
 namespace SocialNetwork.Web.Areas.User.Controllers
@@ -41,6 +42,19 @@ namespace SocialNetwork.Web.Areas.User.Controllers
             var post = await _postService.ByIdAsync(id);
 
             return View(post);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Comment(CommentModel commentModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            await _postService.MakeCommentAsync(commentModel.Comment, commentModel.PostId, commentModel.CommentAuthor);
+
+            return RedirectToAction(nameof(Details), new { id = commentModel.PostId });
         }
     }
 }

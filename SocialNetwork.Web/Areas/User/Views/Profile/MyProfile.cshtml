@@ -8,7 +8,7 @@
         <div class="col-md-8">
             <h1 class="my-4">
                 My posts<br />
-                <small>Something on your mind? <a href="">Create new post</a></small>
+                <small>Something on your mind? <a asp-controller="Posts" asp-action="Create">Create new post</a></small>
             </h1>
             @if (Model.Posts.Any())
             {

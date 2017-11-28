@@ -39,8 +39,8 @@
                 <hr>
             }
 
-
             <!-- Post Content -->
+            <h4>Content:</h4>
             <p>@Model.Content</p>
             <hr>
 
@@ -48,28 +48,35 @@
             <div class="card my-4">
                 <h5 class="card-header">Leave a Comment:</h5>
                 <div class="card-body">
-                    <form>
+                    <form method="post" asp-controller="Posts" asp-action="Comment">
                         <div class="form-group">
-                            <textarea class="form-control" rows="3"></textarea>
+                            <textarea class="form-control" rows="3" name="Comment"></textarea>
                         </div>
+                        <input type="hidden" name="PostId" value="@Model.Id" />
+                        <input type="hidden" name="CommentAuthor" value="@Model.User.UserName" />
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
             </div>
 
-
-            @foreach (var comment in Model.Comments)
+            @if (Model.Comments.Any())
             {
-                    <!-- Single Comment -->
-                <div class="media mb-4">
-                    <img class="d-flex mr-3 rounded-circle" src="/api/Image/@comment.UserId" alt="">
-                    <div class="media-body">
-                        <h5 class="mt-0">@comment.User.FirstName @comment.User.LastName</h5>
-                        @comment.Content
-                    </div>
-                </div>
-            }
+                <h4>Comments:</h4>
 
+                @foreach (var comment in Model.Comments)
+                {
+
+                    <!-- Single Comment -->
+                    <div class="media mb-4">
+                        <img class="d-flex mr-3 rounded-circle" src="/api/Image/@comment.User.ProfilePictureId" alt="" width="60" height="60">
+                        <div class="media-body">
+                            <h5 class="mt-0"><a href="">@comment.User.FirstName @comment.User.LastName</a></h5>
+                            @comment.Content
+                        </div>
+                    </div>
+                }
+            }
+            
         </div>
 
         <!-- Sidebar Widgets Column -->

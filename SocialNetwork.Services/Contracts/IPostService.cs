@@ -12,5 +12,6 @@ namespace SocialNetwork.Services.Contracts
         Task<bool> CreateAsync(string publisher, string title, string content, IFormFile picture);
         Task<bool> CreateAsync(string publisher, string title, string content);
         Task<Post> ByIdAsync(int id);
+        Task<bool> MakeCommentAsync(string commentContent, int postId, string commentAuthor);
     }
 }

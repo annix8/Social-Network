@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
-namespace SocialNetwork.Web.Areas.User.Models
+namespace SocialNetwork.Web.Areas.User.Models.Posts
 {
     public class PostModel
     {

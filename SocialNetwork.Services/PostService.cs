@@ -89,5 +89,34 @@ namespace SocialNetwork.Services
 
             return true;
         }
+
+        public async Task<bool> MakeCommentAsync(string commentContent, int postId, string commentAuthor)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.UserName == commentAuthor);
+
+            if(user == null)
+            {
+                return false;
+            }
+
+            var post = await _db.Posts.FindAsync(postId);
+
+            if(post == null)
+            {
+                return false;
+            }
+
+            var comment = new Comment
+            {
+                Content = commentContent,
+                Post = post,
+                User = user
+            };
+
+            await _db.Comments.AddAsync(comment);
+            await _db.SaveChangesAsync();
+
+            return true;
+        }
     }
 }
