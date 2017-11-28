@@ -1,27 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+using SocialNetwork.Services.Contracts;
 using SocialNetwork.Web.Areas.User.Models;
-using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace SocialNetwork.Web.Areas.User.Controllers
 {
     [Authorize]
     public class PostsController : UserAreaController
     {
-        
+        private readonly IPostService _postService;
+
+        public PostsController(IPostService postService)
+        {
+            _postService = postService;
+        }
+
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(PostModel postModel)
+        public async Task<IActionResult> Create(PostModel postModel)
         {
-            return RedirectToAction(nameof(ProfileController.MyProfile),nameof(ProfileController));
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var postResult = postModel.Picture == null ?
+               await _postService.CreateAsync(User.Identity.Name, postModel.Title, postModel.Content) :
+               await _postService.CreateAsync(User.Identity.Name, postModel.Title, postModel.Content, postModel.Picture);
+
+            return RedirectToAction(nameof(ProfileController.MyProfile), nameof(ProfileController));
         }
     }
 }

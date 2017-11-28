@@ -22,6 +22,7 @@ namespace SocialNetwork.Services
         {
             return await _db.Users
                 .Include(u => u.Posts)
+                .ThenInclude(p => p.Picture)
                 .Include(u => u.ProfilePicture)
                 .FirstOrDefaultAsync(u => u.UserName == username);
         }

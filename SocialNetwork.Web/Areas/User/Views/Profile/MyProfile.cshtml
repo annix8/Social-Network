@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "My profile";
 }
-
 <div class="container">
     <div class="row">
         <!-- Blog Entries Column -->
@@ -18,7 +17,7 @@
                 <!-- Blog Post -->
                     <div class="card mb-4">
                         @if (post.Picture != null)
-                    {
+                        {
                             <img class="card-img-top" src="/api/Image/@post.PictureId" alt="Card image cap">
                         }
                         <div class="card-body">
@@ -49,7 +48,6 @@
                 <p>You haven't posted anything yet :(</p>
             }
 
-
         </div>
         <!-- Sidebar Widgets Column -->
         <div class="col-md-4">
@@ -72,7 +70,6 @@
                     {
                         <img src="/api/Image/@Model.ProfilePictureId" style="width:70%;height:70%;" />
                     }
-
                     <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="UploadProfilePicture" style="margin-top:25px;">
                         <label class="custom-file" style="margin-bottom:15px;">
                             <input type="file" class="custom-file-input" name="file" />
@@ -117,4 +114,3 @@
     </div>
     <!-- /.row -->
 </div>
-
