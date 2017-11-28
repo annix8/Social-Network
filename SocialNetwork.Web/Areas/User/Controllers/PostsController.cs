@@ -35,5 +35,12 @@ namespace SocialNetwork.Web.Areas.User.Controllers
 
             return RedirectToAction(nameof(ProfileController.MyProfile), nameof(ProfileController));
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var post = await _postService.ByIdAsync(id);
+
+            return View(post);
+        }
     }
 }

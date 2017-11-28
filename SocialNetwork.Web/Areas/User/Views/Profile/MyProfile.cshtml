@@ -23,7 +23,7 @@
                         <div class="card-body">
                             <h2 class="card-title">@post.Title</h2>
                             <p class="card-text">@post.Content<p>
-                                <a href="#" class="btn btn-primary">Read More &rarr;</a>
+                                <a asp-area="User" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">Read More &rarr;</a>
                         </div>
                         <div class="card-footer text-muted">
                             <img src="/api/Image/@Model.ProfilePictureId" alt="Card image cap" width="60" height="60">

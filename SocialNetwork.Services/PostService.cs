@@ -20,6 +20,20 @@ namespace SocialNetwork.Services
             _db = db;
         }
 
+        /// <summary>
+        /// This method loads user, comments and their authors and the picture of the post
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Post> ByIdAsync(int id)
+        {
+            return await _db.Posts
+                .Include(p => p.User)
+                .Include(p => p.Comments).ThenInclude(c => c.User)
+                .Include(p => p.Picture)
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
+
         public async Task<bool> CreateAsync(string publisher, string title, string content, IFormFile pictureFile)
         {
             var user = await _db.Users.FirstOrDefaultAsync(u => u.UserName == publisher);
