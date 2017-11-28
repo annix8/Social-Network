@@ -53,16 +53,17 @@
         </div>
         <!-- Sidebar Widgets Column -->
         <div class="col-md-4">
+            <!-- Widget with name and email info -->
             <div class="card my-4">
                 <h5 class="card-header">@Model.FirstName @Model.LastName</h5>
                 <div class="card-body">
                     <p>@Model.Email</p>
                 </div>
             </div>
-            <!-- Side Widget -->
+            <!-- Widget for the profile photo -->
             <div class="card my-4">
                 <h5 class="card-header">Profile photo</h5>
-                <div class="card-body">
+                <div class="card-body" style="text-align:center;">
                     @if (Model.ProfilePicture == null)
                     {
                         <img src="~/images/profile/nophoto.jpg" style="width:70%;height:70%;" />
