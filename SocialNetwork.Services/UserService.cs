@@ -6,6 +6,7 @@ using SocialNetwork.DataModel.Models;
 using System.Threading.Tasks;
 using SocialNetwork.DataModel;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace SocialNetwork.Services
 {

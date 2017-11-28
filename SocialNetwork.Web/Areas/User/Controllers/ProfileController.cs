@@ -28,6 +28,7 @@ namespace SocialNetwork.Web.Areas.User.Controllers
         public async Task<IActionResult> MyProfile()
         {
             var user = await _userService.ByUsernameAsync(User.Identity.Name);
+            user.Posts = user.Posts.OrderByDescending(p => p.PublishedOn).ToList();
             return View(user);
         }
 
