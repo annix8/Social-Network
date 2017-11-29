@@ -34,7 +34,7 @@ namespace SocialNetwork.Web.Areas.User.Controllers
                await _postService.CreateAsync(User.Identity.Name, postModel.Title, postModel.Content) :
                await _postService.CreateAsync(User.Identity.Name, postModel.Title, postModel.Content, postModel.Picture);
 
-            return RedirectToAction(nameof(ProfileController.MyProfile), nameof(ProfileController));
+            return RedirectToAction(nameof(ProfileController.MyProfile), "Profile");
         }
 
         public async Task<IActionResult> Details(int id)
