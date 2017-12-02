@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "My profile";
 }
-<div class="container">
+
     <div class="row">
         <!-- Blog Entries Column -->
         <div class="col-md-8">
@@ -28,9 +28,13 @@
                         <div class="card-footer text-muted">
                             <img src="/api/Image/@Model.ProfilePictureId" alt="Card image cap" width="60" height="60">
                             Posted on @post.PublishedOn.ToString("dd-MMM-yyyy hh:mm:ss tt", new CultureInfo("en-US")) by
-                            <a href="#">@Model.UserName</a>
-                            <a href="#" class="btn btn-danger" style="float:right;">Delete</a>
-                            <a href="#" class="btn btn-warning" style="float:right;margin-right:5px;">Edit</a>
+                            <a href="#">@Model.FirstName @Model.LastName</a>
+                            @if(post.EditedOn != null)
+                            {
+                                <span>Edited</span>
+                            }
+                            <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger" style="float:right;">Delete</a>
+                            <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning" style="float:right;margin-right:5px;">Edit</a>
                         </div>
                     </div>
                 }
@@ -115,4 +119,3 @@
         </div>
     </div>
     <!-- /.row -->
-</div>

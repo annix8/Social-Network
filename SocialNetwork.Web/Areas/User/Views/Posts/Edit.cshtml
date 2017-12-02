@@ -1,12 +1,14 @@
 ﻿@model PostModel
 @{
-    ViewData["Title"] = "Create post";
+    ViewData["Title"] = "Edit";
 }
+
+
 <div class="row">
     <div class="col-md-8">
-        <h2>Create post</h2><hr />
+        <h2>Edit post - @Model.Title</h2>
 
-        <form method="post" enctype="multipart/form-data" asp-controller="Posts" asp-action="Create">
+        <form method="post" enctype="multipart/form-data" asp-controller="Posts" asp-action="Edit">
             <div asp-validation-summary="All"></div>
             <div class="form-group">
                 <label asp-for="Title">Title</label>
@@ -18,11 +20,9 @@
                 <textarea asp-for="Content" class="form-control" rows="15"></textarea>
                 <span asp-validation-for="Content"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Picture">Picture</label>
-                <input asp-for="Picture" />
-            </div>
-            <input type="submit" class="btn btn-primary" value="Create" />
+            
+            <input type="hidden" asp-for="PostId" />
+            <input type="submit" class="btn btn-primary" value="Edit" />
         </form>
     </div>
     <div class="col-md-4">
@@ -34,6 +34,3 @@
         </div>
     </div>
 </div>
-@section Scripts{
-    @await Html.PartialAsync("_ValidationScriptsPartial")
-}

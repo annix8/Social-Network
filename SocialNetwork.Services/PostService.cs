@@ -37,7 +37,7 @@ namespace SocialNetwork.Services
         public async Task<bool> CreateAsync(string publisher, string title, string content, IFormFile pictureFile)
         {
             var user = await _db.Users.FirstOrDefaultAsync(u => u.UserName == publisher);
-            if(user == null)
+            if (user == null)
             {
                 return false;
             }
@@ -90,18 +90,59 @@ namespace SocialNetwork.Services
             return true;
         }
 
+        public async Task<bool> DeleteAsync(int postId)
+        {
+            var post = await _db.Posts.FindAsync(postId);
+
+            if (post == null)
+            {
+                return false;
+            }
+            
+            if(post.PictureId != null)
+            {
+                var pic = _db.Pictures.Find(post.PictureId);
+
+                _db.Pictures.Remove(pic);
+            }
+            _db.Posts.Remove(post);
+            await _db.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> EditAsync(int postId, string title, string content)
+        {
+            var post = await _db.Posts
+                .Include(p => p.Picture)
+                .FirstOrDefaultAsync(p => p.Id == postId);
+
+            if (post == null)
+            {
+                return false;
+            }
+
+            post.Title = title;
+            post.Content = content;
+            post.EditedOn = DateTime.UtcNow;
+
+            await _db.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<bool> MakeCommentAsync(string commentContent, int postId, string commentAuthor)
         {
             var user = await _db.Users.FirstOrDefaultAsync(u => u.UserName == commentAuthor);
 
-            if(user == null)
+            if (user == null)
             {
                 return false;
             }
 
             var post = await _db.Posts.FindAsync(postId);
 
-            if(post == null)
+            if (post == null)
             {
                 return false;
             }

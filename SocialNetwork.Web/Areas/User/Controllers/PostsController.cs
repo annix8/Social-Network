@@ -56,5 +56,50 @@ namespace SocialNetwork.Web.Areas.User.Controllers
 
             return RedirectToAction(nameof(Details), new { id = commentModel.PostId });
         }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var post = await _postService.ByIdAsync(id);
+
+            var viewModel = new PostModel
+            {
+                PostId = post.Id,
+                Content = post.Content,
+                Title = post.Title
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(PostModel postModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(postModel);
+            }
+
+            var postResult = await _postService.EditAsync(postModel.PostId, postModel.Title, postModel.Content);
+
+            return RedirectToAction(nameof(ProfileController.MyProfile), "Profile");
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var post = await _postService.ByIdAsync(id);
+
+            return View(new PostModel
+            {
+                PostId = post.Id,
+                Title = post.Title
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(PostModel postModel)
+        {
+            var deleteResult = await _postService.DeleteAsync(postModel.PostId);
+
+            return RedirectToAction(nameof(ProfileController.MyProfile), "Profile");
+        }
     }
 }

@@ -1,0 +1,14 @@
+﻿@model PostModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete post - @Model.Title</h2><hr />
+Are you sure you want to delete this post?
+
+<form method="post" asp-controller="Posts" asp-action="Delete">
+    <input type="hidden" asp-for="PostId" />
+    <input type="submit" value="Yes" class="btn btn-primary" />
+    <a asp-controller="Profile" asp-action="MyProfile" class="btn btn-danger">No, take me back!</a>
+</form>
+
