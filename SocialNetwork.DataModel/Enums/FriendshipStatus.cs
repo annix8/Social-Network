@@ -8,6 +8,7 @@ namespace SocialNetwork.DataModel.Enums
     {
         Pending,
         Accepted,
-        Blocked
+        Blocked,
+        NotFriend
     }
 }

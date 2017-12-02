@@ -6,6 +6,7 @@ namespace SocialNetwork.Web.Areas.User.Controllers
 {
     using DataModel.Models;
     using Microsoft.AspNetCore.Http;
+    using SocialNetwork.DataModel.Enums;
     using SocialNetwork.Services.Contracts;
     using SocialNetwork.Web.Infrastructure;
     using System.Collections.Generic;
@@ -46,6 +47,33 @@ namespace SocialNetwork.Web.Areas.User.Controllers
             }
 
             return RedirectToAction(nameof(MyProfile));
+        }
+
+        public async Task<IActionResult> Visit(string username)
+        {
+            var userToVisit = await _userService.ByUsernameAsync(username);
+            var currentUser = await _userService.ByUsernameAsync(User.Identity.Name);
+
+            var friendshipStatus = await _userService.CheckFriendshipStatus(userToVisit.Id, currentUser.Id);
+
+            switch (friendshipStatus)
+            {
+                case FriendshipStatus.Blocked:
+                case FriendshipStatus.NotFriend:
+                case FriendshipStatus.Pending:
+                    {
+                        userToVisit.IsPublic = false;
+                        break;
+                    }
+                case FriendshipStatus.Accepted:
+                    {
+                        userToVisit.IsPublic = true;
+                        break;
+                    }
+                default:break;
+            }
+
+            return View(userToVisit);
         }
     }
 }

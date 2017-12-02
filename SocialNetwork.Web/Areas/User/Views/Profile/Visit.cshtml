@@ -1,0 +1,130 @@
+﻿@model User
+@{
+    ViewData["Title"] = Model.FirstName;
+}
+
+<div class="row">
+    <!-- Blog Entries Column -->
+    <div class="col-md-8">
+        @if (Model.IsPublic)
+        {
+            <h1 class="my-4">
+                @Model.FirstName @Model.LastName's posts<br />
+            </h1>
+            @if (Model.Posts.Any())
+            {
+                @foreach (var post in Model.Posts)
+                {
+                <!-- Blog Post -->
+                    <div class="card mb-4">
+                        @if (post.Picture != null)
+                        {
+                            <img class="card-img-top" src="/api/Image/@post.PictureId" alt="Card image cap">
+                        }
+                        <div class="card-body">
+                            <h2 class="card-title">@post.Title</h2>
+                            <p class="card-text">@post.Content<p>
+                                <a asp-area="User" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">Read More &rarr;</a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <img src="/api/Image/@Model.ProfilePictureId" alt="Card image cap" width="60" height="60">
+                            Posted on @post.PublishedOn.ToString("dd-MMM-yyyy hh:mm:ss tt", new CultureInfo("en-US")) by
+                            <a href="#">@Model.FirstName @Model.LastName</a>
+                            @if (post.EditedOn != null)
+                        {
+                                <span>Edited</span>
+                            }
+                        </div>
+                    </div>
+                }
+
+            <!-- Pagination -->
+                <ul class="pagination justify-content-center mb-4">
+                    <li class="page-item">
+                        <a class="page-link" href="#">&larr; Older</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Newer &rarr;</a>
+                    </li>
+                </ul>
+            }
+            else
+            {
+                <p>@Model.FirstName @Model.LastName hasn't posted anything yet :(</p>
+            }
+        }
+        else
+        {
+            <p class="danger">You do not have access to this user's personal info. Send a friend request if you wish to befriend him/her.</p>
+        }
+
+    </div>
+    <!-- Sidebar Widgets Column -->
+    <div class="col-md-4">
+        <!-- Widget with name and email info -->
+        <div class="card my-4">
+            <h5 class="card-header">@Model.FirstName @Model.LastName</h5>
+            <div class="card-body">
+                <p>@Model.Email</p>
+            </div>
+        </div>
+        <!-- Widget for the profile photo -->
+        <div class="card my-4">
+            <h5 class="card-header">Profile photo</h5>
+            <div class="card-body" style="text-align:center;">
+                @if (Model.ProfilePicture == null)
+                {
+                    <img src="~/images/profile/nophoto.jpg" style="width:70%;height:70%;" />
+                }
+                else
+                {
+                    <img src="/api/Image/@Model.ProfilePictureId" style="width:70%;height:70%;" />
+                }
+                <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="UploadProfilePicture" style="margin-top:25px;">
+                    <label class="custom-file" style="margin-bottom:15px;">
+                        <input type="file" class="custom-file-input" name="file" />
+                        <span class="custom-file-control">Click to select new picture...</span>
+                    </label>
+                    <div class="form-group">
+                        <input type="submit" value="Upload" class="form-control btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        @if (Model.IsPublic)
+        {
+            <!-- Categories Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Quick links</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <ul class="list-unstyled mb-0">
+                                <li>
+                                    <a href="#">About</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-4">
+                            <ul class="list-unstyled mb-0">
+                                <li>
+                                    <a href="#">Photos</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-4">
+                            <ul class="list-unstyled mb-0">
+                                <li>
+                                    <a href="#">Friends</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        
+    </div>
+</div>
+<!-- /.row -->
+
