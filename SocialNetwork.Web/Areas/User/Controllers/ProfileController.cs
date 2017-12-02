@@ -54,6 +54,11 @@ namespace SocialNetwork.Web.Areas.User.Controllers
             var userToVisit = await _userService.ByUsernameAsync(username);
             var currentUser = await _userService.ByUsernameAsync(User.Identity.Name);
 
+            if(userToVisit.UserName == currentUser.UserName)
+            {
+                return RedirectToAction(nameof(MyProfile));
+            }
+
             var friendshipStatus = await _userService.CheckFriendshipStatus(userToVisit.Id, currentUser.Id);
 
             switch (friendshipStatus)
