@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
-
-namespace SocialNetwork.Web.Areas.User.Models.Posts
+﻿namespace SocialNetwork.Web.Areas.User.Models.Posts
 {
+    using Microsoft.AspNetCore.Http;
+    using System.ComponentModel.DataAnnotations;
+
     public class PostModel
     {
         public int PostId { get; set; }

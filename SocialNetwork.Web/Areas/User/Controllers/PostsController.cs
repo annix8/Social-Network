@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using SocialNetwork.Services.Contracts;
-using SocialNetwork.Web.Areas.User.Models;
-using SocialNetwork.Web.Areas.User.Models.Posts;
-using System.Threading.Tasks;
-
-namespace SocialNetwork.Web.Areas.User.Controllers
+﻿namespace SocialNetwork.Web.Areas.User.Controllers
 {
-    [Authorize]
+    using Microsoft.AspNetCore.Mvc;
+    using SocialNetwork.Services.Contracts;
+    using SocialNetwork.Web.Areas.User.Models.Posts;
+    using System.Threading.Tasks;
+
     public class PostsController : UserAreaController
     {
         private readonly IPostService _postService;

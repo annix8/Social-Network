@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace SocialNetwork.Web.Areas.User.Models.Profile
+﻿namespace SocialNetwork.Web.Areas.User.Models.Profile
 {
     using DataModel.Models;
 

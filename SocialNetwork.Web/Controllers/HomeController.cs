@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using SocialNetwork.Web.Models;
-using SocialNetwork.DataModel;
-
-namespace SocialNetwork.Web.Controllers
+﻿namespace SocialNetwork.Web.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using SocialNetwork.Web.Models;
+    using System.Diagnostics;
+
     public class HomeController : Controller
     {
         public IActionResult Index()

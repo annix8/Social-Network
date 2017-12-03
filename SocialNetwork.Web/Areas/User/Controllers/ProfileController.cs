@@ -1,21 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-
+﻿
 namespace SocialNetwork.Web.Areas.User.Controllers
 {
-    using DataModel.Models;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
     using SocialNetwork.DataModel.Enums;
     using SocialNetwork.Services.Contracts;
     using SocialNetwork.Web.Areas.User.Models.Profile;
-    using SocialNetwork.Web.Infrastructure;
-    using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
 
-    [Authorize]
     public class ProfileController : UserAreaController
     {
         private readonly IUserService _userService;

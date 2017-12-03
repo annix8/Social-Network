@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using SocialNetwork.DataModel;
-using SocialNetwork.DataModel.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace SocialNetwork.Web.Infrastructure.Extensions
+﻿namespace SocialNetwork.Web.Infrastructure.Extensions
 {
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.DependencyInjection;
+    using SocialNetwork.DataModel;
+    using SocialNetwork.DataModel.Models;
+    using System.Threading.Tasks;
+
     public static class DatabaseMigrationExtensions
     {
         public static IApplicationBuilder MigrateDatabase(this IApplicationBuilder app)

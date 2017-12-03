@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using SocialNetwork.DataModel.Models;
-using SocialNetwork.Services.Contracts;
-using Microsoft.AspNetCore.Authorization;
-
-namespace SocialNetwork.Web.Controllers
+﻿namespace SocialNetwork.Web.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using SocialNetwork.DataModel.Models;
+    using SocialNetwork.Services.Contracts;
+    using System.Threading.Tasks;
+
     [Authorize]
     [Route("api/Image")]
     public class PictureController : Controller

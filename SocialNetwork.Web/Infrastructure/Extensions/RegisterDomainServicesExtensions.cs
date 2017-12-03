@@ -1,13 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using SocialNetwork.Services.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-
-namespace SocialNetwork.Web.Infrastructure.Extensions
+﻿namespace SocialNetwork.Web.Infrastructure.Extensions
 {
+    using Microsoft.Extensions.DependencyInjection;
+    using SocialNetwork.Services.Contracts;
+    using System.Linq;
+    using System.Reflection;
+
     public static class RegisterDomainServicesExtensions
     {
         public static IServiceCollection AddDomainServices(this IServiceCollection services)
