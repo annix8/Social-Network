@@ -1,4 +1,4 @@
-﻿@model User
+﻿@model MyProfileModel
 @{
     ViewData["Title"] = "My profile";
 }
@@ -10,9 +10,9 @@
                 My posts<br />
                 <small>Something on your mind? <a asp-controller="Posts" asp-action="Create">Create new post</a></small>
             </h1>
-            @if (Model.Posts.Any())
+            @if (Model.User.Posts.Any())
             {
-                @foreach (var post in Model.Posts)
+                @foreach (var post in Model.User.Posts)
                 {
                 <!-- Blog Post -->
                     <div class="card mb-4">
@@ -26,9 +26,9 @@
                                 <a asp-area="User" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">Read More &rarr;</a>
                         </div>
                         <div class="card-footer text-muted">
-                            <img src="/api/Image/@Model.ProfilePictureId" alt="Card image cap" width="60" height="60">
+                            <img src="/api/Image/@Model.User.ProfilePictureId" alt="Card image cap" width="60" height="60">
                             Posted on @post.PublishedOn.ToString("dd-MMM-yyyy hh:mm:ss tt", new CultureInfo("en-US")) by
-                            <a href="#">@Model.FirstName @Model.LastName</a>
+                            <a href="#">@Model.User.FirstName @Model.User.LastName</a>
                             @if(post.EditedOn != null)
                             {
                                 <span>Edited</span>
@@ -59,22 +59,31 @@
         <div class="col-md-4">
             <!-- Widget with name and email info -->
             <div class="card my-4">
-                <h5 class="card-header">@Model.FirstName @Model.LastName</h5>
+                <h5 class="card-header">@Model.User.FirstName @Model.User.LastName</h5>
                 <div class="card-body">
-                    <p>@Model.Email</p>
+                    <p>@Model.User.Email</p>
+                    @if (Model.PendingRequestsCount > 0)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            <p>
+                                <a asp-controller="Profile" asp-action="PendingRequests" asp-route-userId="@Model.User.Id">You have @Model.PendingRequestsCount new pending friend requests</a>
+                            </p>
+                        </div>
+                        
+                    }
                 </div>
             </div>
             <!-- Widget for the profile photo -->
             <div class="card my-4">
                 <h5 class="card-header">Profile photo</h5>
                 <div class="card-body" style="text-align:center;">
-                    @if (Model.ProfilePicture == null)
+                    @if (Model.User.ProfilePicture == null)
                     {
                         <img src="~/images/profile/nophoto.jpg" style="width:70%;height:70%;" />
                     }
                     else
                     {
-                        <img src="/api/Image/@Model.ProfilePictureId" style="width:70%;height:70%;" />
+                        <img src="/api/Image/@Model.User.ProfilePictureId" style="width:70%;height:70%;" />
                     }
                     <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="UploadProfilePicture" style="margin-top:25px;">
                         <label class="custom-file" style="margin-bottom:15px;">

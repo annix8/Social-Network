@@ -31,7 +31,15 @@ namespace SocialNetwork.Web.Areas.User.Controllers
         {
             var user = await _userService.ByUsernameAsync(User.Identity.Name);
             user.Posts = user.Posts.OrderByDescending(p => p.PublishedOn).ToList();
-            return View(user);
+
+            var viewModel = new MyProfileModel
+            {
+                User = user,
+                PendingRequestsCount = user.FriendRequestsAccepted.Where(x => x.FriendshipStatus == FriendshipStatus.Pending).Count()
+            };
+
+            return View(viewModel);
+
         }
 
         [HttpPost]
@@ -80,6 +88,12 @@ namespace SocialNetwork.Web.Areas.User.Controllers
             }
 
             return RedirectToAction(nameof(Visit), new { username = usernameToBefriend });
+        }
+
+        public async Task<IActionResult> PendingRequests(string userId)
+        {
+
+            return View();
         }
     }
 }

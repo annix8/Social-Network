@@ -36,7 +36,7 @@ namespace SocialNetwork.Services
                 .FirstOrDefaultAsync(fr => (fr.UserId == firstUserId && fr.FriendId == secondUserId) ||
                 (fr.FriendId == firstUserId && fr.UserId == secondUserId));
 
-            if(friendship == null)
+            if (friendship == null)
             {
                 return FriendshipStatus.NotFriend;
             }
@@ -54,7 +54,7 @@ namespace SocialNetwork.Services
             var issuer = await _db.Users.FirstOrDefaultAsync(u => u.UserName == issuerUsername);
             var friend = await _db.Users.FirstOrDefaultAsync(u => u.UserName == userToBefriend);
 
-            if(issuer == null || friend == null)
+            if (issuer == null || friend == null)
             {
                 return false;
             }
