@@ -68,7 +68,11 @@
 
                     <!-- Single Comment -->
                     <div class="media mb-4">
-                        <img class="d-flex mr-3 rounded-circle" src="/api/Image/@comment.User.ProfilePictureId" alt="" width="60" height="60">
+                        @{ 
+                            var userProfilePicture = comment.User.ProfilePictureId == null ?
+                                "/images/profile/nophoto.jpg" : $"/api/Image/{comment.User.ProfilePictureId}";
+                        }
+                        <img class="d-flex mr-3 rounded-circle" src="@userProfilePicture" alt="profile-picture" width="60" height="60">
                         <div class="media-body">
                             <h5 class="mt-0"><a href="">@comment.User.FirstName @comment.User.LastName</a></h5>
                             @comment.Content

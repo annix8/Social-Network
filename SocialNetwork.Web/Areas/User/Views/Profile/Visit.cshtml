@@ -6,7 +6,7 @@
 <div class="row">
     <!-- Blog Entries Column -->
     <div class="col-md-8">
-        @if (Model.FriendshipStatus == FriendshipStatus.Accepted)
+        @if (Model.FriendshipStatus == FriendshipStatus.Accepted || User.IsInRole(GlobalConstants.UserRole.Administrator))
         {
             <h1 class="my-4">
                 @Model.User.FirstName @Model.User.LastName's posts<br />
@@ -107,7 +107,7 @@
                 }
             </div>
         </div>
-        @if (Model.FriendshipStatus == FriendshipStatus.Accepted)
+        @if (Model.FriendshipStatus == FriendshipStatus.Accepted || User.IsInRole(GlobalConstants.UserRole.Administrator))
         {
             <!-- Categories Widget -->
             <div class="card my-4">
