@@ -16,5 +16,7 @@ namespace SocialNetwork.Services.Contracts
         Task<FriendshipStatus> CheckFriendshipStatusAsync(string firstUserId, string secondUserId);
 
         Task<bool> MakeFriendRequestAsync(string issuerUsername, string userToBefriend);
+
+        Task<bool> DeleteFriendshipAsync(string issuerUsername, string userToCancel);
     }
 }

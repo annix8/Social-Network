@@ -55,17 +55,21 @@
         }
         else
         {
-            <p class="danger">You do not have access to this user's personal info. Send a friend request if you wish to befriend him/her.</p>
 
-            if(Model.FriendshipStatus == FriendshipStatus.Pending)
+            if (Model.FriendshipStatus == FriendshipStatus.Pending)
             {
-                <button class="btn btn-primary" disabled>Friend request sent</button>
+                <div class="alert alert-info" role="alert">
+                    Friend request pending... You will see user's profile if he accepts you.
+                </div>
+                <a class="btn btn-danger" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Cancel friend request</a>
 
             }
-            else if(Model.FriendshipStatus == FriendshipStatus.NotFriend)
+            else if (Model.FriendshipStatus == FriendshipStatus.NotFriend)
             {
+                <div class="alert alert-warning" role="alert">
+                    <p class="danger">You do not have access to this user's personal info. Send a friend request if you wish to befriend him/her.</p>
+                </div>
                 <a class="btn btn-primary" asp-controller="Profile" asp-action="SendFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Add friend</a>
-
             }
         }
 
@@ -125,8 +129,7 @@
                 </div>
             </div>
         }
-        
+
     </div>
 </div>
 <!-- /.row -->
-

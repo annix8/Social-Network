@@ -30,6 +30,27 @@ namespace SocialNetwork.Services
                 .FirstOrDefaultAsync(u => u.UserName == username);
         }
 
+        public async Task<bool> DeleteFriendshipAsync(string issuerUsername, string userToCancel)
+        {
+            var issuer = await _db.Users.FirstOrDefaultAsync(u => u.UserName == issuerUsername);
+            var friend = await _db.Users.FirstOrDefaultAsync(u => u.UserName == userToCancel);
+
+            var friendship = await _db.Friendships
+                .FirstOrDefaultAsync(f => (f.User == issuer && f.Friend == friend) ||
+                (f.Friend == issuer && f.User == friend));
+
+            if(friendship == null)
+            {
+                return false;
+            }
+
+            _db.Friendships.Remove(friendship);
+
+            await _db.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<FriendshipStatus> CheckFriendshipStatusAsync(string firstUserId, string secondUserId)
         {
             var friendship = await _db.Friendships
