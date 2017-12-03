@@ -61,10 +61,13 @@ namespace SocialNetwork.Web.Areas.User.Controllers
                 return RedirectToAction(nameof(MyProfile));
             }
 
+            var (friendshipStatus, issuerName) = await _userService.CheckFriendshipStatusAsync(userToVisit.Id, currentUser.Id);
+
             var viewModel = new VisitProfileModel
             {
                 User = userToVisit,
-               FriendshipStatus = await _userService.CheckFriendshipStatusAsync(userToVisit.Id, currentUser.Id)
+                FriendshipStatus = friendshipStatus,
+                IssuerUsername = issuerName
             };
 
             return View(viewModel);
@@ -90,8 +93,16 @@ namespace SocialNetwork.Web.Areas.User.Controllers
             return RedirectToAction(nameof(Visit), new { username = usernameToBefriend });
         }
 
+        public async Task<IActionResult> AcceptFriendRequest(string usernameToBefriend)
+        {
+            var result = await _userService.AcceptFriendshipAsync(User.Identity.Name, usernameToBefriend);
+
+            return RedirectToAction(nameof(Visit), new { username = usernameToBefriend });
+        }
+
         public async Task<IActionResult> PendingRequests(string userId)
         {
+            var users = await _userService.PendingFriendsAsync(userId);
 
             return View();
         }

@@ -7,5 +7,6 @@
     {
         public User User { get; set; }
         public FriendshipStatus FriendshipStatus { get; set; }
+        public string IssuerUsername { get; set; }
     }
 }

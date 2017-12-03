@@ -13,10 +13,14 @@ namespace SocialNetwork.Services.Contracts
 
         Task<int> CountAsync();
 
-        Task<FriendshipStatus> CheckFriendshipStatusAsync(string firstUserId, string secondUserId);
+        Task<(FriendshipStatus, string)> CheckFriendshipStatusAsync(string firstUserId, string secondUserId);
 
         Task<bool> MakeFriendRequestAsync(string issuerUsername, string userToBefriend);
 
         Task<bool> DeleteFriendshipAsync(string issuerUsername, string userToCancel);
+
+        Task<bool> AcceptFriendshipAsync(string firstUsername, string secondUsername);
+
+        Task<IEnumerable<User>> PendingFriendsAsync(string userId);
     }
 }

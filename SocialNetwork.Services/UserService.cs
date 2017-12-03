@@ -39,7 +39,7 @@ namespace SocialNetwork.Services
                 .FirstOrDefaultAsync(f => (f.User == issuer && f.Friend == friend) ||
                 (f.Friend == issuer && f.User == friend));
 
-            if(friendship == null)
+            if (friendship == null)
             {
                 return false;
             }
@@ -51,7 +51,7 @@ namespace SocialNetwork.Services
             return true;
         }
 
-        public async Task<FriendshipStatus> CheckFriendshipStatusAsync(string firstUserId, string secondUserId)
+        public async Task<(FriendshipStatus, string)> CheckFriendshipStatusAsync(string firstUserId, string secondUserId)
         {
             var friendship = await _db.Friendships
                 .FirstOrDefaultAsync(fr => (fr.UserId == firstUserId && fr.FriendId == secondUserId) ||
@@ -59,10 +59,13 @@ namespace SocialNetwork.Services
 
             if (friendship == null)
             {
-                return FriendshipStatus.NotFriend;
+                return (FriendshipStatus.NotFriend, "");
             }
 
-            return friendship.FriendshipStatus;
+            var issuer = await _db.Users
+                .FirstOrDefaultAsync(u => u.Id == friendship.FriendshipIssuerId);
+
+            return (friendship.FriendshipStatus, issuer.UserName);
         }
 
         public async Task<int> CountAsync()
@@ -89,6 +92,36 @@ namespace SocialNetwork.Services
             };
 
             await _db.Friendships.AddAsync(friendship);
+            await _db.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<IEnumerable<User>> PendingFriendsAsync(string userId)
+        {
+            return await _db.Friendships
+                 .Include(fr => fr.User)
+                 .Where(fr => fr.FriendId == userId)
+                 .Select(fr => fr.User)
+                 .ToListAsync();
+        }
+
+        public async Task<bool> AcceptFriendshipAsync(string firstUsername, string secondUsername)
+        {
+            var firstUser = await _db.Users.FirstOrDefaultAsync(u => u.UserName == firstUsername);
+            var secondUser = await _db.Users.FirstOrDefaultAsync(u => u.UserName == secondUsername);
+
+            var friendship = await _db.Friendships
+                .FirstOrDefaultAsync(fr => (fr.User == firstUser && fr.Friend == secondUser) ||
+                (fr.Friend == firstUser && fr.User == secondUser));
+
+            if(friendship == null)
+            {
+                return false;
+            }
+
+            friendship.FriendshipStatus = FriendshipStatus.Accepted;
+
             await _db.SaveChangesAsync();
 
             return true;
