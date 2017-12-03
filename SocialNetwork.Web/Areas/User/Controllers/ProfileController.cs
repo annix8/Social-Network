@@ -6,6 +6,7 @@ namespace SocialNetwork.Web.Areas.User.Controllers
     using SocialNetwork.DataModel.Enums;
     using SocialNetwork.Services.Contracts;
     using SocialNetwork.Web.Areas.User.Models.Profile;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -86,16 +87,26 @@ namespace SocialNetwork.Web.Areas.User.Controllers
             return RedirectToAction(nameof(Visit), new { username = usernameToBefriend });
         }
 
-        public async Task<IActionResult> CancelFriendRequest(string usernameToBefriend)
+        public async Task<IActionResult> CancelFriendRequest(string usernameToBefriend, string returnUrl = null)
         {
             var result = await _userService.DeleteFriendshipAsync(User.Identity.Name, usernameToBefriend);
+
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
 
             return RedirectToAction(nameof(Visit), new { username = usernameToBefriend });
         }
 
-        public async Task<IActionResult> AcceptFriendRequest(string usernameToBefriend)
+        public async Task<IActionResult> AcceptFriendRequest(string usernameToBefriend, string returnUrl = null)
         {
             var result = await _userService.AcceptFriendshipAsync(User.Identity.Name, usernameToBefriend);
+
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
 
             return RedirectToAction(nameof(Visit), new { username = usernameToBefriend });
         }
@@ -104,7 +115,17 @@ namespace SocialNetwork.Web.Areas.User.Controllers
         {
             var users = await _userService.PendingFriendsAsync(userId);
 
-            return View();
+            var viewModel = users
+                .Select(u => new PendingRequestsModel
+                {
+                    UserId = u.Id,
+                    Email = u.Email,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Username = u.UserName
+                });
+
+            return View(viewModel);
         }
     }
 }

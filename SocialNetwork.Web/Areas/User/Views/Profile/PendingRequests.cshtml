@@ -1,7 +1,57 @@
-﻿
+﻿@model IEnumerable<PendingRequestsModel>
 @{
-    ViewData["Title"] = "PendingRequests";
+    ViewData["Title"] = "Pending requests";
 }
+<div class="row">
+    <div class="col-md-8">
+        <h2>Pending requests</h2><hr />
+        @if (Model.Any())
+        {
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+                @foreach (var request in Model)
+                {
+                    <tr>
+                        <td><a asp-controller="Profile" asp-action="Visit" asp-route-username="@request.Username">@request.FirstName @request.LastName</a></td>
+                        <td>@request.Username</td>
+                        <td>@request.Email</td>
+                        <td>
+                            <a class="btn btn-primary"
+                               asp-controller="Profile"
+                               asp-action="AcceptFriendRequest"
+                               asp-route-usernameToBefriend="@request.Username"
+                               asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString">Accept friend request</a>
 
-<h2>PendingRequests</h2>
+                            <a class="btn btn-danger"
+                               asp-controller="Profile"
+                               asp-action="CancelFriendRequest"
+                               asp-route-usernameToBefriend="@request.Username"
+                               asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString">Cancel friend request</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+           <div class="alert alert-info" role="alert">
+               You don't have any pending friend requests.
+           </div>
 
+        }
+
+    </div>
+    <div class="col-md-4">
+        <div class="card my-4">
+            <h5 class="card-header">Profile</h5>
+            <div class="card-body">
+                <a asp-area="User" asp-controller="Profile" asp-action="MyProfile">Go to my profile</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -101,7 +101,7 @@ namespace SocialNetwork.Services
         {
             return await _db.Friendships
                  .Include(fr => fr.User)
-                 .Where(fr => fr.FriendId == userId)
+                 .Where(fr => fr.FriendId == userId && fr.FriendshipStatus == FriendshipStatus.Pending)
                  .Select(fr => fr.User)
                  .ToListAsync();
         }
