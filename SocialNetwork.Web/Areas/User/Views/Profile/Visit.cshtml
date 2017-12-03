@@ -63,8 +63,8 @@
                     <div class="alert alert-info" role="alert">
                         This person has requested to be your friend. Will you accept the request?
                     </div>
-                    <a class="btn btn-primary" asp-controller="Profile" asp-action="AcceptFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Accept friend request</a>
-                    <a class="btn btn-danger" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Cancel friend request</a>
+                    <a class="btn btn-primary" asp-controller="Profile" asp-action="AcceptFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Accept</a>
+                    <a class="btn btn-danger" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Decline</a>
                 }
                 else
                 {

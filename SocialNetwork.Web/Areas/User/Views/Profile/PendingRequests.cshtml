@@ -25,13 +25,13 @@
                                asp-controller="Profile"
                                asp-action="AcceptFriendRequest"
                                asp-route-usernameToBefriend="@request.Username"
-                               asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString">Accept friend request</a>
+                               asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString">Accept</a>
 
                             <a class="btn btn-danger"
                                asp-controller="Profile"
                                asp-action="CancelFriendRequest"
                                asp-route-usernameToBefriend="@request.Username"
-                               asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString">Cancel friend request</a>
+                               asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString">Decline</a>
                         </td>
                     </tr>
                 }
