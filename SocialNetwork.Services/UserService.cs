@@ -30,7 +30,7 @@ namespace SocialNetwork.Services
                 .FirstOrDefaultAsync(u => u.UserName == username);
         }
 
-        public async Task<FriendshipStatus> CheckFriendshipStatus(string firstUserId, string secondUserId)
+        public async Task<FriendshipStatus> CheckFriendshipStatusAsync(string firstUserId, string secondUserId)
         {
             var friendship = await _db.Friendships
                 .FirstOrDefaultAsync(fr => (fr.UserId == firstUserId && fr.FriendId == secondUserId) ||
@@ -47,6 +47,30 @@ namespace SocialNetwork.Services
         public async Task<int> CountAsync()
         {
             return await _db.Users.CountAsync();
+        }
+
+        public async Task<bool> MakeFriendRequestAsync(string issuerUsername, string userToBefriend)
+        {
+            var issuer = await _db.Users.FirstOrDefaultAsync(u => u.UserName == issuerUsername);
+            var friend = await _db.Users.FirstOrDefaultAsync(u => u.UserName == userToBefriend);
+
+            if(issuer == null || friend == null)
+            {
+                return false;
+            }
+
+            var friendship = new Friendship
+            {
+                User = issuer,
+                Friend = friend,
+                FriendshipIssuerId = issuer.Id,
+                FriendshipStatus = FriendshipStatus.Pending
+            };
+
+            await _db.Friendships.AddAsync(friendship);
+            await _db.SaveChangesAsync();
+
+            return true;
         }
     }
 }

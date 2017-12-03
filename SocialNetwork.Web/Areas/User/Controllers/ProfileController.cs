@@ -8,6 +8,7 @@ namespace SocialNetwork.Web.Areas.User.Controllers
     using Microsoft.AspNetCore.Http;
     using SocialNetwork.DataModel.Enums;
     using SocialNetwork.Services.Contracts;
+    using SocialNetwork.Web.Areas.User.Models.Profile;
     using SocialNetwork.Web.Infrastructure;
     using System.Collections.Generic;
     using System.IO;
@@ -54,31 +55,31 @@ namespace SocialNetwork.Web.Areas.User.Controllers
             var userToVisit = await _userService.ByUsernameAsync(username);
             var currentUser = await _userService.ByUsernameAsync(User.Identity.Name);
 
-            if(userToVisit.UserName == currentUser.UserName)
+            if (userToVisit.UserName == currentUser.UserName)
             {
                 return RedirectToAction(nameof(MyProfile));
             }
 
-            var friendshipStatus = await _userService.CheckFriendshipStatus(userToVisit.Id, currentUser.Id);
-
-            switch (friendshipStatus)
+            var viewModel = new VisitProfileModel
             {
-                case FriendshipStatus.Blocked:
-                case FriendshipStatus.NotFriend:
-                case FriendshipStatus.Pending:
-                    {
-                        userToVisit.IsPublic = false;
-                        break;
-                    }
-                case FriendshipStatus.Accepted:
-                    {
-                        userToVisit.IsPublic = true;
-                        break;
-                    }
-                default:break;
+                User = userToVisit,
+               FriendshipStatus = await _userService.CheckFriendshipStatusAsync(userToVisit.Id, currentUser.Id)
+            };
+
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> SendFriendRequest(string usernameToBefriend)
+        {
+            var friendshipResult = await _userService.MakeFriendRequestAsync(User.Identity.Name, usernameToBefriend);
+
+            if (!friendshipResult)
+            {
+                //TODO: log errors
+                return RedirectToAction(nameof(Visit), new { username = usernameToBefriend });
             }
 
-            return View(userToVisit);
+            return RedirectToAction(nameof(Visit), new { username = usernameToBefriend });
         }
     }
 }

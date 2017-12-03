@@ -1,19 +1,19 @@
-﻿@model User
+﻿@model VisitProfileModel
 @{
-    ViewData["Title"] = Model.FirstName;
+    ViewData["Title"] = Model.User.FirstName;
 }
 
 <div class="row">
     <!-- Blog Entries Column -->
     <div class="col-md-8">
-        @if (Model.IsPublic)
+        @if (Model.FriendshipStatus == FriendshipStatus.Accepted)
         {
             <h1 class="my-4">
-                @Model.FirstName @Model.LastName's posts<br />
+                @Model.User.FirstName @Model.User.LastName's posts<br />
             </h1>
-            @if (Model.Posts.Any())
+            @if (Model.User.Posts.Any())
             {
-                @foreach (var post in Model.Posts)
+                @foreach (var post in Model.User.Posts)
                 {
                 <!-- Blog Post -->
                     <div class="card mb-4">
@@ -27,9 +27,9 @@
                                 <a asp-area="User" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">Read More &rarr;</a>
                         </div>
                         <div class="card-footer text-muted">
-                            <img src="/api/Image/@Model.ProfilePictureId" alt="Card image cap" width="60" height="60">
+                            <img src="/api/Image/@Model.User.ProfilePictureId" alt="Card image cap" width="60" height="60">
                             Posted on @post.PublishedOn.ToString("dd-MMM-yyyy hh:mm:ss tt", new CultureInfo("en-US")) by
-                            <a href="#">@Model.FirstName @Model.LastName</a>
+                            <a href="#">@Model.User.FirstName @Model.User.LastName</a>
                             @if (post.EditedOn != null)
                         {
                                 <span>Edited</span>
@@ -50,12 +50,23 @@
             }
             else
             {
-                <p>@Model.FirstName @Model.LastName hasn't posted anything yet :(</p>
+                <p>@Model.User.FirstName @Model.User.LastName hasn't posted anything yet :(</p>
             }
         }
         else
         {
             <p class="danger">You do not have access to this user's personal info. Send a friend request if you wish to befriend him/her.</p>
+
+            if(Model.FriendshipStatus == FriendshipStatus.Pending)
+            {
+                <button class="btn btn-primary" disabled>Friend request sent</button>
+
+            }
+            else if(Model.FriendshipStatus == FriendshipStatus.NotFriend)
+            {
+                <a class="btn btn-primary" asp-controller="Profile" asp-action="SendFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Add friend</a>
+
+            }
         }
 
     </div>
@@ -63,26 +74,26 @@
     <div class="col-md-4">
         <!-- Widget with name and email info -->
         <div class="card my-4">
-            <h5 class="card-header">@Model.FirstName @Model.LastName</h5>
+            <h5 class="card-header">@Model.User.FirstName @Model.User.LastName</h5>
             <div class="card-body">
-                <p>@Model.Email</p>
+                <p>@Model.User.Email</p>
             </div>
         </div>
         <!-- Widget for the profile photo -->
         <div class="card my-4">
             <h5 class="card-header">Profile photo</h5>
             <div class="card-body" style="text-align:center;">
-                @if (Model.ProfilePicture == null)
+                @if (Model.User.ProfilePicture == null)
                 {
                     <img src="~/images/profile/nophoto.jpg" style="width:70%;height:70%;" />
                 }
                 else
                 {
-                    <img src="/api/Image/@Model.ProfilePictureId" style="width:70%;height:70%;" />
+                    <img src="/api/Image/@Model.User.ProfilePictureId" style="width:70%;height:70%;" />
                 }
             </div>
         </div>
-        @if (Model.IsPublic)
+        @if (Model.FriendshipStatus == FriendshipStatus.Accepted)
         {
             <!-- Categories Widget -->
             <div class="card my-4">
