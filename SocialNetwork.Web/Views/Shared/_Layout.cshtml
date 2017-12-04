@@ -38,10 +38,10 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <form method="post" style="margin-top:10px;margin-left:10px;">
+                            <form asp-area="User" asp-controller="People" asp-action="Search" method="get" style="margin-top:10px;margin-left:10px;">
                                 <input type="submit" class="btn btn-primary" value="Search" style="float:right;"/>
                                 <div class="form-group" style="overflow: hidden; padding-right: .5em;">
-                                    <input type="text" placeholder="Search by e.g. John Doe" class="form-control"/>
+                                    <input type="text" placeholder="Search by username" class="form-control" name="username"/>
                                 </div>
                             </form>
                         </li>

@@ -22,5 +22,9 @@ namespace SocialNetwork.Services.Contracts
         Task<bool> AcceptFriendshipAsync(string firstUsername, string secondUsername);
 
         Task<IEnumerable<User>> PendingFriendsAsync(string userId);
+
+        Task<int> ByContainingUsernameCountAsync(string username);
+
+        Task<IEnumerable<User>> ByContainingUsernamePaginationAsync(string username, int page = 1, int pageSize = 10);
     }
 }

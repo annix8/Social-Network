@@ -115,7 +115,7 @@ namespace SocialNetwork.Services
                 .FirstOrDefaultAsync(fr => (fr.User == firstUser && fr.Friend == secondUser) ||
                 (fr.Friend == firstUser && fr.User == secondUser));
 
-            if(friendship == null)
+            if (friendship == null)
             {
                 return false;
             }
@@ -125,6 +125,24 @@ namespace SocialNetwork.Services
             await _db.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<int> ByContainingUsernameCountAsync(string username)
+        {
+            return await _db.Users
+                 .Where(u => u.UserName.ToLower().Contains(username.ToLower()))
+                 .CountAsync();
+        }
+
+        public async Task<IEnumerable<User>> ByContainingUsernamePaginationAsync(string username, int page = 1, int pageSize = 10)
+        {
+            return await _db.Users
+                .Where(u => u.UserName.ToLower().Contains(username.ToLower()))
+                .OrderBy(u => u.FirstName)
+                .ThenBy(u => u.LastName)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
     }
 }
