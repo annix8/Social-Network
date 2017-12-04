@@ -121,7 +121,7 @@
 
             var deleteResult = await _postService.DeleteAsync(postModel.PostId);
 
-            return RedirectToAction(nameof(ProfileController.MyProfile), "Profile");
+            return RedirectToAction(nameof(ProfileController.Visit), "Profile", new { username = post.User.UserName});
         }
     }
 }
