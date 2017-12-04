@@ -3,6 +3,7 @@
     using Microsoft.AspNetCore.Mvc;
     using SocialNetwork.Services.Contracts;
     using SocialNetwork.Web.Areas.User.Models.Posts;
+    using SocialNetwork.Web.Infrastructure;
     using System.Threading.Tasks;
 
     public class PostsController : UserAreaController
@@ -58,6 +59,11 @@
         {
             var post = await _postService.ByIdAsync(id);
 
+            if(post.User.UserName != User.Identity.Name)
+            {
+                return View(GlobalConstants.AccessDeniedView);
+            }
+
             var viewModel = new PostModel
             {
                 PostId = post.Id,
@@ -70,6 +76,13 @@
         [HttpPost]
         public async Task<IActionResult> Edit(PostModel postModel)
         {
+            var post = await _postService.ByIdAsync(postModel.PostId);
+
+            if (post.User.UserName != User.Identity.Name)
+            {
+                return View(GlobalConstants.AccessDeniedView);
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(postModel);
@@ -84,6 +97,11 @@
         {
             var post = await _postService.ByIdAsync(id);
 
+            if (post.User.UserName != User.Identity.Name && !User.IsInRole(GlobalConstants.UserRole.Administrator))
+            {
+                return View(GlobalConstants.AccessDeniedView);
+            }
+
             return View(new PostModel
             {
                 PostId = post.Id,
@@ -94,6 +112,13 @@
         [HttpPost]
         public async Task<IActionResult> Delete(PostModel postModel)
         {
+            var post = await _postService.ByIdAsync(postModel.PostId);
+
+            if (post.User.UserName != User.Identity.Name && !User.IsInRole(GlobalConstants.UserRole.Administrator))
+            {
+                return View(GlobalConstants.AccessDeniedView);
+            }
+
             var deleteResult = await _postService.DeleteAsync(postModel.PostId);
 
             return RedirectToAction(nameof(ProfileController.MyProfile), "Profile");

@@ -17,6 +17,8 @@
             UserRole.Administrator
         };
 
+        public static string AccessDeniedView => "/Views/Account/AccessDenied.cshtml";
+
         public class UserRole
         {
             public const string User = "User";
