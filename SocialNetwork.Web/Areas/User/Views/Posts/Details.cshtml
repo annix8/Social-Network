@@ -21,7 +21,7 @@
             <!-- Author -->
             <p class="lead">
                 by
-                <a href="#">@Model.User.FirstName @Model.User.LastName</a>
+                <a asp-controller="Profile" asp-action="Visit" asp-route-username="@Model.User.UserName">@Model.User.FirstName @Model.User.LastName</a>
             </p>
 
             <hr>
@@ -74,7 +74,7 @@
                         }
                         <img class="d-flex mr-3 rounded-circle" src="@userProfilePicture" alt="profile-picture" width="60" height="60">
                         <div class="media-body">
-                            <h5 class="mt-0"><a href="">@comment.User.FirstName @comment.User.LastName</a></h5>
+                            <h5 class="mt-0"><a asp-controller="Profile" asp-action="Visit" asp-route-username="@comment.User.UserName">@comment.User.FirstName @comment.User.LastName</a></h5>
                             @comment.Content
                         </div>
                     </div>

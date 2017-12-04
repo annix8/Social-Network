@@ -29,7 +29,7 @@
                         <div class="card-footer text-muted">
                             <img src="/api/Image/@Model.User.ProfilePictureId" alt="Card image cap" width="60" height="60">
                             Posted on @post.PublishedOn.ToString("dd-MMM-yyyy hh:mm:ss tt", new CultureInfo("en-US")) by
-                            <a href="#">@Model.User.FirstName @Model.User.LastName</a>
+                            <a asp-controller="Profile" asp-action="Visit" asp-route-username="@Model.User.UserName">@Model.User.FirstName @Model.User.LastName</a>
                             @if (post.EditedOn != null)
                             {
                                 <span>Edited</span>
@@ -90,6 +90,16 @@
     </div>
     <!-- Sidebar Widgets Column -->
     <div class="col-md-4">
+        @if (User.IsInRole(GlobalConstants.UserRole.Administrator))
+        {
+            <div class="card my-4">
+                <h5 class="card-header">Admin widget</h5>
+                <div class="card-body">
+                    <a class="btn btn-primary" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Add user to role</a>
+                    <a class="btn btn-danger" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Delete user account</a>
+                </div>
+            </div>
+        }
         <!-- Widget with name and email info -->
         <div class="card my-4">
             <h5 class="card-header">@Model.User.FirstName @Model.User.LastName</h5>
@@ -113,7 +123,7 @@
         </div>
         @if (Model.FriendshipStatus == FriendshipStatus.Accepted || User.IsInRole(GlobalConstants.UserRole.Administrator))
         {
-            <!-- Categories Widget -->
+            <!-- Quick links Widget -->
             <div class="card my-4">
                 <h5 class="card-header">Quick links</h5>
                 <div class="card-body">
@@ -143,7 +153,6 @@
                 </div>
             </div>
         }
-
     </div>
 </div>
 <!-- /.row -->
