@@ -15,7 +15,7 @@
         {
             var userService = (IUserService)this.HttpContext.RequestServices.GetService(typeof(IUserService)); 
 
-            if (User.IsInRole(GlobalConstants.UserRole.Administrator))
+            if (User.IsInRole(GlobalConstants.UserRole.Administrator) || userId == loggedUserId)
             {
                 return true;
             }
