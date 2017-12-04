@@ -31,7 +31,7 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
+                        <li class="nav-item" style="margin-right:50px; margin-top:5px;;">
                             <a class="nav-link active" asp-area="User" asp-controller="Profile" asp-action="MyProfile">
                                 My profile
                                 <span class="sr-only">(current)</span>
@@ -41,7 +41,7 @@
                             <form asp-area="User" asp-controller="People" asp-action="Search" method="get" style="margin-top:10px;margin-left:10px;">
                                 <input type="submit" class="btn btn-primary" value="Search" style="float:right;"/>
                                 <div class="form-group" style="overflow: hidden; padding-right: .5em;">
-                                    <input type="text" placeholder="Search by username" class="form-control" name="username"/>
+                                    <input type="text" placeholder="Find people by username" class="form-control" name="username"/>
                                 </div>
                             </form>
                         </li>
