@@ -17,10 +17,14 @@ namespace SocialNetwork.Web.Areas.User.Controllers
         {
             _userService = userService;
         }
-        
+
         public async Task<IActionResult> Search(string username, int page = 1)
         {
-            var people = await _userService.ByContainingUsernamePaginationAsync(username,page,PageSize);
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+            var people = await _userService.ByContainingUsernamePaginationAsync(username, page, PageSize);
 
             var viewModel = new SearchPeoplePaginationModel
             {
