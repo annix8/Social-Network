@@ -1,25 +1,21 @@
 ﻿namespace SocialNetwork.Web.Areas.User.Controllers
 {
+    using DataModel.Models;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using SocialNetwork.Services.Contracts;
     using SocialNetwork.Web.Areas.User.Models.Posts;
     using SocialNetwork.Web.Infrastructure;
     using System.Threading.Tasks;
-    using DataModel.Models;
-    using System;
-    using SocialNetwork.DataModel.Enums;
 
     public class PostsController : UserAreaController
     {
         private readonly IPostService _postService;
-        private readonly IUserService _userService;
         private readonly UserManager<User> _userManager;
 
-        public PostsController(IPostService postService, IUserService userService, UserManager<User> userManager)
+        public PostsController(IPostService postService, UserManager<User> userManager)
         {
             _postService = postService;
-            _userService = userService;
             _userManager = userManager;
         }
 
@@ -42,13 +38,13 @@
 
             return RedirectToAction(nameof(ProfileController.MyProfile), "Profile");
         }
-
+        
         public async Task<IActionResult> Details(int id)
         {
             var post = await _postService.ByIdAsync(id);
             var loggedUserId = _userManager.GetUserId(User);
 
-            if (!await CheckFriendshipStatus(post.UserId, loggedUserId))
+            if (!await this.CheckFriendshipStatus(post.UserId, loggedUserId))
             {
                 return View(GlobalConstants.AccessDeniedView);
             }
@@ -62,7 +58,7 @@
             var post = await _postService.ByIdAsync(commentModel.PostId);
             var loggedUserId = _userManager.GetUserId(User);
 
-            if (!await CheckFriendshipStatus(post.UserId, loggedUserId))
+            if (!await this.CheckFriendshipStatus(post.UserId, loggedUserId))
             {
                 return View(GlobalConstants.AccessDeniedView);
             }
@@ -144,18 +140,6 @@
             var deleteResult = await _postService.DeleteAsync(postModel.PostId);
 
             return RedirectToAction(nameof(ProfileController.Visit), "Profile", new { username = post.User.UserName });
-        }
-
-        private async Task<bool> CheckFriendshipStatus(string userId, string loggedUserId)
-        {
-            if (User.IsInRole(GlobalConstants.UserRole.Administrator))
-            {
-                return true;
-            }
-
-            var (status, _) = await _userService.CheckFriendshipStatusAsync(userId, loggedUserId);
-
-            return status == FriendshipStatus.Accepted ? true : false;
         }
     }
 }
