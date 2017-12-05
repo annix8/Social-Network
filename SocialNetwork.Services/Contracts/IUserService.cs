@@ -1,12 +1,10 @@
-﻿using SocialNetwork.DataModel.Enums;
-using SocialNetwork.DataModel.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SocialNetwork.Services.Contracts
+﻿namespace SocialNetwork.Services.Contracts
 {
+    using DataModel.Enums;
+    using DataModel.Models;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public interface IUserService
     {
         Task<User> ByUsernameAsync(string username);

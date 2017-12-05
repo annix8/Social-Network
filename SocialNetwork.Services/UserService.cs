@@ -1,16 +1,14 @@
-﻿using SocialNetwork.Services.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using SocialNetwork.DataModel.Models;
-using System.Threading.Tasks;
-using SocialNetwork.DataModel;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using SocialNetwork.DataModel.Enums;
-
-namespace SocialNetwork.Services
+﻿namespace SocialNetwork.Services
 {
+    using DataModel;
+    using DataModel.Enums;
+    using DataModel.Models;
+    using Microsoft.EntityFrameworkCore;
+    using Services.Contracts;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     public class UserService : IUserService
     {
         private readonly SocialNetworkDbContext _db;

@@ -1,16 +1,14 @@
-﻿using SocialNetwork.DataModel;
-using SocialNetwork.Services.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
-using System.IO;
-using SocialNetwork.DataModel.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace SocialNetwork.Services
+﻿namespace SocialNetwork.Services
 {
+    using DataModel;
+    using DataModel.Models;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.EntityFrameworkCore;
+    using Services.Contracts;
+    using System;
+    using System.IO;
+    using System.Threading.Tasks;
+
     public class PostService : IPostService
     {
         private readonly SocialNetworkDbContext _db;

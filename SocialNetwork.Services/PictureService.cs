@@ -1,16 +1,13 @@
-﻿using SocialNetwork.Services.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using SocialNetwork.DataModel.Models;
-using System.Threading.Tasks;
-using SocialNetwork.DataModel;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using System.IO;
-
-namespace SocialNetwork.Services
+﻿namespace SocialNetwork.Services
 {
+    using DataModel;
+    using DataModel.Models;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.EntityFrameworkCore;
+    using Services.Contracts;
+    using System.IO;
+    using System.Threading.Tasks;
+
     public class PictureService : IPictureService
     {
         private readonly SocialNetworkDbContext _db;
