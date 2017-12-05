@@ -98,21 +98,11 @@
 
         public async Task<IEnumerable<User>> PendingFriendsAsync(string userId)
         {
-            var friends = await _db.Friendships
-                .Include(fr => fr.User)
-                .Where(fr => fr.UserId == userId && fr.FriendshipStatus == FriendshipStatus.Pending)
-                .Select(x => x.Friend)
-                .ToListAsync();
-
-            var friendsUsers = await _db.Friendships
-                .Include(fr => fr.User)
-                .Where(fr => fr.FriendId == userId && fr.FriendshipStatus == FriendshipStatus.Pending)
-                .Select(x => x.User)
-                .ToListAsync();
-
-            friends.AddRange(friendsUsers);
-
-            return friends;
+            return await _db.Friendships
+                 .Include(fr => fr.User)
+                 .Where(fr => fr.FriendId == userId && fr.FriendshipStatus == FriendshipStatus.Pending)
+                 .Select(fr => fr.User)
+                 .ToListAsync();
         }
 
         public async Task<bool> AcceptFriendshipAsync(string firstUsername, string secondUsername)

@@ -29,9 +29,7 @@ namespace SocialNetwork.Web.Areas.User.Controllers
             var viewModel = new MyProfileModel
             {
                 User = user,
-                PendingRequestsCount = user.FriendRequestsAccepted
-                .Where(x => x.FriendshipStatus == FriendshipStatus.Pending)
-                .Count() + user.FriendRequestsMade.Where(x => x.FriendshipStatus == FriendshipStatus.Pending).Count()
+                PendingRequestsCount = user.FriendRequestsAccepted.Where(x => x.FriendshipStatus == FriendshipStatus.Pending).Count()
             };
 
             return View(viewModel);
