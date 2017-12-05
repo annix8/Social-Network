@@ -1,0 +1,79 @@
+﻿@model FriendsPagingModel
+@{
+    ViewData["Title"] = "Friends";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <h2>Friends</h2><hr />
+        @if (Model.Friends.Any())
+            {
+
+            <ul class="pagination pagination-lg">
+                <li class="page-item @(Model.PreviousPage == Model.CurrentPage ? "disabled" : "")">
+                    <a class="page-link"
+                       asp-area="User"
+                       asp-controller="People"
+                       asp-action="Friends"
+                       asp-route-page="@Model.PreviousPage"
+                       asp-route-userId="@Model.UserId" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(Model.CurrentPage == i ? "active" : string.Empty)">
+                        <a class="page-link"
+                           asp-controller="People"
+                           asp-action="Friends"
+                           asp-route-page="@i"
+                           asp-route-userId="@Model.UserId">@i</a>
+                    </li>
+                }
+                <li class="page-item @(Model.NextPage == Model.CurrentPage ? "disabled" : "")">
+                    <a class="page-link" asp-area="User"
+                       asp-controller="People"
+                       asp-action="Friends"
+                       asp-route-page="@Model.NextPage"
+                       asp-route-userId="@Model.UserId" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                </tr>
+                @foreach (var user in Model.Friends)
+                {
+                    <tr>
+                        <td><a asp-controller="Profile" asp-action="Visit" asp-route-username="@user.UserName">@user.FirstName @user.LastName</a></td>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                No users were found.
+            </div>
+
+        }
+    </div>
+    <div class="col-md-4">
+        <div class="card my-4">
+            <h5 class="card-header">Profile</h5>
+            <div class="card-body">
+                <a asp-area="User" asp-controller="Profile" asp-action="MyProfile">Go to my profile</a>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -25,6 +25,7 @@
                 .ThenInclude(p => p.Picture)
                 .Include(u => u.ProfilePicture)
                 .Include(u => u.FriendRequestsAccepted)
+                .Include(u => u.FriendRequestsMade)
                 .FirstOrDefaultAsync(u => u.UserName == username);
         }
 
@@ -97,11 +98,21 @@
 
         public async Task<IEnumerable<User>> PendingFriendsAsync(string userId)
         {
-            return await _db.Friendships
-                 .Include(fr => fr.User)
-                 .Where(fr => fr.FriendId == userId && fr.FriendshipStatus == FriendshipStatus.Pending)
-                 .Select(fr => fr.User)
-                 .ToListAsync();
+            var friends = await _db.Friendships
+                .Include(fr => fr.User)
+                .Where(fr => fr.UserId == userId && fr.FriendshipStatus == FriendshipStatus.Pending)
+                .Select(x => x.Friend)
+                .ToListAsync();
+
+            var friendsUsers = await _db.Friendships
+                .Include(fr => fr.User)
+                .Where(fr => fr.FriendId == userId && fr.FriendshipStatus == FriendshipStatus.Pending)
+                .Select(x => x.User)
+                .ToListAsync();
+
+            friends.AddRange(friendsUsers);
+
+            return friends;
         }
 
         public async Task<bool> AcceptFriendshipAsync(string firstUsername, string secondUsername)
@@ -141,6 +152,41 @@
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<User>> FriendsPaginationAsync(string userId, int page = 1, int pageSize = 10)
+        {
+            var friends = await _db.Friendships
+                .Include(fr => fr.User)
+                .Where(fr => fr.UserId == userId && fr.FriendshipStatus == FriendshipStatus.Accepted)
+                .Select(x => x.Friend)
+                .ToListAsync();
+
+            var friendsUsers = await _db.Friendships
+                .Include(fr => fr.User)
+                .Where(fr => fr.FriendId == userId && fr.FriendshipStatus == FriendshipStatus.Accepted)
+                .Select(x => x.User)
+                .ToListAsync();
+
+            friends.AddRange(friendsUsers);
+
+            return friends
+                .OrderBy(fr => fr.FirstName).ThenBy(f => f.LastName)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+        }
+
+        public async Task<int> FriendsCountAsync(string userId)
+        {
+            var friends1 = await _db.Friendships
+                .Where(fr => fr.UserId == userId && fr.FriendshipStatus == FriendshipStatus.Accepted)
+                .CountAsync();
+
+            var friends2 = await _db.Friendships
+                .Where(fr => fr.FriendId == userId && fr.FriendshipStatus == FriendshipStatus.Accepted)
+                .CountAsync();
+            return friends1 + friends2;
         }
     }
 }

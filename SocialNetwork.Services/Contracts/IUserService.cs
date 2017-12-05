@@ -24,5 +24,9 @@
         Task<int> ByContainingUsernameCountAsync(string username);
 
         Task<IEnumerable<User>> ByContainingUsernamePaginationAsync(string username, int page = 1, int pageSize = 10);
+
+        Task<IEnumerable<User>> FriendsPaginationAsync(string userId, int page = 1, int pageSize = 10);
+
+        Task<int> FriendsCountAsync(string userId);
     }
 }
