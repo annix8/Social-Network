@@ -184,5 +184,28 @@
             var user =  await _db.Users.FindAsync(userId);
             return $"{user.FirstName} {user.LastName}";
         }
+
+        public async Task<bool> ValidateFriendshipAcceptance(string friendshipAccepterId, string userToAcceptId)
+        {
+            var friendship = await _db.Friendships
+                .FirstOrDefaultAsync(fr => (fr.UserId == friendshipAccepterId && fr.FriendId == userToAcceptId) ||
+                (fr.FriendId == friendshipAccepterId && fr.UserId == userToAcceptId));
+
+            
+            if(friendship.FriendshipIssuerId == friendshipAccepterId)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<string> IdByUsernameAsync(string username)
+        {
+            var user = await _db.Users
+                .FirstOrDefaultAsync(u => u.UserName == username);
+
+            return user.Id;
+        }
     }
 }

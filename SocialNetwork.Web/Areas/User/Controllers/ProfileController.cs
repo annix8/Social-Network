@@ -1,24 +1,28 @@
 ﻿
 namespace SocialNetwork.Web.Areas.User.Controllers
 {
+    using DataModel.Enums;
+    using DataModel.Models;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using SocialNetwork.DataModel.Enums;
-    using SocialNetwork.Services.Contracts;
-    using SocialNetwork.Web.Areas.User.Models.Profile;
-    using System.Collections.Generic;
+    using Services.Contracts;
     using System.Linq;
     using System.Threading.Tasks;
+    using Web.Areas.User.Models.Profile;
+    using Web.Infrastructure;
 
     public class ProfileController : UserAreaController
     {
         private readonly IUserService _userService;
         private readonly IPictureService _pictureService;
+        private readonly UserManager<User> _userManager;
 
-        public ProfileController(IUserService userService, IPictureService pictureService)
+        public ProfileController(IUserService userService, IPictureService pictureService, UserManager<User> userManager)
         {
             _userService = userService;
             _pictureService = pictureService;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> MyProfile()
@@ -101,6 +105,14 @@ namespace SocialNetwork.Web.Areas.User.Controllers
 
         public async Task<IActionResult> AcceptFriendRequest(string usernameToBefriend, string returnUrl = null)
         {
+            var loggedUserId = _userManager.GetUserId(User);
+            var userToBefriendId = await _userService.IdByUsernameAsync(usernameToBefriend);
+
+            if(!await _userService.ValidateFriendshipAcceptance(loggedUserId, userToBefriendId))
+            {
+                return View(GlobalConstants.AccessDeniedView);
+            }
+
             var result = await _userService.AcceptFriendshipAsync(User.Identity.Name, usernameToBefriend);
 
             if (!string.IsNullOrEmpty(returnUrl))

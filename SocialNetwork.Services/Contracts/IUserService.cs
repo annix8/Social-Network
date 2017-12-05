@@ -9,6 +9,8 @@
     {
         Task<User> ByUsernameAsync(string username);
 
+        Task<string> IdByUsernameAsync(string username);
+
         Task<string> NamesByIdAsync(string userId);
 
         Task<int> CountAsync();
@@ -30,5 +32,7 @@
         Task<IEnumerable<User>> FriendsPaginationAsync(string userId, int page = 1, int pageSize = 10);
 
         Task<int> FriendsCountAsync(string userId);
+
+        Task<bool> ValidateFriendshipAcceptance(string friendshipAccepterId, string userToAcceptId);
     }
 }
