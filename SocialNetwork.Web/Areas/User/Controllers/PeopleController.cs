@@ -56,6 +56,7 @@
             {
                 Friends = friends,
                 UserId = userId,
+                Names = await _userService.NamesByIdAsync(userId),
                 CurrentPage = page,
                 TotalPages = (int)Math.Ceiling(await _userService.FriendsCountAsync(userId) / (double)FriendsPageSize)
             };

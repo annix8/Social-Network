@@ -188,5 +188,11 @@
                 .CountAsync();
             return friends1 + friends2;
         }
+
+        public async Task<string> NamesByIdAsync(string userId)
+        {
+            var user =  await _db.Users.FindAsync(userId);
+            return $"{user.FirstName} {user.LastName}";
+        }
     }
 }

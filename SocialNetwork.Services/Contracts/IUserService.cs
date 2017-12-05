@@ -9,6 +9,8 @@
     {
         Task<User> ByUsernameAsync(string username);
 
+        Task<string> NamesByIdAsync(string userId);
+
         Task<int> CountAsync();
 
         Task<(FriendshipStatus, string)> CheckFriendshipStatusAsync(string firstUserId, string secondUserId);
