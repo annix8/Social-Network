@@ -111,22 +111,6 @@
             return RedirectToAction(nameof(ProfileController.MyProfile), "Profile");
         }
 
-        public async Task<IActionResult> Delete(int id)
-        {
-            var post = await _postService.ByIdAsync(id);
-
-            if (post.User.UserName != User.Identity.Name && !User.IsInRole(GlobalConstants.UserRole.Administrator))
-            {
-                return View(GlobalConstants.AccessDeniedView);
-            }
-
-            return View(new PostModel
-            {
-                PostId = post.Id,
-                Title = post.Title
-            });
-        }
-
         [HttpPost]
         public async Task<IActionResult> Delete(PostModel postModel)
         {
@@ -139,7 +123,7 @@
 
             var deleteResult = await _postService.DeleteAsync(postModel.PostId);
 
-            return RedirectToAction(nameof(ProfileController.Visit), "Profile", new { username = post.User.UserName });
+            return Ok();
         }
     }
 }

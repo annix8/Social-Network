@@ -3,142 +3,166 @@
     ViewData["Title"] = "My profile";
 }
 
-    <div class="row">
-        <!-- Blog Entries Column -->
-        <div class="col-md-8">
-            <h1 class="my-4">
-                My posts<br />
-                <small>Something on your mind? <a asp-controller="Posts" asp-action="Create">Create new post</a></small>
-            </h1>
-            @if (Model.User.Posts.Any())
+<div class="row">
+    <!-- Blog Entries Column -->
+    <div class="col-md-8">
+        <h1 class="my-4">
+            My posts<br />
+            <small>Something on your mind? <a asp-controller="Posts" asp-action="Create">Create new post</a></small>
+        </h1>
+        @if (Model.User.Posts.Any())
             {
-                @foreach (var post in Model.User.Posts)
+            @foreach (var post in Model.User.Posts)
                 {
                 <!-- Blog Post -->
-                    <div class="card mb-4">
-                        @if (post.Picture != null)
-                        {
-                            <img class="card-img-top" src="/api/Image/@post.PictureId" alt="Card image cap">
-                        }
-                        <div class="card-body">
-                            <h2 class="card-title">@post.Title</h2>
-                            <p class="card-text">@post.Content<p>
-                                <a asp-area="User" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">Read More &rarr;</a>
-                        </div>
-                        <div class="card-footer text-muted">
-                            @{
-                                var userProfilePicture = post.User.ProfilePictureId == null ?
-                                    "/images/profile/nophoto.jpg" : $"/api/Image/{post.User.ProfilePictureId}";
-                            }
-                            <img src="@userProfilePicture" alt="Card image cap" width="60" height="60">
-                            Posted on @post.PublishedOn.ToString("dd-MMM-yyyy hh:mm:ss tt", new CultureInfo("en-US")) by
-                            <a href="#">@Model.User.FirstName @Model.User.LastName</a>
-                            @if(post.EditedOn != null)
-                            {
-                                <span>Edited</span>
-                            }
-                            @*<a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger" style="float:right;">Delete</a>*@
-                            <a onclick="deletePost" class="btn btn-danger" style="float:right;">Delete</a>
-                            <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning" style="float:right;margin-right:5px;">Edit</a>
-                        </div>
+                <div class="card mb-4">
+                    @if (post.Picture != null)
+                    {
+                        <img class="card-img-top" src="/api/Image/@post.PictureId" alt="Card image cap">
+                    }
+                    <div class="card-body">
+                        <h2 class="card-title">@post.Title</h2>
+                        <p class="card-text">@post.Content<p>
+                            <a asp-area="User" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">Read More &rarr;</a>
                     </div>
-                }
+                    <div class="card-footer text-muted">
+                        @{
+                            var userProfilePicture = post.User.ProfilePictureId == null ?
+                                "/images/profile/nophoto.jpg" : $"/api/Image/{post.User.ProfilePictureId}";
+                        }
+                        <img src="@userProfilePicture" alt="Card image cap" width="60" height="60">
+                        Posted on @post.PublishedOn.ToString("dd-MMM-yyyy hh:mm:ss tt", new CultureInfo("en-US")) by
+                        <a href="#">@Model.User.FirstName @Model.User.LastName</a>
+                        @if (post.EditedOn != null)
+                        {
+                            <span>Edited</span>
+                        }
+                        <button onclick="deletePost(@post.Id)" class="btn btn-danger" style="float:right;">Delete</button>
+                        <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning" style="float:right;margin-right:5px;">Edit</a>
+                    </div>
+                </div>
+                            }
 
             <!-- Pagination -->
-                <ul class="pagination justify-content-center mb-4">
-                    <li class="page-item">
-                        <a class="page-link" href="#">&larr; Older</a>
-                    </li>
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#">Newer &rarr;</a>
-                    </li>
-                </ul>
-            }
-            else
-            {
-                <p>You haven't posted anything yet :(</p>
-            }
+                            <ul class="pagination justify-content-center mb-4">
+                                <li class="page-item">
+                                    <a class="page-link" href="#">&larr; Older</a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#">Newer &rarr;</a>
+                                </li>
+                            </ul>
+                            }
+                            else
+                            {
+                                <p>You haven't posted anything yet :(</p>
+                            }
 
+    </div>
+    <!-- Sidebar Widgets Column -->
+    <div class="col-md-4">
+        <!-- Widget with name and email info -->
+        <div class="card my-4" style="text-align:center;">
+            <h5 class="card-header">@Model.User.FirstName @Model.User.LastName</h5>
+            <div class="card-body">
+                <p>@Model.User.Email</p>
+                @if (Model.PendingRequestsCount > 0)
+                {
+                    <div class="alert alert-success" role="alert">
+                        <p>
+                            <a asp-controller="Profile" asp-action="PendingRequests" asp-route-userId="@Model.User.Id">You have @Model.PendingRequestsCount new pending friend requests</a>
+                        </p>
+                    </div>
+
+                }
+            </div>
         </div>
-        <!-- Sidebar Widgets Column -->
-        <div class="col-md-4">
-            <!-- Widget with name and email info -->
-            <div class="card my-4" style="text-align:center;">
-                <h5 class="card-header">@Model.User.FirstName @Model.User.LastName</h5>
-                <div class="card-body">
-                    <p>@Model.User.Email</p>
-                    @if (Model.PendingRequestsCount > 0)
-                    {
-                        <div class="alert alert-success" role="alert">
-                            <p>
-                                <a asp-controller="Profile" asp-action="PendingRequests" asp-route-userId="@Model.User.Id">You have @Model.PendingRequestsCount new pending friend requests</a>
-                            </p>
-                        </div>
-                        
-                    }
-                </div>
+        <!-- Widget for the profile photo -->
+        <div class="card my-4" style="text-align:center;">
+            <h5 class="card-header">Profile photo</h5>
+            <div class="card-body" style="text-align:center;">
+                @if (Model.User.ProfilePicture == null)
+                {
+                    <img src="~/images/profile/nophoto.jpg" style="width:70%;height:70%;" />
+                }
+                else
+                {
+                    <img src="/api/Image/@Model.User.ProfilePictureId" style="width:70%;height:70%;" />
+                }
+                <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="UploadProfilePicture" style="margin-top:25px;">
+                    <label class="custom-file" style="margin-bottom:15px;">
+                        <input type="file" class="custom-file-input" name="file" />
+                        <span class="custom-file-control">Click to select new picture...</span>
+                    </label>
+                    <div class="form-group">
+                        <input type="submit" value="Upload" class="form-control btn btn-primary" />
+                    </div>
+                </form>
             </div>
-            <!-- Widget for the profile photo -->
-            <div class="card my-4" style="text-align:center;">
-                <h5 class="card-header">Profile photo</h5>
-                <div class="card-body" style="text-align:center;">
-                    @if (Model.User.ProfilePicture == null)
-                    {
-                        <img src="~/images/profile/nophoto.jpg" style="width:70%;height:70%;" />
-                    }
-                    else
-                    {
-                        <img src="/api/Image/@Model.User.ProfilePictureId" style="width:70%;height:70%;" />
-                    }
-                    <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="UploadProfilePicture" style="margin-top:25px;">
-                        <label class="custom-file" style="margin-bottom:15px;">
-                            <input type="file" class="custom-file-input" name="file" />
-                            <span class="custom-file-control">Click to select new picture...</span>
-                        </label>
-                        <div class="form-group">
-                            <input type="submit" value="Upload" class="form-control btn btn-primary" />
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <!-- Categories Widget -->
-            <div class="card my-4" style="text-align:center;">
-                <h5 class="card-header">Quick links</h5>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <ul class="list-unstyled mb-0">
-                                <li>
-                                    <a href="#">About</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-4">
-                            <ul class="list-unstyled mb-0">
-                                <li>
-                                    <a href="#">Photos</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-4">
-                            <ul class="list-unstyled mb-0">
-                                <li>
-                                    <a asp-controller="People" asp-action="Friends" asp-route-userId="@Model.User.Id">Friends</a>
-                                </li>
-                            </ul>
-                        </div>
+        </div>
+        <!-- Categories Widget -->
+        <div class="card my-4" style="text-align:center;">
+            <h5 class="card-header">Quick links</h5>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="#">About</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="#">Photos</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a asp-controller="People" asp-action="Friends" asp-route-userId="@Model.User.Id">Friends</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- /.row -->
+</div>
+<!-- /.row -->
 
-@section Scripts{ 
+@section Scripts{
     <script>
-        function deletePost() {
-
-
+        function deletePost(postId) {
+            swal({
+                title: 'Warning',
+                text: "Are you sure you want to delete this post?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                $.ajax({
+                    url: "/User/Posts/Delete/" + postId,
+                    type: "POST",
+                    data: {
+                        PostId: postId
+                    }
+                })
+                    .done(function (data) {
+                        swal({
+                            title: "Deleted",
+                            text: "Post has been successfully deleted",
+                            type: "success"
+                        }).then(() => { location.reload(); });
+                    })
+                    .error(function (data) {
+                        swal("Oops", "Something went wrong!", "error");
+                    });
+            })
         }
     </script>
 }
