@@ -22,5 +22,7 @@
         Task<IEnumerable<Post>> ByUserIdAsync(string ownerId, int page = 1, int pageSize = 10);
 
         Task<int> ByUserIdCountAsync(string ownerId);
+
+        Task<IEnumerable<Post>> FriendsPostsAsync(string userId);
     }
 }
