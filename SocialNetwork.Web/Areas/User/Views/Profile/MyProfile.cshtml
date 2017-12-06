@@ -62,7 +62,7 @@
                                 "/images/profile/nophoto.jpg" : $"/api/Image/{post.User.ProfilePictureId}";
                         }
                         <img src="@userProfilePicture" alt="Card image cap" width="60" height="60">
-                        Posted on @post.PublishedOn.ToString("dd-MMM-yyyy hh:mm:ss tt", new CultureInfo("en-US")) by
+                        Posted on @post.PublishedOn.ToString("dd-MMM-yyyy hh:mm:ss tt", new CultureInfo("en-US")) (UTC) by
                         <a href="#">@Model.User.FirstName @Model.User.LastName</a>
                         @if (post.EditedOn != null)
                         {
