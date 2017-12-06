@@ -16,14 +16,14 @@
                         This person has requested to be your friend. Will you accept the request?
                     </div>
                     <a class="btn btn-primary" asp-controller="Profile" asp-action="AcceptFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Accept</a>
-                    <a class="btn btn-danger" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Decline</a>
+                    <a class="btn btn-danger" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToUnfriend="@Model.User.UserName">Decline</a>
                 }
                 else
                 {
                     <div class="alert alert-info" role="alert">
                         Friend request pending...
                     </div>
-                    <a class="btn btn-danger" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Cancel friend request</a>
+                    <a class="btn btn-danger" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToUnfriend="@Model.User.UserName">Cancel friend request</a>
                 }
             }
             else if (Model.FriendshipStatus == FriendshipStatus.NotFriend)
@@ -69,7 +69,7 @@
                             }
                             @if (User.IsInRole(GlobalConstants.UserRole.Administrator))
                             {
-                                <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger" style="float:right;">Delete</a>
+                                <button onclick="deletePost(@post.Id)" class="btn btn-danger" style="float:right;">Delete</button>
                             }
                         </div>
                     </div>
@@ -162,7 +162,7 @@
             <div class="card my-4" style="text-align:center;">
                 <h5 class="card-header">Actions</h5>
                 <div class="card-body">
-                    <a class="btn btn-danger" asp-controller="Profile" asp-action="Unfriend">Unfriend</a>
+                    <button class="btn btn-danger" onclick="unfriendUser('@Model.User.UserName')">Unfriend</button>
                 </div>
             </div>
         }

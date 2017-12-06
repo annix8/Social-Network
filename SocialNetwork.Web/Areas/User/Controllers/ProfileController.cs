@@ -91,16 +91,16 @@ namespace SocialNetwork.Web.Areas.User.Controllers
             return RedirectToAction(nameof(Visit), new { username = usernameToBefriend });
         }
 
-        public async Task<IActionResult> CancelFriendRequest(string usernameToBefriend, string returnUrl = null)
+        public async Task<IActionResult> CancelFriendRequest(string usernameToUnfriend, string returnUrl = null)
         {
-            var result = await _userService.DeleteFriendshipAsync(User.Identity.Name, usernameToBefriend);
+            var result = await _userService.DeleteFriendshipAsync(User.Identity.Name, usernameToUnfriend);
 
             if (!string.IsNullOrEmpty(returnUrl))
             {
                 return Redirect(returnUrl);
             }
 
-            return RedirectToAction(nameof(Visit), new { username = usernameToBefriend });
+            return RedirectToAction(nameof(Visit), new { username = usernameToUnfriend });
         }
 
         public async Task<IActionResult> AcceptFriendRequest(string usernameToBefriend, string returnUrl = null)
