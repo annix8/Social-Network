@@ -8,6 +8,8 @@
     using System;
     using System.IO;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class PostService : IPostService
     {
@@ -30,6 +32,24 @@
                 .Include(p => p.Comments).ThenInclude(c => c.User)
                 .Include(p => p.Picture)
                 .FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<IEnumerable<Post>> ByUserIdAsync(string ownerId, int page = 1, int pageSize = 10)
+        {
+            return await _db.Posts
+                .Include(p => p.Picture)
+                .Where(p => p.UserId == ownerId)
+                .OrderByDescending(p => p.PublishedOn)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<int> ByUserIdCountAsync(string ownerId)
+        {
+            return await _db.Posts
+                .Where(p => p.UserId == ownerId)
+                .CountAsync();
         }
 
         public async Task<bool> CreateAsync(string publisher, string title, string content, IFormFile pictureFile)

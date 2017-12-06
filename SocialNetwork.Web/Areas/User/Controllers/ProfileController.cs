@@ -7,6 +7,7 @@ namespace SocialNetwork.Web.Areas.User.Controllers
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Services.Contracts;
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using Web.Areas.User.Models.Profile;
@@ -16,23 +17,32 @@ namespace SocialNetwork.Web.Areas.User.Controllers
     {
         private readonly IUserService _userService;
         private readonly IPictureService _pictureService;
+        private readonly IPostService _postService;
         private readonly UserManager<User> _userManager;
+        private const int PostPageSize = 5;
 
-        public ProfileController(IUserService userService, IPictureService pictureService, UserManager<User> userManager)
+        public ProfileController(IUserService userService,
+              IPictureService pictureService,
+              IPostService postService,
+              UserManager<User> userManager)
         {
             _userService = userService;
             _pictureService = pictureService;
+            _postService = postService;
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> MyProfile()
+        public async Task<IActionResult> MyProfile(int page = 1)
         {
             var user = await _userService.ByUsernameAsync(User.Identity.Name);
-            user.Posts = user.Posts.OrderByDescending(p => p.PublishedOn).ToList();
+            var usersPosts = await _postService.ByUserIdAsync(user.Id, page, PostPageSize);
 
             var viewModel = new MyProfileModel
             {
                 User = user,
+                Posts = usersPosts,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling(await _postService.ByUserIdCountAsync(user.Id) / (double)PostPageSize),
                 PendingRequestsCount = user.FriendRequestsAccepted.Where(x => x.FriendshipStatus == FriendshipStatus.Pending).Count()
             };
 
@@ -56,7 +66,7 @@ namespace SocialNetwork.Web.Areas.User.Controllers
             return RedirectToAction(nameof(MyProfile));
         }
 
-        public async Task<IActionResult> Visit(string username)
+        public async Task<IActionResult> Visit(string username, int page = 1)
         {
             var userToVisit = await _userService.ByUsernameAsync(username);
             var currentUser = await _userService.ByUsernameAsync(User.Identity.Name);
@@ -67,10 +77,14 @@ namespace SocialNetwork.Web.Areas.User.Controllers
             }
 
             var (friendshipStatus, issuerName) = await _userService.CheckFriendshipStatusAsync(userToVisit.Id, currentUser.Id);
+            var userToVisitPosts = await _postService.ByUserIdAsync(userToVisit.Id, page, PostPageSize);
 
             var viewModel = new VisitProfileModel
             {
                 User = userToVisit,
+                Posts = userToVisitPosts,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling(await _postService.ByUserIdCountAsync(userToVisit.Id) / (double)PostPageSize),
                 FriendshipStatus = friendshipStatus,
                 IssuerUsername = issuerName
             };
@@ -108,7 +122,7 @@ namespace SocialNetwork.Web.Areas.User.Controllers
             var loggedUserId = _userManager.GetUserId(User);
             var userToBefriendId = await _userService.IdByUsernameAsync(usernameToBefriend);
 
-            if(!await _userService.ValidateFriendshipAcceptance(loggedUserId, userToBefriendId))
+            if (!await _userService.ValidateFriendshipAcceptance(loggedUserId, userToBefriendId))
             {
                 return View(GlobalConstants.AccessDeniedView);
             }

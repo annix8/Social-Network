@@ -40,9 +40,43 @@
             <h1 class="my-4">
                 @Model.User.FirstName @Model.User.LastName's posts<br />
             </h1>
-            @if (Model.User.Posts.Any())
+            @if (Model.Posts.Any())
             {
-                @foreach (var post in Model.User.Posts)
+                <ul class="pagination pagination-lg">
+                    <li class="page-item @(Model.PreviousPage == Model.CurrentPage ? "disabled" : "")">
+                        <a class="page-link"
+                           asp-area="User"
+                           asp-controller="Profile"
+                           asp-action="Visit"
+                           asp-route-page="@Model.PreviousPage"
+                           asp-route-username="@Model.User.UserName" aria-label="Previous">
+                            <span aria-hidden="true">&laquo; Newer</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(Model.CurrentPage == i ? "active" : string.Empty)">
+                            <a class="page-link"
+                               asp-controller="Profile"
+                               asp-action="Visit"
+                               asp-route-page="@i"
+                               asp-route-username="@Model.User.UserName">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(Model.NextPage == Model.CurrentPage ? "disabled" : "")">
+                        <a class="page-link" asp-area="User"
+                           asp-controller="Profile"
+                           asp-action="Visit"
+                           asp-route-page="@Model.NextPage"
+                           asp-route-username="@Model.User.UserName" aria-label="Next">
+                            <span aria-hidden="true">Older &raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </ul>
+
+                @foreach (var post in Model.Posts)
                 {
                 <!-- Blog Post -->
                     <div class="card mb-4">

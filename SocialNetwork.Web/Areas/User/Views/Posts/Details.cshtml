@@ -28,7 +28,6 @@
 
             <!-- Date/Time -->
             <p>Posted on @Model.PublishedOn.ToString("dd-MMM-yyyy hh:mm:ss tt", new CultureInfo("en-US")) (UTC)</p>
-
             <hr>
 
             <!-- Preview Image -->
@@ -87,7 +86,7 @@
         <div class="col-md-4">
 
             <!-- Side Widget -->
-            <div class="card my-4">
+            <div class="card my-4" style="text-align:center;">
                 <h5 class="card-header">Profile</h5>
                 <div class="card-body">
                     <a asp-controller="Profile" asp-action="MyProfile">Go to my profile</a>

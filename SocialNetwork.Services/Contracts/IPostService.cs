@@ -2,6 +2,7 @@
 {
     using DataModel.Models;
     using Microsoft.AspNetCore.Http;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public interface IPostService
@@ -17,5 +18,9 @@
         Task<Post> ByIdAsync(int id);
 
         Task<bool> MakeCommentAsync(string commentContent, int postId, string commentAuthor);
+
+        Task<IEnumerable<Post>> ByUserIdAsync(string ownerId, int page = 1, int pageSize = 10);
+
+        Task<int> ByUserIdCountAsync(string ownerId);
     }
 }

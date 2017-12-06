@@ -21,8 +21,6 @@
         public async Task<User> ByUsernameAsync(string username)
         {
             return await _db.Users
-                .Include(u => u.Posts)
-                .ThenInclude(p => p.Picture)
                 .Include(u => u.ProfilePicture)
                 .Include(u => u.FriendRequestsAccepted)
                 .Include(u => u.FriendRequestsMade)
