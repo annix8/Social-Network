@@ -6,6 +6,35 @@
 <div class="row">
     <!-- Blog Entries Column -->
     <div class="col-md-8">
+        @if (Model.FriendshipStatus != FriendshipStatus.Accepted)
+        {
+            if (Model.FriendshipStatus == FriendshipStatus.Pending)
+            {
+                if (Model.IssuerUsername != User.Identity.Name)
+                {
+                    <div class="alert alert-info" role="alert">
+                        This person has requested to be your friend. Will you accept the request?
+                    </div>
+                    <a class="btn btn-primary" asp-controller="Profile" asp-action="AcceptFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Accept</a>
+                    <a class="btn btn-danger" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Decline</a>
+                }
+                else
+                {
+                    <div class="alert alert-info" role="alert">
+                        Friend request pending...
+                    </div>
+                    <a class="btn btn-danger" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Cancel friend request</a>
+                }
+            }
+            else if (Model.FriendshipStatus == FriendshipStatus.NotFriend)
+            {
+                <div class="alert alert-warning" role="alert">
+                    <p class="danger">You do not have this person in your friend list. Send a friend request to befriend him/her.</p>
+                </div>
+                <a class="btn btn-primary" asp-controller="Profile" asp-action="SendFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Add friend</a>
+            }
+
+        }
         @if (Model.FriendshipStatus == FriendshipStatus.Accepted || User.IsInRole(GlobalConstants.UserRole.Administrator))
         {
             <h1 class="my-4">
@@ -57,60 +86,31 @@
                 <p>@Model.User.FirstName @Model.User.LastName hasn't posted anything yet :(</p>
             }
         }
-        else
-        {
-
-            if (Model.FriendshipStatus == FriendshipStatus.Pending)
-            {
-                if (Model.IssuerUsername != User.Identity.Name)
-                {
-                    <div class="alert alert-info" role="alert">
-                        This person has requested to be your friend. Will you accept the request?
-                    </div>
-                    <a class="btn btn-primary" asp-controller="Profile" asp-action="AcceptFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Accept</a>
-                    <a class="btn btn-danger" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Decline</a>
-                }
-                else
-                {
-                    <div class="alert alert-info" role="alert">
-                        Friend request pending... You will see user's profile if he accepts you.
-                    </div>
-                    <a class="btn btn-danger" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Cancel friend request</a>
-                }
-            }
-            else if (Model.FriendshipStatus == FriendshipStatus.NotFriend)
-            {
-                <div class="alert alert-warning" role="alert">
-                    <p class="danger">You do not have access to this user's personal info. Send a friend request if you wish to befriend him/her.</p>
-                </div>
-                <a class="btn btn-primary" asp-controller="Profile" asp-action="SendFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Add friend</a>
-            }
-        }
 
     </div>
     <!-- Sidebar Widgets Column -->
     <div class="col-md-4">
         @if (User.IsInRole(GlobalConstants.UserRole.Administrator))
         {
-            <div class="card my-4">
+            <div class="card my-4" style="text-align:center;">
                 <h5 class="card-header">Admin widget</h5>
                 <div class="card-body">
-                    <a class="btn btn-primary" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Add user to role</a>
-                    <a class="btn btn-danger" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Delete user account</a>
+                    <a class="btn btn-primary" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Assign role</a>
+                    <a class="btn btn-danger" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Delete account</a>
                 </div>
             </div>
         }
         <!-- Widget with name and email info -->
-        <div class="card my-4">
+        <div class="card my-4" style="text-align:center;">
             <h5 class="card-header">@Model.User.FirstName @Model.User.LastName</h5>
             <div class="card-body">
                 <p>@Model.User.Email</p>
             </div>
         </div>
         <!-- Widget for the profile photo -->
-        <div class="card my-4">
+        <div class="card my-4" style="text-align:center;">
             <h5 class="card-header">Profile photo</h5>
-            <div class="card-body" style="text-align:center;">
+            <div class="card-body">
                 @if (Model.User.ProfilePicture == null)
                 {
                     <img src="~/images/profile/nophoto.jpg" style="width:70%;height:70%;" />
@@ -124,7 +124,7 @@
         @if (Model.FriendshipStatus == FriendshipStatus.Accepted || User.IsInRole(GlobalConstants.UserRole.Administrator))
         {
             <!-- Quick links Widget -->
-            <div class="card my-4">
+            <div class="card my-4" style="text-align:center;">
                 <h5 class="card-header">Quick links</h5>
                 <div class="card-body">
                     <div class="row">
@@ -150,6 +150,15 @@
                             </ul>
                         </div>
                     </div>
+                </div>
+            </div>
+        }
+        @if (Model.FriendshipStatus == FriendshipStatus.Accepted)
+        {
+            <div class="card my-4" style="text-align:center;">
+                <h5 class="card-header">Actions</h5>
+                <div class="card-body">
+                    <a class="btn btn-danger" asp-controller="Profile" asp-action="Unfriend">Unfriend</a>
                 </div>
             </div>
         }

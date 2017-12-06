@@ -58,7 +58,7 @@
         <!-- Sidebar Widgets Column -->
         <div class="col-md-4">
             <!-- Widget with name and email info -->
-            <div class="card my-4">
+            <div class="card my-4" style="text-align:center;">
                 <h5 class="card-header">@Model.User.FirstName @Model.User.LastName</h5>
                 <div class="card-body">
                     <p>@Model.User.Email</p>
@@ -74,7 +74,7 @@
                 </div>
             </div>
             <!-- Widget for the profile photo -->
-            <div class="card my-4">
+            <div class="card my-4" style="text-align:center;">
                 <h5 class="card-header">Profile photo</h5>
                 <div class="card-body" style="text-align:center;">
                     @if (Model.User.ProfilePicture == null)
@@ -97,7 +97,7 @@
                 </div>
             </div>
             <!-- Categories Widget -->
-            <div class="card my-4">
+            <div class="card my-4" style="text-align:center;">
                 <h5 class="card-header">Quick links</h5>
                 <div class="card-body">
                     <div class="row">
