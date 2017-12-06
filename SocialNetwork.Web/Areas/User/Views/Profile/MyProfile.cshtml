@@ -26,14 +26,19 @@
                                 <a asp-area="User" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">Read More &rarr;</a>
                         </div>
                         <div class="card-footer text-muted">
-                            <img src="/api/Image/@Model.User.ProfilePictureId" alt="Card image cap" width="60" height="60">
+                            @{
+                                var userProfilePicture = post.User.ProfilePictureId == null ?
+                                    "/images/profile/nophoto.jpg" : $"/api/Image/{post.User.ProfilePictureId}";
+                            }
+                            <img src="@userProfilePicture" alt="Card image cap" width="60" height="60">
                             Posted on @post.PublishedOn.ToString("dd-MMM-yyyy hh:mm:ss tt", new CultureInfo("en-US")) by
                             <a href="#">@Model.User.FirstName @Model.User.LastName</a>
                             @if(post.EditedOn != null)
                             {
                                 <span>Edited</span>
                             }
-                            <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger" style="float:right;">Delete</a>
+                            @*<a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger" style="float:right;">Delete</a>*@
+                            <a onclick="deletePost" class="btn btn-danger" style="float:right;">Delete</a>
                             <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning" style="float:right;margin-right:5px;">Edit</a>
                         </div>
                     </div>
@@ -128,3 +133,12 @@
         </div>
     </div>
     <!-- /.row -->
+
+@section Scripts{ 
+    <script>
+        function deletePost() {
+
+
+        }
+    </script>
+}
