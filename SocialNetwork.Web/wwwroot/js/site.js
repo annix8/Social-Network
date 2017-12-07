@@ -8,23 +8,25 @@
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
-        $.ajax({
-            url: "/User/Posts/Delete/" + postId,
-            type: "POST",
-            data: {
-                PostId: postId
-            }
-        })
-            .done(function (data) {
-                swal({
-                    title: "Deleted",
-                    text: "Post has been successfully deleted",
-                    type: "success"
-                }).then(() => { location.reload(); });
+        if (result.value) {
+            $.ajax({
+                url: "/User/Posts/Delete/" + postId,
+                type: "POST",
+                data: {
+                    PostId: postId
+                }
             })
-            .error(function (data) {
-                swal("Oops", "Something went wrong!", "error");
-            });
+                .done(function (data) {
+                    swal({
+                        title: "Deleted",
+                        text: "Post has been successfully deleted",
+                        type: "success"
+                    }).then(() => { location.reload(); });
+                })
+                .error(function (data) {
+                    swal("Oops", "Something went wrong!", "error");
+                });
+        }
     })
 }
 
@@ -38,19 +40,21 @@ function unfriendUser(userToUnfriend) {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes!'
     }).then((result) => {
-        $.ajax({
-            url: "/User/Profile/CancelFriendRequest?usernameToUnfriend=" + userToUnfriend + "&returnUrl=" + window.location,
-            type: "GET"
-        })
-            .done(function () {
-                swal({
-                    title: "Success",
-                    text: "User removed from friends.",
-                    type: "success"
-                }).then(() => { location.reload(); });
+        if (result.value) {
+            $.ajax({
+                url: "/User/Profile/CancelFriendRequest?usernameToUnfriend=" + userToUnfriend + "&returnUrl=" + window.location,
+                type: "GET"
             })
-            .error(function (data) {
-                swal("Oops", "Something went wrong!", "error");
-            });
+                .done(function () {
+                    swal({
+                        title: "Success",
+                        text: "User removed from friends.",
+                        type: "success"
+                    }).then(() => { location.reload(); });
+                })
+                .error(function (data) {
+                    swal("Oops", "Something went wrong!", "error");
+                });
+        }
     })
 }
