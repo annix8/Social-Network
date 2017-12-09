@@ -18,6 +18,7 @@
         };
 
         public static string AccessDeniedView => "/Views/Account/AccessDenied.cshtml";
+        public static string NotFoundView => "/Views/Shared/NotFound.cshtml";
 
         public class UserRole
         {

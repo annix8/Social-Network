@@ -42,6 +42,12 @@
         public async Task<IActionResult> Details(int id)
         {
             var post = await _postService.ByIdAsync(id);
+
+            if(post == null)
+            {
+                return View(GlobalConstants.NotFoundView);
+            }
+
             var loggedUserId = _userManager.GetUserId(User);
 
             if (!await this.CheckFriendshipStatus(post.UserId, loggedUserId))
