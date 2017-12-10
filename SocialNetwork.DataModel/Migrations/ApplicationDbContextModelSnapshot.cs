@@ -187,6 +187,28 @@ namespace SocialNetwork.DataModel.Migrations
                     b.ToTable("Friendships");
                 });
 
+            modelBuilder.Entity("SocialNetwork.DataModel.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Content");
+
+                    b.Property<string>("ReceiverId")
+                        .IsRequired();
+
+                    b.Property<string>("SenderId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("SocialNetwork.DataModel.Models.Picture", b =>
                 {
                     b.Property<int>("Id")
@@ -373,6 +395,19 @@ namespace SocialNetwork.DataModel.Migrations
                         .WithMany("FriendRequestsMade")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("SocialNetwork.DataModel.Models.Message", b =>
+                {
+                    b.HasOne("SocialNetwork.DataModel.Models.User", "Receiver")
+                        .WithMany("MessagesReceived")
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SocialNetwork.DataModel.Models.User", "Sender")
+                        .WithMany("MessagesSent")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SocialNetwork.DataModel.Models.Picture", b =>

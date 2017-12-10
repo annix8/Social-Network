@@ -16,7 +16,8 @@ namespace SocialNetwork.DataModel
         public DbSet<Friendship> Friendships { get; set; }
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<Post> Posts { get; set; }
-        
+        public DbSet<Message> Messages { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Friendship>()
@@ -33,6 +34,16 @@ namespace SocialNetwork.DataModel
                 .WithMany(f => f.FriendRequestsAccepted)
                 .HasForeignKey(u => u.FriendId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<User>()
+                .HasMany(m => m.MessagesSent)
+                .WithOne(u => u.Sender)
+                .HasForeignKey(u => u.SenderId);
+
+            builder.Entity<User>()
+                .HasMany(m => m.MessagesReceived)
+                .WithOne(u => u.Receiver)
+                .HasForeignKey(u => u.ReceiverId);
 
             base.OnModelCreating(builder);
         }

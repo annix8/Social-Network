@@ -20,6 +20,8 @@ namespace SocialNetwork.DataModel.Models
         public ICollection<Post> Posts { get; set; } = new HashSet<Post>();
         public ICollection<Friendship> FriendRequestsMade { get; set; } = new HashSet<Friendship>();
         public ICollection<Friendship> FriendRequestsAccepted { get; set; } = new HashSet<Friendship>();
+        public ICollection<Message> MessagesSent { get; set; }
+        public ICollection<Message> MessagesReceived { get; set; }
         [Required]
         public bool IsPublic { get; set; }
         public Picture ProfilePicture { get; set; }
