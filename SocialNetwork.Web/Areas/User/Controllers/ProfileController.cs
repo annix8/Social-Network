@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Services.Contracts;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Web.Areas.User.Models.Profile;
@@ -52,17 +53,16 @@
         [HttpPost]
         public async Task<IActionResult> UploadProfilePicture(IFormFile file)
         {
-            // TODO: check file extension and log errors
-            if (file == null || file.Length < 0)
+            var (hasErrors,errors) = this.ValidateFile(file);
+
+            if (hasErrors)
             {
-                return BadRequest();
-            }
-            else
-            {
-                await _pictureService.UploadProfilePictureAsync(User.Identity.Name, file);
+                return BadRequest(string.Join("\n",errors));
             }
 
-            return RedirectToAction(nameof(MyProfile));
+            await _pictureService.UploadProfilePictureAsync(User.Identity.Name, file);
+            
+            return Ok();
         }
 
         public async Task<IActionResult> Visit(string username, int page = 1)
@@ -151,6 +151,34 @@
                 });
 
             return View(viewModel);
+        }
+
+        private (bool, List<string>) ValidateFile(IFormFile file)
+        {
+            var errors = new List<string>();
+            var hasErrors = false;
+            var fileNameTokens = file.FileName.Split('.');
+            double fileMb = (double)file.Length / (1024 * 1024);
+
+            if(file == null)
+            {
+                errors.Add("You must provide a file.");
+                hasErrors = true;
+            }
+
+            if(fileMb > 2.5)
+            {
+                errors.Add("Allowed maximum size of file is 2.5mb.");
+                hasErrors = true;
+            }
+
+            if (!GlobalConstants.PictureFileNameExtensions.Contains(fileNameTokens[fileNameTokens.Length - 1]))
+            {
+                errors.Add($"Allowed file extensions are: {string.Join(", ",GlobalConstants.PictureFileNameExtensions)}");
+                hasErrors = true;
+            }
+
+            return (hasErrors, errors);
         }
     }
 }

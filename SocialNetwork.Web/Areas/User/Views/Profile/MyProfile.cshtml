@@ -112,15 +112,11 @@
                 {
                     <img src="/api/Image/@Model.User.ProfilePictureId" style="width:70%;height:70%;" />
                 }
-                <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="UploadProfilePicture" style="margin-top:25px;">
-                    <label class="custom-file" style="margin-bottom:15px;">
-                        <input type="file" class="custom-file-input" name="file" />
-                        <span class="custom-file-control">Click to select new picture...</span>
-                    </label>
-                    <div class="form-group">
-                        <input type="submit" value="Upload" class="form-control btn btn-primary" />
-                    </div>
-                </form>
+                <label class="custom-file" style="margin-bottom:15px;margin-top:15px;">
+                    <input type="file" class="custom-file-input" name="file" id="profilePictureSelect"/>
+                    <span class="custom-file-control">Click to select new picture...</span>
+                </label>
+                
             </div>
         </div>
         <!-- Quick links Widget -->
@@ -170,3 +166,37 @@
     </div>
 </div>
 <!-- /.row -->
+
+@section Scripts{ 
+   <script>
+       $("#profilePictureSelect").change(function () {
+           var file = $("#profilePictureSelect")[0].files[0];
+
+           var formData = new FormData();
+           formData.append("file", file)
+
+           $.ajax({
+               url: "/User/Profile/UploadProfilePicture",
+               method: "POST",
+               data: formData,
+               contentType: false,
+               processData: false,
+               success: function () {
+                   swal({
+                       title: "Success",
+                       text: "Profile picture uploaded.",
+                       type: "success"
+                   }).then(() => { location.reload(); });
+               },
+               error: function (er) {
+                   console.log(er)
+                   swal({
+                       title: "Error",
+                       text: er.responseText,
+                       type: "error"
+                   }).then(() => { location.reload(); });
+               }
+           });
+       })
+    </script>
+}
