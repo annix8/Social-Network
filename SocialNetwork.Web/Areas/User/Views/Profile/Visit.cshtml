@@ -124,7 +124,7 @@
                 <h5 class="card-header">Admin widget</h5>
                 <div class="card-body">
                     <a class="btn btn-primary" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Assign role</a>
-                    <a class="btn btn-danger" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Delete account</a>
+                    <button onclick="deleteProfile('@Model.User.UserName')" class="btn btn-danger">Delete account</button>
                 </div>
             </div>
         }

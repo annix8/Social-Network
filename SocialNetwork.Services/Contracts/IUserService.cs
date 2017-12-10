@@ -34,5 +34,7 @@
         Task<int> FriendsCountAsync(string userId);
 
         Task<bool> ValidateFriendshipAcceptance(string friendshipAccepterId, string userToAcceptId);
+
+        Task<bool> DeleteAccountAsync(string usernameToDelete);
     }
 }

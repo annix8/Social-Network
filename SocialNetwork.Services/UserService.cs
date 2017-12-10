@@ -179,7 +179,7 @@
 
         public async Task<string> NamesByIdAsync(string userId)
         {
-            var user =  await _db.Users.FindAsync(userId);
+            var user = await _db.Users.FindAsync(userId);
             return $"{user.FirstName} {user.LastName}";
         }
 
@@ -189,8 +189,8 @@
                 .FirstOrDefaultAsync(fr => (fr.UserId == friendshipAccepterId && fr.FriendId == userToAcceptId) ||
                 (fr.FriendId == friendshipAccepterId && fr.UserId == userToAcceptId));
 
-            
-            if(friendship.FriendshipIssuerId == friendshipAccepterId)
+
+            if (friendship.FriendshipIssuerId == friendshipAccepterId)
             {
                 return false;
             }
@@ -204,6 +204,26 @@
                 .FirstOrDefaultAsync(u => u.UserName == username);
 
             return user.Id;
+        }
+
+        public async Task<bool> DeleteAccountAsync(string usernameToDelete)
+        {
+            var userToDelete = await _db.Users.FirstOrDefaultAsync(u => u.UserName == usernameToDelete);
+
+            if (userToDelete == null)
+            {
+                return false;
+            }
+
+            var friendships = _db.Friendships
+                .Where(fr => fr.User == userToDelete || fr.Friend == userToDelete);
+
+            _db.Friendships.RemoveRange(friendships);
+
+            _db.Users.Remove(userToDelete);
+            await _db.SaveChangesAsync();
+
+            return true;
         }
     }
 }

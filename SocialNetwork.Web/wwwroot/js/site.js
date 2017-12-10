@@ -58,3 +58,32 @@ function unfriendUser(userToUnfriend) {
         }
     })
 }
+
+function deleteProfile(usernameToDelete) {
+    swal({
+        title: 'Warning',
+        text: "Are you sure you want to delete user with username '" + usernameToDelete + "'",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes!'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: "/Admin/Profile/DeleteProfile?usernameToDelete=" + usernameToDelete,
+                type: "GET"
+            })
+                .done(function () {
+                    swal({
+                        title: "Success",
+                        text: "Account with username '" + usernameToDelete + "' successfuly deleted.",
+                        type: "success"
+                    }).then(() => { window.location.href = "/" });
+                })
+                .error(function (data) {
+                    swal("Oops", "Something went wrong!", "error");
+                });
+        }
+    })
+}
