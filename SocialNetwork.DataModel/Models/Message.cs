@@ -12,6 +12,8 @@ namespace SocialNetwork.DataModel.Models
         public User Receiver { get; set; }
         [Required]
         public string ReceiverId { get; set; }
+        [Required]
         public string Content { get; set; }
+        public DateTime Date { get; set; }
     }
 }

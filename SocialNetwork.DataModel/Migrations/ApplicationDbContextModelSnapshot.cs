@@ -192,7 +192,10 @@ namespace SocialNetwork.DataModel.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Content");
+                    b.Property<string>("Content")
+                        .IsRequired();
+
+                    b.Property<DateTime>("Date");
 
                     b.Property<string>("ReceiverId")
                         .IsRequired();
