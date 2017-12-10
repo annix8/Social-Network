@@ -42,7 +42,7 @@
     </tr>
     @foreach (var message in Model.Messages)
     {
-        var senderOrReceiver = Model.Sent ? message.Sender : message.Receiver;
+        var senderOrReceiver = Model.Sent ? message.Receiver : message.Sender;
         <tr>
             <td><a asp-controller="Profile" asp-action="Visit" asp-route-username="@senderOrReceiver.UserName">@senderOrReceiver.FirstName @senderOrReceiver.LastName</a></td>
             <td>@message.Content</td>

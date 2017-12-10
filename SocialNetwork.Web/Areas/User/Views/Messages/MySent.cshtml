@@ -7,7 +7,7 @@
         <h2>Sent</h2><hr />
         @if (Model.Messages.Any())
         {
-            Html.RenderPartial("_Messages");
+            Html.RenderPartial("_Messages", Model);
         }
         else
         {
