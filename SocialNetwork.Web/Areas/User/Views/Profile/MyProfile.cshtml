@@ -123,32 +123,47 @@
                 </form>
             </div>
         </div>
-        <!-- Categories Widget -->
+        <!-- Quick links Widget -->
         <div class="card my-4" style="text-align:center;">
             <h5 class="card-header">Quick links</h5>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-lg-4">
-                        <ul class="list-unstyled mb-0">
-                            <li>
-                                <a href="#">My messages</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <ul class="list-unstyled mb-0">
                             <li>
                                 <a href="#">Photos</a>
                             </li>
                         </ul>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <ul class="list-unstyled mb-0">
                             <li>
                                 <a asp-controller="People" asp-action="Friends" asp-route-userId="@Model.User.Id">Friends</a>
                             </li>
                         </ul>
                     </div>
+                </div>
+            </div>
+        </div>
+        <!-- Messages widget -->
+        <div class="card my-4" style="text-align:center;">
+            <h5 class="card-header">Messages</h5>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a asp-controller="Messages" asp-action="MyReceived">Inbox</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6">
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="#">Sent</a>
+                            </li>
+                        </ul>
+                    </div>                   
                 </div>
             </div>
         </div>

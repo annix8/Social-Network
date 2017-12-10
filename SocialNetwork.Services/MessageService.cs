@@ -6,6 +6,8 @@
     using SocialNetwork.DataModel;
     using Microsoft.EntityFrameworkCore;
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class MessageService : IMessageService
     {
@@ -14,6 +16,62 @@
         public MessageService(SocialNetworkDbContext db)
         {
             _db = db;
+        }
+
+        public async Task<IEnumerable<Message>> ByReceiverUsernameAsync(string receiverUsername, int page = 1, int pageSize = 10)
+        {
+            var receiver = await _db.Users
+                .Include(u => u.MessagesReceived)
+                .ThenInclude(m => m.Sender)
+                .FirstOrDefaultAsync(u => u.UserName == receiverUsername);
+
+            if (receiver == null)
+            {
+                return null;
+            }
+
+            return receiver.MessagesReceived
+                .OrderByDescending(m => m.Date)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+        }
+
+        public async Task<int> ByReceiverUsernameTotalAsync(string receiverUsername)
+        {
+            var receiver = await _db.Users
+                .Include(u => u.MessagesReceived)
+                .FirstOrDefaultAsync(u => u.UserName == receiverUsername);
+
+            return receiver.MessagesReceived.Count();
+        }
+
+        public async Task<IEnumerable<Message>> BySenderUsernameAsync(string senderUsername, int page = 1, int pageSize = 10)
+        {
+            var receiver = await _db.Users
+                .Include(u => u.MessagesSent)
+                .ThenInclude(m => m.Receiver)
+                .FirstOrDefaultAsync(u => u.UserName == senderUsername);
+
+            if (receiver == null)
+            {
+                return null;
+            }
+
+            return receiver.MessagesSent
+                .OrderByDescending(m => m.Date)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+        }
+
+        public async Task<int> BySenderUsernameTotalAsync(string senderUsername)
+        {
+            var receiver = await _db.Users
+                .Include(u => u.MessagesSent)
+                .FirstOrDefaultAsync(u => u.UserName == senderUsername);
+
+            return receiver.MessagesSent.Count();
         }
 
         public async Task<bool> CreateMessageAsync(string senderUsername, string receiverUsername, string content)

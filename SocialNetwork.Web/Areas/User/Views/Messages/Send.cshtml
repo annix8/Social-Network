@@ -3,6 +3,13 @@
     ViewData["Title"] = "Send";
 }
 
+@if (TempData.ContainsKey(GlobalConstants.SuccessMessageKey))
+{
+    <div class="alert alert-success">
+        @TempData[GlobalConstants.SuccessMessageKey]
+    </div>
+
+}
 <div class="row">
     <div class="col-md-8">
         <h2>Send message to username '<b>@Model.ReceiverUsername'</b></h2><hr />

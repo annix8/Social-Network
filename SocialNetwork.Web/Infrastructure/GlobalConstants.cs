@@ -4,12 +4,11 @@
 
     public class GlobalConstants
     {
-        public static string[] PictureFileNameExtensions => new string[]
+        public class UserRole
         {
-            "jpeg",
-            "jpg",
-            "png"
-        };
+            public const string User = "User";
+            public const string Administrator = "Administrator";
+        }
 
         public static List<string> UserRoles => new List<string>
         {
@@ -17,13 +16,16 @@
             UserRole.Administrator
         };
 
+        public static string[] PictureFileNameExtensions => new string[]
+        {
+            "jpeg",
+            "jpg",
+            "png"
+        };
+        
         public static string AccessDeniedView => "/Views/Account/AccessDenied.cshtml";
         public static string NotFoundView => "/Views/Shared/NotFound.cshtml";
 
-        public class UserRole
-        {
-            public const string User = "User";
-            public const string Administrator = "Administrator";
-        }
+        public static string SuccessMessageKey => "SuccessMessage";
     }
 }
