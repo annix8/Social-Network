@@ -20,7 +20,9 @@
         {
             "jpeg",
             "jpg",
-            "png"
+            "png",
+            "gif",
+            "bmp"
         };
         
         public static string AccessDeniedView => "/Views/Account/AccessDenied.cshtml";
