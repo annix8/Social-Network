@@ -69,7 +69,7 @@ namespace SocialNetwork.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                  name: "UserArea",
+                  name: "defaultArea",
                   template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
                 );
                 
