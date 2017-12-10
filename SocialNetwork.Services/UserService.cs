@@ -217,8 +217,11 @@
 
             var friendships = _db.Friendships
                 .Where(fr => fr.User == userToDelete || fr.Friend == userToDelete);
+            var messages = _db.Messages
+                .Where(m => m.Sender == userToDelete || m.Receiver == userToDelete);
 
             _db.Friendships.RemoveRange(friendships);
+            _db.Messages.RemoveRange(messages);
 
             _db.Users.Remove(userToDelete);
             await _db.SaveChangesAsync();
