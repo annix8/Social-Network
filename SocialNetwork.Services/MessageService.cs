@@ -5,6 +5,7 @@
     using SocialNetwork.DataModel.Models;
     using SocialNetwork.DataModel;
     using Microsoft.EntityFrameworkCore;
+    using System;
 
     public class MessageService : IMessageService
     {
@@ -29,7 +30,8 @@
             {
                 Sender = sender,
                 Receiver = receiver,
-                Content = content
+                Content = content,
+                Date = DateTime.UtcNow
             };
 
             await _db.Messages.AddAsync(message);

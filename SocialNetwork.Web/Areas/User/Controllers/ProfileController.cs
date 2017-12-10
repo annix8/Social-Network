@@ -1,5 +1,4 @@
-﻿
-namespace SocialNetwork.Web.Areas.User.Controllers
+﻿namespace SocialNetwork.Web.Areas.User.Controllers
 {
     using DataModel.Enums;
     using DataModel.Models;

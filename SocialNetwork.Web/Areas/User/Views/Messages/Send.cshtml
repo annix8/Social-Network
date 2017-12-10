@@ -1,0 +1,33 @@
+﻿@model MessageModel
+@{
+    ViewData["Title"] = "Send";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <h2>Send message to username '<b>@Model.ReceiverUsername'</b></h2><hr />
+        <form method="post"  asp-controller="Messages" asp-action="Send">
+            <div asp-validation-summary="All"></div>
+            <div class="form-group">
+                <label asp-for="Content">Content</label>
+                <textarea asp-for="Content" class="form-control" rows="15"></textarea>
+                <span asp-validation-for="Content"></span>
+            </div>
+            <input type="hidden" asp-for="SenderUsername" />
+            <input type="hidden" asp-for="ReceiverUsername" />
+
+            <input type="submit" class="btn btn-primary" value="Send message" />
+        </form>
+    </div>
+    <div class="col-md-4">
+        <div class="card my-4">
+            <h5 class="card-header">Profile</h5>
+            <div class="card-body">
+                <a asp-area="User" asp-controller="Profile" asp-action="MyProfile">Go to my profile</a>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

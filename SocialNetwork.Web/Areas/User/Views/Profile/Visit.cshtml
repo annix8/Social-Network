@@ -41,7 +41,7 @@
                 @Model.User.FirstName @Model.User.LastName's posts<br />
             </h1>
             @if (Model.Posts.Any())
-            {
+             {
                 <ul class="pagination pagination-lg">
                     <li class="page-item @(Model.PreviousPage == Model.CurrentPage ? "disabled" : "")">
                         <a class="page-link"
@@ -107,13 +107,13 @@
                             }
                         </div>
                     </div>
-                }
-            }
-            else
-            {
-                <p>@Model.User.FirstName @Model.User.LastName hasn't posted anything yet :(</p>
-            }
-        }
+                 }
+             }
+             else
+             {
+                 <p>@Model.User.FirstName @Model.User.LastName hasn't posted anything yet :(</p>
+             }
+         }
 
     </div>
     <!-- Sidebar Widgets Column -->
@@ -149,20 +149,20 @@
                 }
             </div>
         </div>
-        @if (Model.FriendshipStatus == FriendshipStatus.Accepted || User.IsInRole(GlobalConstants.UserRole.Administrator))
-        {
-            <!-- Quick links Widget -->
-            <div class="card my-4" style="text-align:center;">
-                <h5 class="card-header">Quick links</h5>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <ul class="list-unstyled mb-0">
-                                <li>
-                                    <a href="#">About</a>
-                                </li>
-                            </ul>
-                        </div>
+        <!-- Quick links Widget -->
+        <div class="card my-4" style="text-align:center;">
+            <h5 class="card-header">Quick links</h5>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a asp-area="User" asp-controller="Messages" asp-action="Send" asp-route-receiverUsername="@Model.User.UserName">Send message</a>
+                            </li>
+                        </ul>
+                    </div>
+                    @if (Model.FriendshipStatus == FriendshipStatus.Accepted || User.IsInRole(GlobalConstants.UserRole.Administrator))
+                    {
                         <div class="col-lg-4">
                             <ul class="list-unstyled mb-0">
                                 <li>
@@ -177,10 +177,11 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    }
+
                 </div>
             </div>
-        }
+        </div>
         @if (Model.FriendshipStatus == FriendshipStatus.Accepted)
         {
             <div class="card my-4" style="text-align:center;">
