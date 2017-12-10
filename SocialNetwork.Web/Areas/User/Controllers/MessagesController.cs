@@ -56,11 +56,32 @@
                 return View(GlobalConstants.NotFoundView);
             }
 
-            var viewModel = new ReceivedMessagesPaginationModel
+            var viewModel = new MessagesPaginationModel
             {
                 Messages = messages,
                 CurrentPage = page,
-                TotalPages = (int)Math.Ceiling(await _messageService.ByReceiverUsernameTotalAsync(User.Identity.Name) / (double)MessagePageSize)
+                TotalPages = (int)Math.Ceiling(await _messageService.ByReceiverUsernameTotalAsync(User.Identity.Name) / (double)MessagePageSize),
+                Sent = false
+            };
+
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> MySent(int page = 1)
+        {
+            var messages = await _messageService.BySenderUsernameAsync(User.Identity.Name, page, MessagePageSize);
+
+            if (messages == null)
+            {
+                return View(GlobalConstants.NotFoundView);
+            }
+
+            var viewModel = new MessagesPaginationModel
+            {
+                Messages = messages,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling(await _messageService.BySenderUsernameTotalAsync(User.Identity.Name) / (double)MessagePageSize),
+                Sent = true
             };
 
             return View(viewModel);

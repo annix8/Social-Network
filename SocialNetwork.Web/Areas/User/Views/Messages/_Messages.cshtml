@@ -1,0 +1,54 @@
+﻿@model MessagesPaginationModel
+
+    @{ 
+        var action = Model.Sent ? "MySent" : "MyReceived";
+    }
+<ul class="pagination pagination-lg">
+    <li class="page-item @(Model.PreviousPage == Model.CurrentPage ? "disabled" : "")">
+        <a class="page-link"
+           asp-area="User"
+           asp-controller="Messages"
+           asp-action="@action"
+           asp-route-page="@Model.PreviousPage" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+        </a>
+    </li>
+    @for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        <li class="page-item @(Model.CurrentPage == i ? "active" : string.Empty)">
+            <a class="page-link"
+               asp-controller="Messages"
+               asp-action="@action"
+               asp-route-page="@i">@i</a>
+        </li>
+    }
+    <li class="page-item @(Model.NextPage == Model.CurrentPage ? "disabled" : "")">
+        <a class="page-link" asp-area="User"
+           asp-controller="Messages"
+           asp-action="@action"
+           asp-route-page="@Model.NextPage" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+        </a>
+    </li>
+</ul>
+
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>@(Model.Sent ? "To" : "From")</th>
+        <th>Content</th>
+        <th>Date</th>
+    </tr>
+    @foreach (var message in Model.Messages)
+    {
+        var senderOrReceiver = Model.Sent ? message.Sender : message.Receiver;
+        <tr>
+            <td><a asp-controller="Profile" asp-action="Visit" asp-route-username="@senderOrReceiver.UserName">@senderOrReceiver.FirstName @senderOrReceiver.LastName</a></td>
+            <td>@message.Content</td>
+            <td>@message.Date.ToString("dd-MMM-yyyy hh:mm:ss tt", new CultureInfo("en-US")) (UTC)</td>
+        </tr>
+    }
+</table>
+
+
