@@ -114,7 +114,10 @@
                 {
                     return BadRequest(string.Join("\n", errors));
                 }
+            }
 
+            foreach (var pic in pictures.Files)
+            {
                 // pic.Name is the album's id passed from ajax call
                 await _pictureService.UploadPictureToAlbumAsync(int.Parse(pic.Name), loggedUserId, pic);
             }
