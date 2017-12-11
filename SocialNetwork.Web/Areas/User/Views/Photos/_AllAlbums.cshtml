@@ -5,19 +5,21 @@
     <div class="alert alert-info">
         Nothing to show :(
     </div>
-    return;
 
 }
-<div class="row text-center text-lg-left">
+else
+{
+    <div class="row text-center text-lg-left">
 
-    @foreach (var album in Model.Albums)
-    {
-        <div class="col-lg-3 col-md-4 col-xs-6">
-            @album.Name
-            <a href="#" class="d-block mb-4 h-100">
-                <img class="img-fluid img-thumbnail" src="~/images/home/album.jpg" alt="">
-            </a>
-        </div>
-    }
+        @foreach (var album in Model.Albums)
+        {
+            <div class="col-lg-3 col-md-4 col-xs-6">
+                @album.Name
+                <a asp-controller="Photos" asp-action="Album" asp-route-id="@album.Id" class="d-block mb-4 h-100">
+                    <img class="img-fluid img-thumbnail" src="~/images/home/album.jpg" alt="">
+                </a>
+            </div>
+        }
 
-</div>
+    </div>
+}

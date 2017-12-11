@@ -1,0 +1,94 @@
+﻿@model AlbumModel
+@{
+    ViewData["Title"] = "Album";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="my-4">
+                Album: @Model.Album.Name<br />
+                
+            </h2>
+            <p><b>Description</b>: @Model.Album.Description<br /></p>
+                @if (Model.MyAlbum)
+                 {
+                    <small>
+                        <label class="custom-file" style="margin-bottom:15px;margin-top:15px;">
+                            <input type="file" multiple class="custom-file-input" name="pictures" id="uploadPictures" />
+                            <span class="custom-file-control">Upload new photos...</span>
+                        </label>
+                    </small>
+                     @if (Model.MyAlbum || User.IsInRole(GlobalConstants.UserRole.Administrator))
+                     {
+                         <small style="float:right;"><button class="btn btn-danger">Delete album</button></small><br />
+                     }
+                 }
+            <h4>Photos:</h4>
+            @if (!Model.Album.Pictures.Any())
+            {
+                <div class="alert alert-info">
+                    Nothing to show :(
+                </div>
+            }
+            else
+            {
+                <div class="row text-center text-lg-left">
+
+                    @foreach (var picture in Model.Album.Pictures)
+                    {
+                        <div class="col-lg-3 col-md-4 col-xs-6">
+                            <a target="_blank" href="/api/Image/@picture.Id" class="d-block mb-4 h-100">
+                                <img class="img-fluid img-thumbnail" src="/api/Image/@picture.Id" alt="">
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+            
+        </div>
+        <div class="col-md-4">
+            <div class="card my-4" style="text-align:center;">
+                <h5 class="card-header">Profile</h5>
+                <div class="card-body">
+                    <a asp-area="User" asp-controller="Profile" asp-action="MyProfile">Go to my profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $("#uploadPictures").change(function () {
+            var pictures = $("#uploadPictures")[0].files;
+
+            var formData = new FormData();
+            for (var i = 0; i < pictures.length; i++) {
+                formData.append('@Model.Album.Id', pictures[i]);
+            }
+
+            $.ajax({
+                url: "/User/Photos/UploadPictures",
+                method: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function () {
+                    swal({
+                        title: "Success",
+                        text: "Picture/s uploaded.",
+                        type: "success"
+                    }).then(() => { location.reload(); });
+                },
+                error: function (er) {
+                    console.log(er)
+                    swal({
+                        title: "Error",
+                        text: er.responseText,
+                        type: "error"
+                    }).then(() => { location.reload(); });
+                }
+            });
+        })
+    </script>
+}

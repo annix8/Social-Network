@@ -19,6 +19,28 @@
             _db = db;
         }
 
+        public async Task<Album> AlbumByIdAsync(int albumId)
+        {
+            return await _db.Albums
+                .Include(a => a.Pictures)
+                .Include(a => a.User)
+                .FirstOrDefaultAsync(a => a.Id == albumId);
+        }
+
+        public async Task<string> AlbumOwnerId(int albumId)
+        {
+            var album = await _db.Albums
+                .Include(a => a.User)
+                .FirstOrDefaultAsync(a => a.Id == albumId);
+
+            if (album == null)
+            {
+                return null;
+            }
+
+            return album.User.Id;
+        }
+
         public async Task<Picture> ByIdAsync(int id)
         {
             return await _db.Pictures.FindAsync(id);
@@ -30,7 +52,7 @@
                 .Include(u => u.Albums)
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
-            if(user == null)
+            if (user == null)
             {
                 return false;
             }
@@ -44,6 +66,39 @@
 
             await _db.Albums.AddAsync(album);
             await _db.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> UploadPictureToAlbumAsync(int albumId, string uploaderId, IFormFile picture)
+        {
+            var album = await _db.Albums
+                .Include(a => a.User)
+                .FirstOrDefaultAsync(a => a.Id == albumId);
+
+            if (album == null)
+            {
+                return false;
+            }
+            if (album.UserId != uploaderId)
+            {
+                return false;
+            }
+
+            using (var stream = new MemoryStream())
+            {
+                await picture.CopyToAsync(stream);
+                var imageData = stream.ToArray();
+
+                var pic = new Picture
+                {
+                    ImageData = imageData
+                };
+
+                 album.Pictures.Add(pic);
+
+                await _db.SaveChangesAsync();
+            }
 
             return true;
         }
@@ -74,7 +129,7 @@
                 {
                     pic = new Picture { ImageData = imageData };
                 }
-                
+
                 user.ProfilePicture = pic;
 
                 await _db.SaveChangesAsync();
@@ -89,7 +144,7 @@
                 .Include(u => u.Albums)
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
-            if(user == null)
+            if (user == null)
             {
                 return null;
             }
