@@ -7,6 +7,8 @@
     using Services.Contracts;
     using System.IO;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class PictureService : IPictureService
     {
@@ -55,6 +57,20 @@
             }
 
             return true;
+        }
+
+        public async Task<IEnumerable<Album>> UserAlbumsAsync(string userId)
+        {
+            var user = await _db.Users
+                .Include(u => u.Albums)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if(user == null)
+            {
+                return null;
+            }
+
+            return user.Albums.ToList();
         }
     }
 }
