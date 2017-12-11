@@ -12,5 +12,7 @@
         Task<bool> UploadProfilePictureAsync(string username, IFormFile picture);
 
         Task<IEnumerable<Album>> UserAlbumsAsync(string userId);
+
+        Task<bool> CreateAlbumAsync(string albumName, string description, string userId);
     }
 }

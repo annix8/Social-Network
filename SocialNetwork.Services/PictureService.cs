@@ -24,6 +24,30 @@
             return await _db.Pictures.FindAsync(id);
         }
 
+        public async Task<bool> CreateAlbumAsync(string albumName, string description, string userId)
+        {
+            var user = await _db.Users
+                .Include(u => u.Albums)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if(user == null)
+            {
+                return false;
+            }
+
+            var album = new Album
+            {
+                Name = albumName,
+                Description = description,
+                User = user
+            };
+
+            await _db.Albums.AddAsync(album);
+            await _db.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<bool> UploadProfilePictureAsync(string username, IFormFile picture)
         {
             var user = await _db.Users

@@ -43,5 +43,20 @@
 
             return View(viewModel);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAlbum(string title, string description)
+        {
+            if(string.IsNullOrEmpty(title) || string.IsNullOrEmpty(description))
+            {
+                return BadRequest("Title and description must be provided");
+            }
+
+            var loggedUserId = _userManager.GetUserId(User);
+
+            await _pictureService.CreateAlbumAsync(title, description, loggedUserId);
+
+            return Ok();
+        }
     }
 }
