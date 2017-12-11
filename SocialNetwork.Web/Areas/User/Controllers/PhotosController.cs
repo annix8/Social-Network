@@ -80,6 +80,27 @@
 
             return View(viewModel);
         }
+        
+        [HttpPost]
+        public async Task<IActionResult> DeleteAlbum(int id)
+        {
+            var loggedUserId = _userManager.GetUserId(User);
+            var albumOwnerId = await _pictureService.AlbumOwnerId(id);
+
+            if (loggedUserId != albumOwnerId && !User.IsInRole(GlobalConstants.UserRole.Administrator))
+            {
+                return BadRequest("Error: Insufficient privileges");
+            }
+
+            var result = await _pictureService.DeleteAlbumByIdAsync(id);
+
+            if (!result)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
 
         [HttpPost]
         public async Task<IActionResult> UploadPictures(IFormCollection pictures)

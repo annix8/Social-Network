@@ -18,10 +18,10 @@
                             <span class="custom-file-control">Upload new photos...</span>
                         </label>
                     </small>
-                     @if (Model.MyAlbum || User.IsInRole(GlobalConstants.UserRole.Administrator))
-                     {
-                         <small style="float:right;"><button class="btn btn-danger">Delete album</button></small><br />
-                     }
+                 }
+                 @if (Model.MyAlbum || User.IsInRole(GlobalConstants.UserRole.Administrator))
+                 {
+                     <small style="float:right;"><button class="btn btn-danger" onclick="deleteAlbum(@Model.Album.Id)">Delete album</button></small><br />
                  }
             <h4>Photos:</h4>
             @if (!Model.Album.Pictures.Any())

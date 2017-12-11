@@ -11,6 +11,8 @@
 
         Task<Album> AlbumByIdAsync(int albumId);
 
+        Task<bool> DeleteAlbumByIdAsync(int albumId);
+
         Task<bool> UploadProfilePictureAsync(string username, IFormFile picture);
 
         Task<bool> UploadPictureToAlbumAsync(int albumId, string uploaderId, IFormFile picture);

@@ -16,16 +16,16 @@
                     PostId: postId
                 }
             })
-             .done(function (data) {
-                 swal({
-                     title: "Deleted",
-                     text: "Post has been successfully deleted",
-                     type: "success"
-                 }).then(() => { location.reload(); });
-             })
-             .error(function (data) {
-                 swal("Oops", "Something went wrong!", "error");
-             });
+                .done(function (data) {
+                    swal({
+                        title: "Deleted",
+                        text: "Post has been successfully deleted",
+                        type: "success"
+                    }).then(() => { location.reload(); });
+                })
+                .error(function (data) {
+                    swal("Oops", "Something went wrong!", "error");
+                });
         }
     })
 }
@@ -45,16 +45,16 @@ function unfriendUser(userToUnfriend) {
                 url: "/User/Profile/CancelFriendRequest?usernameToUnfriend=" + userToUnfriend + "&returnUrl=" + window.location,
                 type: "GET"
             })
-             .done(function () {
-                 swal({
-                     title: "Success",
-                     text: "User removed from friends.",
-                     type: "success"
-                 }).then(() => { location.reload(); });
-             })
-             .error(function (data) {
-                 swal("Oops", "Something went wrong!", "error");
-             });
+                .done(function () {
+                    swal({
+                        title: "Success",
+                        text: "User removed from friends.",
+                        type: "success"
+                    }).then(() => { location.reload(); });
+                })
+                .error(function (data) {
+                    swal("Oops", "Something went wrong!", "error");
+                });
         }
     })
 }
@@ -74,16 +74,16 @@ function deleteProfile(usernameToDelete) {
                 url: "/Admin/Profile/DeleteProfile?usernameToDelete=" + usernameToDelete,
                 type: "GET"
             })
-             .done(function () {
-                 swal({
-                     title: "Success",
-                     text: "Account with username '" + usernameToDelete + "' successfuly deleted.",
-                     type: "success"
-                 }).then(() => { window.location.href = "/" });
-             })
-             .error(function (data) {
-                 swal("Oops", "Something went wrong!", "error");
-             });
+                .done(function () {
+                    swal({
+                        title: "Success",
+                        text: "Account with username '" + usernameToDelete + "' successfuly deleted.",
+                        type: "success"
+                    }).then(() => { window.location.href = "/" });
+                })
+                .error(function (data) {
+                    swal("Oops", "Something went wrong!", "error");
+                });
         }
     })
 }
@@ -131,18 +131,47 @@ function createNewAlbum() {
                             description: albumTokens[1]
                         }
                     })
-                     .done(function () {
-                         swal({
-                             title: "Success",
-                             text: "Album created",
-                             type: "success"
-                         }).then(() => { location.reload(); });
-                     })
-                     .error(function (data) {
-                         swal("Oops", "Something went wrong!", "error");
-                     });
+                        .done(function () {
+                            swal({
+                                title: "Success",
+                                text: "Album created",
+                                type: "success"
+                            }).then(() => { location.reload(); });
+                        })
+                        .error(function (data) {
+                            swal("Oops", "Something went wrong!", "error");
+                        });
                 }
             })
+        }
+    })
+}
+
+function deleteAlbum(albumId) {
+    swal({
+        title: 'Warning',
+        text: "Are you sure you want to delete this album?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: "/User/Photos/DeleteAlbum/" + albumId,
+                type: "POST"
+            })
+                .done(function (data) {
+                    swal({
+                        title: "Deleted",
+                        text: "Album has been successfully deleted",
+                        type: "success"
+                    }).then(() => { window.location.href = "/"; });
+                })
+                .error(function (data) {
+                    swal("Oops", "Something went wrong!", "error");
+                });
         }
     })
 }

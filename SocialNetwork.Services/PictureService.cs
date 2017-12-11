@@ -70,6 +70,30 @@
             return true;
         }
 
+        public async Task<bool> DeleteAlbumByIdAsync(int albumId)
+        {
+            var album = await _db.Albums
+                .Include(a => a.Pictures)
+                .FirstOrDefaultAsync(a => a.Id == albumId);
+
+            if(album == null)
+            {
+                return false;
+            }
+
+            foreach (var pic in album.Pictures)
+            {
+                var picture = await _db.Pictures.FindAsync(pic.Id);
+
+                _db.Remove(picture);
+            }
+
+            _db.Albums.Remove(album);
+            await _db.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<bool> UploadPictureToAlbumAsync(int albumId, string uploaderId, IFormFile picture)
         {
             var album = await _db.Albums
