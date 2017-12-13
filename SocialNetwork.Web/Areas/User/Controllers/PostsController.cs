@@ -38,12 +38,12 @@
 
             return RedirectToAction(nameof(ProfileController.MyProfile), "Profile");
         }
-        
+
         public async Task<IActionResult> Details(int id)
         {
             var post = await _postService.ByIdAsync(id);
 
-            if(post == null)
+            if (post == null)
             {
                 return View(GlobalConstants.NotFoundView);
             }
@@ -61,17 +61,23 @@
         [HttpPost]
         public async Task<IActionResult> Comment(CommentModel commentModel)
         {
+            if (!ModelState.IsValid)
+            {
+                // TODO: show errors
+                return View();
+            }
+
             var post = await _postService.ByIdAsync(commentModel.PostId);
+            if (post == null)
+            {
+                return View(GlobalConstants.NotFoundView);
+            }
+
             var loggedUserId = _userManager.GetUserId(User);
 
             if (!await this.CheckFriendshipStatus(post.UserId, loggedUserId))
             {
                 return View(GlobalConstants.AccessDeniedView);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return View();
             }
 
             await _postService.MakeCommentAsync(commentModel.Comment, commentModel.PostId, commentModel.CommentAuthor);
@@ -82,6 +88,10 @@
         public async Task<IActionResult> Edit(int id)
         {
             var post = await _postService.ByIdAsync(id);
+            if (post == null)
+            {
+                return View(GlobalConstants.NotFoundView);
+            }
 
             if (post.User.UserName != User.Identity.Name)
             {
@@ -100,16 +110,20 @@
         [HttpPost]
         public async Task<IActionResult> Edit(PostModel postModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(postModel);
+            }
+
             var post = await _postService.ByIdAsync(postModel.PostId);
+            if (post == null)
+            {
+                return View(GlobalConstants.NotFoundView);
+            }
 
             if (post.User.UserName != User.Identity.Name)
             {
                 return View(GlobalConstants.AccessDeniedView);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return View(postModel);
             }
 
             var postResult = await _postService.EditAsync(postModel.PostId, postModel.Title, postModel.Content);
@@ -121,6 +135,10 @@
         public async Task<IActionResult> Delete(PostModel postModel)
         {
             var post = await _postService.ByIdAsync(postModel.PostId);
+            if (post == null)
+            {
+                return View(GlobalConstants.NotFoundView);
+            }
 
             if (post.User.UserName != User.Identity.Name && !User.IsInRole(GlobalConstants.UserRole.Administrator))
             {
