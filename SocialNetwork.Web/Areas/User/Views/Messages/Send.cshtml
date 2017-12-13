@@ -36,4 +36,10 @@
 </div>
 @section Scripts{
     @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        $(document).ready(() => {
+            $("#Content").empty();
+        })
+    </script>
 }
