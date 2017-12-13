@@ -71,13 +71,13 @@
         @if (TempData.ContainsKey(GlobalConstants.SuccessMessageKey))
         {
             <div class="alert alert-success">
-                @TempData[GlobalConstants.SuccessMessageKey]
+                @TempData.ShowSuccessMessage()
             </div>
         }
         @if (TempData.ContainsKey(GlobalConstants.ErrorMessageKey))
         {
             <div class="alert alert-danger">
-                @TempData[GlobalConstants.ErrorMessageKey]
+                @TempData.ShowErrorMessage()
             </div>
         }
 

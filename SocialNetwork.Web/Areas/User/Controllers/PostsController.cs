@@ -7,6 +7,7 @@
     using SocialNetwork.Services.Contracts;
     using SocialNetwork.Web.Areas.User.Models.Posts;
     using SocialNetwork.Web.Infrastructure;
+    using SocialNetwork.Web.Infrastructure.Extensions;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -69,8 +70,8 @@
                     .Where(v => v.ValidationState == ModelValidationState.Invalid)
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage);
-
-                TempData[GlobalConstants.ErrorMessageKey] = string.Join(", ",errors);
+                
+                TempData.AddErrorMessage(string.Join(", ", errors));
                 return RedirectToAction(nameof(Details), new { id = commentModel.PostId });
             }
 

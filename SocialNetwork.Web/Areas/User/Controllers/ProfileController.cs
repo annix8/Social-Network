@@ -6,6 +6,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Services.Contracts;
+    using SocialNetwork.Web.Infrastructure.Extensions;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -100,7 +101,6 @@
             var friendshipResult = await _userService.MakeFriendRequestAsync(User.Identity.Name, usernameToBefriend);
             if (!friendshipResult)
             {
-                //TODO: log errors
                 return RedirectToAction(nameof(Visit), new { username = usernameToBefriend });
             }
 
@@ -112,7 +112,6 @@
             var result = await _userService.DeleteFriendshipAsync(User.Identity.Name, usernameToUnfriend);
             if (!result)
             {
-                //TODO: log errors
                 return RedirectToAction(nameof(Visit), new { username = usernameToUnfriend });
             }
 

@@ -1,11 +1,14 @@
 ﻿namespace SocialNetwork.Web.Areas.User.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using SocialNetwork.Services.Contracts;
-    using SocialNetwork.Web.Areas.User.Models.Messages;
-    using SocialNetwork.Web.Infrastructure;
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
+    using Services.Contracts;
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
+    using Web.Areas.User.Models.Messages;
+    using Web.Infrastructure;
+    using Web.Infrastructure.Extensions;
 
     public class MessagesController : UserAreaController
     {
@@ -32,17 +35,24 @@
         {
             if (!ModelState.IsValid)
             {
-                return this.BadRequest();
+                var errors = ModelState.Values
+                    .Where(v => v.ValidationState == ModelValidationState.Invalid)
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage);
+
+                TempData.AddErrorMessage(string.Join(", ", errors));
+                return View(messageModel.ReceiverUsername);
             }
 
             var result = await _messageService.CreateMessageAsync(User.Identity.Name, messageModel.ReceiverUsername, messageModel.Content);
 
             if (!result)
             {
-                return this.BadRequest();
+                TempData.AddErrorMessage("Something went wrong.");
+                return View(messageModel.ReceiverUsername);
             }
 
-            TempData.Add(GlobalConstants.SuccessMessageKey, "Message sent!");
+            TempData.AddSuccessMessage("Message sent.");
             return View(messageModel);
         }
 
