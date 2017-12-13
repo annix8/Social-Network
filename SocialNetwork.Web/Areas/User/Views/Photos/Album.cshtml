@@ -39,7 +39,7 @@
                         <div class="col-lg-3 col-md-4 col-xs-6">
                             @if(Model.MyAlbum || User.IsInRole(GlobalConstants.UserRole.Administrator))
                             {
-                                <span class="glyphicon glyphicon-remove" onclick="deleteAlbumPicture(@Model.Album.Id,@picture.Id)" style="cursor:pointer;"></span>
+                                <span class="glyphicon glyphicon-remove" onclick="deleteAlbumPicture(@Model.Album.Id,@picture.Id)" style="cursor:pointer;color:red;"></span>
                             }
                             <a target="_blank" href="/api/Image/@picture.Id" class="d-block mb-4 h-100">
                                 <img class="img-fluid img-thumbnail" src="/api/Image/@picture.Id" alt="">

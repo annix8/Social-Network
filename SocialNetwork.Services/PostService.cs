@@ -48,6 +48,15 @@
                 .CountAsync();
         }
 
+        public async Task<Comment> CommentByIdAsync(int id)
+        {
+            return await _db.Comments
+                .Include(c => c.User)
+                .Include(c => c.Post)
+                .ThenInclude(p => p.User)
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
         public async Task<bool> CreateAsync(string publisher, string title, string content, IFormFile pictureFile)
         {
             var user = await _db.Users.FirstOrDefaultAsync(u => u.UserName == publisher);
@@ -120,6 +129,21 @@
                 _db.Pictures.Remove(pic);
             }
             _db.Posts.Remove(post);
+            await _db.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DeleteCommentByIdAsync(int id)
+        {
+            var comment = await _db.Comments.FindAsync(id);
+
+            if(comment == null)
+            {
+                return false;
+            }
+
+            _db.Comments.Remove(comment);
             await _db.SaveChangesAsync();
 
             return true;

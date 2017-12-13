@@ -73,6 +73,12 @@
                         }
                         <img class="d-flex mr-3 rounded-circle" src="@userProfilePicture" alt="profile-picture" width="60" height="60">
                         <div class="media-body">
+                            @if (comment.User.UserName == User.Identity.Name ||
+                                User.IsInRole(GlobalConstants.UserRole.Administrator) ||
+                                Model.User.UserName == User.Identity.Name)
+                            {
+                                <span onclick="deleteComment(@comment.Id)" class="glyphicon glyphicon-remove" style="cursor:pointer;float:right;color:red;"></span>
+                            }
                             <h5 class="mt-0"><a asp-controller="Profile" asp-action="Visit" asp-route-username="@comment.User.UserName">@comment.User.FirstName @comment.User.LastName</a></h5>
                             @comment.Content
                         </div>

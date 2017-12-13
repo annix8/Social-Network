@@ -24,5 +24,9 @@
         Task<int> ByUserIdCountAsync(string ownerId);
 
         Task<IEnumerable<Post>> FriendsPostsAsync(string userId);
+
+        Task<Comment> CommentByIdAsync(int id);
+
+        Task<bool> DeleteCommentByIdAsync(int id);
     }
 }

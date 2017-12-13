@@ -93,6 +93,32 @@
             return RedirectToAction(nameof(Details), new { id = commentModel.PostId });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteComment(int commentId)
+        {
+            var comment = await _postService.CommentByIdAsync(commentId);
+            if(comment == null)
+            {
+                return BadRequest();
+            }
+
+            if(comment.User.UserName != User.Identity.Name &&
+                !User.IsInRole(GlobalConstants.UserRole.Administrator)
+                && comment.Post.User.UserName != User.Identity.Name)
+            {
+                return BadRequest();
+            }
+
+            var result = await _postService.DeleteCommentByIdAsync(commentId);
+
+            if (!result)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
         public async Task<IActionResult> Edit(int id)
         {
             var post = await _postService.ByIdAsync(id);

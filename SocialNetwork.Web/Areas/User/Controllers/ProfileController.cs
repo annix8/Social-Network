@@ -6,9 +6,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Services.Contracts;
-    using SocialNetwork.Web.Infrastructure.Extensions;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Web.Areas.User.Models.Profile;

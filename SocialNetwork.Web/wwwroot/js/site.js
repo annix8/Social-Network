@@ -30,6 +30,36 @@
     })
 }
 
+function deleteComment(commentId) {
+    swal({
+        title: 'Warning',
+        text: "Are you sure you want to delete this comment?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: "/User/Posts/DeleteComment?commentId=" + commentId,
+                type: "POST"
+            })
+                .done(function (data) {
+                    swal({
+                        title: "Deleted",
+                        text: "Comment has been successfully deleted",
+                        type: "success"
+                    }).then(() => { location.reload(); });
+                })
+                .error(function (data) {
+                    swal("Oops", "Something went wrong!", "error")
+                        .then(() => { location.reload(); });
+                });
+        }
+    })
+}
+
 function unfriendUser(userToUnfriend) {
     swal({
         title: 'Warning',
