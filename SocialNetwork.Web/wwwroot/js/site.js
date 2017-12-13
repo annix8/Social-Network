@@ -204,3 +204,61 @@ function deleteAlbumPicture(albumId, pictureId) {
         }
     })
 }
+
+function makeAdmin(username) {
+    swal({
+        title: 'Warning',
+        text: "Are you sure you want to promote this user to administrator role?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes!'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: "/Admin/Profile/MakeAdmin/?username=" + username,
+                type: "POST"
+            })
+                .done(function (data) {
+                    swal({
+                        title: "Success",
+                        text: "User has been successfuly promoted to administrator role. Hope you know what you are doing.",
+                        type: "success"
+                    }).then(() => { location.reload(); });
+                })
+                .error(function (er) {
+                    swal("Oops", "Something went wrong.", "error");
+                });
+        }
+    })
+}
+
+function demoteToUser(username) {
+    swal({
+        title: 'Warning',
+        text: "Are you sure you want to demote this user?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes!'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: "/Admin/Profile/DemoteToUser/?username=" + username,
+                type: "POST"
+            })
+                .done(function (data) {
+                    swal({
+                        title: "Success",
+                        text: "User has been successfuly demoted.",
+                        type: "success"
+                    }).then(() => { location.reload(); });
+                })
+                .error(function (er) {
+                    swal("Oops", "Something went wrong.", "error");
+                });
+        }
+    })
+}

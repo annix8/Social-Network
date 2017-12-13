@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = Model.User.FirstName;
 }
-
+@inject UserManager<User> UserManager
 <div class="row">
     <!-- Blog Entries Column -->
     <div class="col-md-8">
@@ -123,8 +123,14 @@
             <div class="card my-4">
                 <h5 class="card-header">Admin widget</h5>
                 <div class="card-body">
-                    <a class="btn btn-primary" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Assign role</a>
-                    <button onclick="deleteProfile('@Model.User.UserName')" class="btn btn-danger">Delete account</button>
+                    @if(await UserManager.IsInRoleAsync(Model.User, GlobalConstants.UserRole.Administrator)){ 
+                        <button onclick="demoteToUser('@Model.User.UserName')" class="btn btn-primary">Demote to user</button>
+                    }
+                    else
+                    {
+                        <button onclick="makeAdmin('@Model.User.UserName')" class="btn btn-primary">Make admin</button>
+                        <button onclick="deleteProfile('@Model.User.UserName')" class="btn btn-danger">Delete account</button>
+                    }
                 </div>
             </div>
         }
