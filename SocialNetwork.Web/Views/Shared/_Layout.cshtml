@@ -68,6 +68,19 @@
     </nav>
 
     <div class="container body-content">
+        @if (TempData.ContainsKey(GlobalConstants.SuccessMessageKey))
+        {
+            <div class="alert alert-success">
+                @TempData[GlobalConstants.SuccessMessageKey]
+            </div>
+        }
+        @if (TempData.ContainsKey(GlobalConstants.ErrorMessageKey))
+        {
+            <div class="alert alert-danger">
+                @TempData[GlobalConstants.ErrorMessageKey]
+            </div>
+        }
+
         @RenderBody()
         <hr />
         <footer class="py-5 bg-dark">

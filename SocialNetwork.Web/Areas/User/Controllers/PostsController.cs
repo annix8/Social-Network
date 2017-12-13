@@ -3,9 +3,11 @@
     using DataModel.Models;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
     using SocialNetwork.Services.Contracts;
     using SocialNetwork.Web.Areas.User.Models.Posts;
     using SocialNetwork.Web.Infrastructure;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public class PostsController : UserAreaController
@@ -63,8 +65,13 @@
         {
             if (!ModelState.IsValid)
             {
-                // TODO: show errors
-                return View();
+                var errors = ModelState.Values
+                    .Where(v => v.ValidationState == ModelValidationState.Invalid)
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage);
+
+                TempData[GlobalConstants.ErrorMessageKey] = string.Join(", ",errors);
+                return RedirectToAction(nameof(Details), new { id = commentModel.PostId });
             }
 
             var post = await _postService.ByIdAsync(commentModel.PostId);

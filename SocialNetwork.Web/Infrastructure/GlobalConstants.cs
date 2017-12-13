@@ -29,5 +29,6 @@
         public static string NotFoundView => "/Views/Shared/NotFound.cshtml";
 
         public static string SuccessMessageKey => "SuccessMessage";
+        public static string ErrorMessageKey => "ErrorMessage";
     }
 }
