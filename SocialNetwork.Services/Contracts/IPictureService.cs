@@ -17,6 +17,8 @@
 
         Task<bool> UploadPictureToAlbumAsync(int albumId, string uploaderId, IFormFile picture);
 
+        Task<bool> DeleteAlbumPictureAsync(int pictureId);
+
         Task<IEnumerable<Album>> UserAlbumsAsync(string userId);
 
         Task<bool> CreateAlbumAsync(string albumName, string description, string userId);

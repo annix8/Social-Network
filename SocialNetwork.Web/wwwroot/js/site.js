@@ -175,3 +175,32 @@ function deleteAlbum(albumId) {
         }
     })
 }
+
+function deleteAlbumPicture(albumId, pictureId) {
+    swal({
+        title: 'Warning',
+        text: "Are you sure you want to delete this picture?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: "/User/Photos/DeleteAlbumPicture/?albumId=" + albumId + "&pictureId=" + pictureId,
+                type: "POST"
+            })
+                .done(function (data) {
+                    swal({
+                        title: "Deleted",
+                        text: "Picture has been successfully deleted",
+                        type: "success"
+                    }).then(() => { location.reload(); });
+                })
+                .error(function (er) {
+                    swal("Oops", "Something went wrong.", "error");
+                });
+        }
+    })
+}

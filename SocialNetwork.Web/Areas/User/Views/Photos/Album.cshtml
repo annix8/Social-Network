@@ -14,7 +14,7 @@
                  {
                     <small>
                         <label class="custom-file" style="margin-bottom:15px;margin-top:15px;">
-                            <input type="file" multiple class="custom-file-input" name="pictures" id="uploadPictures" />
+                            <input type="file" multiple class="custom-file-input" name="pictures" id="uploadPictures"/>
                             <span class="custom-file-control">Upload new photos...</span>
                         </label>
                     </small>
@@ -37,6 +37,10 @@
                     @foreach (var picture in Model.Album.Pictures)
                     {
                         <div class="col-lg-3 col-md-4 col-xs-6">
+                            @if(Model.MyAlbum || User.IsInRole(GlobalConstants.UserRole.Administrator))
+                            {
+                                <span class="glyphicon glyphicon-remove" onclick="deleteAlbumPicture(@Model.Album.Id,@picture.Id)" style="cursor:pointer;"></span>
+                            }
                             <a target="_blank" href="/api/Image/@picture.Id" class="d-block mb-4 h-100">
                                 <img class="img-fluid img-thumbnail" src="/api/Image/@picture.Id" alt="">
                             </a>

@@ -94,6 +94,21 @@
             return true;
         }
 
+        public async Task<bool> DeleteAlbumPictureAsync(int pictureId)
+        {
+            var picture = await _db.Pictures.FindAsync(pictureId);
+
+            if(picture == null)
+            {
+                return false;
+            }
+
+            _db.Pictures.Remove(picture);
+            await _db.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<bool> UploadPictureToAlbumAsync(int albumId, string uploaderId, IFormFile picture)
         {
             var album = await _db.Albums

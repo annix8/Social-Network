@@ -80,7 +80,7 @@
 
             return View(viewModel);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> DeleteAlbum(int id)
         {
@@ -122,6 +122,30 @@
                 await _pictureService.UploadPictureToAlbumAsync(int.Parse(pic.Name), loggedUserId, pic);
             }
 
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteAlbumPicture(int albumId, int pictureId)
+        {
+            var album = await _pictureService.AlbumByIdAsync(albumId);
+            if (album == null)
+            {
+                return BadRequest();
+            }
+
+            if (album.User.UserName != User.Identity.Name && !User.IsInRole(GlobalConstants.UserRole.Administrator))
+            {
+                return Forbid("Access denied");
+            }
+
+            var result = await _pictureService.DeleteAlbumPictureAsync(pictureId);
+
+            if (!result)
+            {
+                return BadRequest();
+            }
+            
             return Ok();
         }
     }

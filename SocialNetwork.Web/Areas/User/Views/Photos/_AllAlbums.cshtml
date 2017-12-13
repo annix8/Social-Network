@@ -13,8 +13,8 @@ else
 
         @foreach (var album in Model.Albums)
         {
-            <div class="col-lg-3 col-md-4 col-xs-6">
-                @album.Name
+            <div class="col-lg-3 col-md-4 col-xs-6" style="text-align:center;">
+                <p style="margin-bottom:5px;">@album.Name</p>
                 <a asp-controller="Photos" asp-action="Album" asp-route-id="@album.Id" class="d-block mb-4 h-100">
                     <img class="img-fluid img-thumbnail" src="~/images/home/album.jpg" alt="">
                 </a>
