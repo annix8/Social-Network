@@ -120,7 +120,7 @@
     <div class="col-md-4">
         @if (User.IsInRole(GlobalConstants.UserRole.Administrator))
         {
-            <div class="card my-4" style="text-align:center;">
+            <div class="card my-4">
                 <h5 class="card-header">Admin widget</h5>
                 <div class="card-body">
                     <a class="btn btn-primary" asp-controller="Profile" asp-action="CancelFriendRequest" asp-route-usernameToBefriend="@Model.User.UserName">Assign role</a>
@@ -129,14 +129,14 @@
             </div>
         }
         <!-- Widget with name and email info -->
-        <div class="card my-4" style="text-align:center;">
+        <div class="card my-4">
             <h5 class="card-header">@Model.User.FirstName @Model.User.LastName</h5>
             <div class="card-body">
                 <p>@Model.User.Email</p>
             </div>
         </div>
         <!-- Widget for the profile photo -->
-        <div class="card my-4" style="text-align:center;">
+        <div class="card my-4">
             <h5 class="card-header">Profile photo</h5>
             <div class="card-body">
                 @if (Model.User.ProfilePicture == null)
@@ -150,7 +150,7 @@
             </div>
         </div>
         <!-- Quick links Widget -->
-        <div class="card my-4" style="text-align:center;">
+        <div class="card my-4">
             <h5 class="card-header">Quick links</h5>
             <div class="card-body">
                 <div class="row">
@@ -184,7 +184,7 @@
         </div>
         @if (Model.FriendshipStatus == FriendshipStatus.Accepted)
         {
-            <div class="card my-4" style="text-align:center;">
+            <div class="card my-4">
                 <h5 class="card-header">Actions</h5>
                 <div class="card-body">
                     <button class="btn btn-danger" onclick="unfriendUser('@Model.User.UserName')">Unfriend</button>

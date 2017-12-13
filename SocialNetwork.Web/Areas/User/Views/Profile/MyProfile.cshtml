@@ -85,7 +85,7 @@
     <!-- Sidebar Widgets Column -->
     <div class="col-md-4">
         <!-- Widget with name and email info -->
-        <div class="card my-4" style="text-align:center;">
+        <div class="card my-4">
             <h5 class="card-header">@Model.User.FirstName @Model.User.LastName</h5>
             <div class="card-body">
                 <p>@Model.User.Email</p>
@@ -101,9 +101,9 @@
             </div>
         </div>
         <!-- Widget for the profile photo -->
-        <div class="card my-4" style="text-align:center;">
+        <div class="card my-4">
             <h5 class="card-header">Profile photo</h5>
-            <div class="card-body" style="text-align:center;">
+            <div class="card-body">
                 @if (Model.User.ProfilePicture == null)
                 {
                     <img src="~/images/profile/nophoto.jpg" style="width:70%;height:70%;" />
@@ -120,7 +120,7 @@
             </div>
         </div>
         <!-- Quick links Widget -->
-        <div class="card my-4" style="text-align:center;">
+        <div class="card my-4">
             <h5 class="card-header">Quick links</h5>
             <div class="card-body">
                 <div class="row">
@@ -142,7 +142,7 @@
             </div>
         </div>
         <!-- Messages widget -->
-        <div class="card my-4" style="text-align:center;">
+        <div class="card my-4">
             <h5 class="card-header">Messages</h5>
             <div class="card-body">
                 <div class="row">

@@ -8,6 +8,7 @@
     <!-- Bootstrap core CSS -->
     <link href="~/bootstrap-theme/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/custom.css" />
 
    <!-- Sweetalert -->
     <script src="~/js/sweetalert.js"></script>
@@ -37,7 +38,7 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item" style="margin-right:50px; margin-top:5px;;">
+                        <li class="nav-item" style="margin-right:50px; margin-top:5px;">
                             <a class="nav-link active" asp-area="User" asp-controller="Profile" asp-action="MyProfile">
                                 My profile
                                 <span class="sr-only">(current)</span>
