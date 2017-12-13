@@ -32,6 +32,11 @@
             var issuer = await _db.Users.FirstOrDefaultAsync(u => u.UserName == issuerUsername);
             var friend = await _db.Users.FirstOrDefaultAsync(u => u.UserName == userToCancel);
 
+            if (friend == null || issuer == null)
+            {
+                return false;
+            }
+
             var friendship = await _db.Friendships
                 .FirstOrDefaultAsync(f => (f.User == issuer && f.Friend == friend) ||
                 (f.Friend == issuer && f.User == friend));
@@ -107,6 +112,11 @@
         {
             var firstUser = await _db.Users.FirstOrDefaultAsync(u => u.UserName == firstUsername);
             var secondUser = await _db.Users.FirstOrDefaultAsync(u => u.UserName == secondUsername);
+
+            if (firstUser == null || secondUser == null)
+            {
+                return false;
+            }
 
             var friendship = await _db.Friendships
                 .FirstOrDefaultAsync(fr => (fr.User == firstUser && fr.Friend == secondUser) ||
@@ -185,6 +195,11 @@
 
         public async Task<bool> ValidateFriendshipAcceptance(string friendshipAccepterId, string userToAcceptId)
         {
+            if(string.IsNullOrEmpty(friendshipAccepterId) || string.IsNullOrEmpty(userToAcceptId))
+            {
+                return false;
+            }
+
             var friendship = await _db.Friendships
                 .FirstOrDefaultAsync(fr => (fr.UserId == friendshipAccepterId && fr.FriendId == userToAcceptId) ||
                 (fr.FriendId == friendshipAccepterId && fr.UserId == userToAcceptId));
@@ -203,7 +218,7 @@
             var user = await _db.Users
                 .FirstOrDefaultAsync(u => u.UserName == username);
 
-            return user.Id;
+            return user != null ? user.Id : null;
         }
 
         public async Task<bool> DeleteAccountAsync(string usernameToDelete)

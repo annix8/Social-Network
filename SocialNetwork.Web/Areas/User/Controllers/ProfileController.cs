@@ -47,7 +47,6 @@
             };
 
             return View(viewModel);
-
         }
 
         [HttpPost]
@@ -68,6 +67,11 @@
         public async Task<IActionResult> Visit(string username, int page = 1)
         {
             var userToVisit = await _userService.ByUsernameAsync(username);
+            if(userToVisit == null)
+            {
+                return View(GlobalConstants.NotFoundView);
+            }
+
             var currentUser = await _userService.ByUsernameAsync(User.Identity.Name);
 
             if (userToVisit.UserName == currentUser.UserName)
@@ -94,7 +98,6 @@
         public async Task<IActionResult> SendFriendRequest(string usernameToBefriend)
         {
             var friendshipResult = await _userService.MakeFriendRequestAsync(User.Identity.Name, usernameToBefriend);
-
             if (!friendshipResult)
             {
                 //TODO: log errors
@@ -107,6 +110,11 @@
         public async Task<IActionResult> CancelFriendRequest(string usernameToUnfriend, string returnUrl = null)
         {
             var result = await _userService.DeleteFriendshipAsync(User.Identity.Name, usernameToUnfriend);
+            if (!result)
+            {
+                //TODO: log errors
+                return RedirectToAction(nameof(Visit), new { username = usernameToUnfriend });
+            }
 
             if (!string.IsNullOrEmpty(returnUrl))
             {
@@ -127,6 +135,11 @@
             }
 
             var result = await _userService.AcceptFriendshipAsync(User.Identity.Name, usernameToBefriend);
+
+            if (!result)
+            {
+                return View(GlobalConstants.AccessDeniedView);
+            }
 
             if (!string.IsNullOrEmpty(returnUrl))
             {
