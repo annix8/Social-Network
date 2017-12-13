@@ -21,8 +21,7 @@
         {
             var viewModel = new MessageModel
             {
-                ReceiverUsername = receiverUsername,
-                SenderUsername = User.Identity.Name
+                ReceiverUsername = receiverUsername
             };
 
             return View(viewModel);
@@ -36,7 +35,7 @@
                 return this.BadRequest();
             }
 
-            var result = await _messageService.CreateMessageAsync(messageModel.SenderUsername, messageModel.ReceiverUsername, messageModel.Content);
+            var result = await _messageService.CreateMessageAsync(User.Identity.Name, messageModel.ReceiverUsername, messageModel.Content);
 
             if (!result)
             {

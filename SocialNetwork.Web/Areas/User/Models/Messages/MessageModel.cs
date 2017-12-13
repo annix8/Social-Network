@@ -5,8 +5,6 @@
     public class MessageModel
     {
         [Required]
-        public string SenderUsername { get; set; }
-        [Required]
         public string ReceiverUsername { get; set; }
         [Required]
         [MaxLength(200, ErrorMessage = "Maximum length of message is 200 symbols")]
