@@ -15,11 +15,7 @@
         public async Task ByUsernameAsyncShouldReturnOneUserWhenUserExists()
         {
             // Arrange
-            var dbOptions = new DbContextOptionsBuilder<SocialNetworkDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-
-            var db = new SocialNetworkDbContext(dbOptions);
+            var db = GetDatabase();
 
             var firstUser = new User
             {
@@ -54,6 +50,15 @@
                 .And
                 .Should()
                 .Equals("testuser");
+        }
+
+        private SocialNetworkDbContext GetDatabase()
+        {
+            var dbOptions = new DbContextOptionsBuilder<SocialNetworkDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+
+            return new SocialNetworkDbContext(dbOptions);
         }
     }
 }
