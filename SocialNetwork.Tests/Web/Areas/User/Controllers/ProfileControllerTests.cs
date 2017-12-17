@@ -57,8 +57,6 @@
             const string username = "Username";
             var userService = new Mock<IUserService>();
             var postService = new Mock<IPostService>();
-            var signInManager = new Mock<SignInManager<User>>(
-                null, null, null, null, null, null);
 
             userService
                 .Setup(s => s.ByUsernameAsync(It.Is<string>(u => u == username)))
@@ -95,11 +93,46 @@
 
         }
 
+        [Fact]
+        public async Task VisitUsernameThatHasSameNameAsLoggedUserShouldReturnRedirectToActionResult()
+        {
+            // Arrange
+            const string username = "Username";
+            var userService = new Mock<IUserService>();
+
+            userService
+                .Setup(s => s.ByUsernameAsync(It.IsAny<string>()))
+                .ReturnsAsync(new User { UserName = username });
+
+            var user = GetMockLoggedUser();
+
+            var controller = new ProfileController(userService.Object, null, null, null);
+
+            controller.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() { User = user }
+            };
+
+            // Act
+            var result = await controller.Visit(username);
+
+            // Assert
+            result
+                .Should()
+                .BeOfType<RedirectToActionResult>();
+
+            result.As<RedirectToActionResult>()
+                .ActionName
+                .Should()
+                .BeEquivalentTo(nameof(ProfileController.MyProfile));
+                
+        }
+
         private ClaimsPrincipal GetMockLoggedUser()
         {
             return new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
-                 new Claim(ClaimTypes.NameIdentifier, "1")
+                 new Claim(ClaimTypes.Name, "")
             }));
         }
     }
