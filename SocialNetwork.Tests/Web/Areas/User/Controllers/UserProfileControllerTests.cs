@@ -1,22 +1,21 @@
 ﻿namespace SocialNetwork.Tests.Web.Controllers.Areas.User.Controllers
 {
+    using DataModel.Models;
     using FluentAssertions;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Moq;
     using SocialNetwork.Services.Contracts;
     using SocialNetwork.Web.Areas.User.Controllers;
-    using DataModel.Models;
+    using SocialNetwork.Web.Areas.User.Models.Profile;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using Xunit;
-    using System.Collections.Generic;
-    using SocialNetwork.Web.Areas.User.Models.Profile;
-    using System.Security.Claims;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Http;
 
-    public class ProfileControllerTests
+    public class UserProfileControllerTests
     {
         [Fact]
         public void ProfileControllerShouldBeForAuthorizedUsersOnly()
