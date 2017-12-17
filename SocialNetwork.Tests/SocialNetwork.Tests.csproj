@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SocialNetwork.DataModel\SocialNetwork.DataModel.csproj" />
+    <ProjectReference Include="..\SocialNetwork.Services\SocialNetwork.Services.csproj" />
     <ProjectReference Include="..\SocialNetwork.Web\SocialNetwork.Web.csproj" />
   </ItemGroup>
 
