@@ -45,7 +45,7 @@
         {
             var loggedUserId = _userManager.GetUserId(User);
 
-            if(!await this.CheckFriendshipStatus(loggedUserId, userId))
+            if(!await this.CheckFriendshipStatus(loggedUserId, userId, _userService))
             {
                 return View(GlobalConstants.AccessDeniedView);
             }

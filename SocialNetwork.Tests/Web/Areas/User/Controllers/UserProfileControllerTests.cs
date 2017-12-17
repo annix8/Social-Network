@@ -3,15 +3,14 @@
     using DataModel.Models;
     using FluentAssertions;
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Moq;
     using SocialNetwork.Services.Contracts;
+    using SocialNetwork.Tests.Extensions;
     using SocialNetwork.Web.Areas.User.Controllers;
     using SocialNetwork.Web.Areas.User.Models.Profile;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Claims;
     using System.Threading.Tasks;
     using Xunit;
 
@@ -39,14 +38,7 @@
             var result = await controller.Visit("unexisting");
 
             // Assert
-            result.As<ViewResult>()
-                .Should()
-                .NotBeNull();
-
-            result.As<ViewResult>()
-                .ViewName.ToLower()
-                .Should()
-                .Contain("notfound");
+            result.AssertNotFoundView();
         }
 
         [Fact]
@@ -69,14 +61,8 @@
                 .Setup(p => p.ByUserIdAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
                 .ReturnsAsync(new List<Post> { new Post { Title = "Post Title" } });
 
-            var user = GetMockLoggedUser();
-
             var controller = new ProfileController(userService.Object, null, postService.Object, null);
-
-            controller.ControllerContext = new ControllerContext()
-            {
-                HttpContext = new DefaultHttpContext() { User = user }
-            };
+            controller.LoginMockUser();
 
             // Act
             var result = await controller.Visit(username);
@@ -89,7 +75,6 @@
                 .Model
                 .Should()
                 .BeOfType<VisitProfileModel>();
-
         }
 
         [Fact]
@@ -103,14 +88,8 @@
                 .Setup(s => s.ByUsernameAsync(It.IsAny<string>()))
                 .ReturnsAsync(new User { UserName = username });
 
-            var user = GetMockLoggedUser();
-
             var controller = new ProfileController(userService.Object, null, null, null);
-
-            controller.ControllerContext = new ControllerContext()
-            {
-                HttpContext = new DefaultHttpContext() { User = user }
-            };
+            controller.LoginMockUser();
 
             // Act
             var result = await controller.Visit(username);
@@ -118,21 +97,10 @@
             // Assert
             result
                 .Should()
-                .BeOfType<RedirectToActionResult>();
-
-            result.As<RedirectToActionResult>()
-                .ActionName
+                .BeOfType<RedirectToActionResult>()
+                .Subject
                 .Should()
-                .BeEquivalentTo(nameof(ProfileController.MyProfile));
-                
-        }
-
-        private ClaimsPrincipal GetMockLoggedUser()
-        {
-            return new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-            {
-                 new Claim(ClaimTypes.Name, "")
-            }));
+                .Match(s => s.As<RedirectToActionResult>().ActionName == nameof(ProfileController.MyProfile));      
         }
     }
 }

@@ -4,21 +4,23 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.ModelBinding;
-    using SocialNetwork.Services.Contracts;
-    using SocialNetwork.Web.Areas.User.Models.Posts;
-    using SocialNetwork.Web.Infrastructure;
-    using SocialNetwork.Web.Infrastructure.Extensions;
+    using Services.Contracts;
     using System.Linq;
     using System.Threading.Tasks;
+    using Web.Areas.User.Models.Posts;
+    using Web.Infrastructure;
+    using Web.Infrastructure.Extensions;
 
     public class PostsController : UserAreaController
     {
         private readonly IPostService _postService;
+        private readonly IUserService _userService;
         private readonly UserManager<User> _userManager;
 
-        public PostsController(IPostService postService, UserManager<User> userManager)
+        public PostsController(IPostService postService, IUserService userService, UserManager<User> userManager)
         {
             _postService = postService;
+            _userService = userService;
             _userManager = userManager;
         }
 
@@ -53,7 +55,7 @@
 
             var loggedUserId = _userManager.GetUserId(User);
 
-            if (!await this.CheckFriendshipStatus(post.UserId, loggedUserId))
+            if (!await this.CheckFriendshipStatus(post.UserId, loggedUserId, _userService))
             {
                 return View(GlobalConstants.AccessDeniedView);
             }
@@ -83,7 +85,7 @@
 
             var loggedUserId = _userManager.GetUserId(User);
 
-            if (!await this.CheckFriendshipStatus(post.UserId, loggedUserId))
+            if (!await this.CheckFriendshipStatus(post.UserId, loggedUserId, _userService))
             {
                 return View(GlobalConstants.AccessDeniedView);
             }

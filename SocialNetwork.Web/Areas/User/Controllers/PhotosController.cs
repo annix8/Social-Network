@@ -28,7 +28,7 @@
         {
             var loggedUserId = _userManager.GetUserId(User);
 
-            if (!await this.CheckFriendshipStatus(loggedUserId, userId))
+            if (!await this.CheckFriendshipStatus(loggedUserId, userId, _userService))
             {
                 return View(GlobalConstants.AccessDeniedView);
             }
@@ -65,7 +65,7 @@
             var loggedUserId = _userManager.GetUserId(User);
             var albumOwnerId = await _pictureService.AlbumOwnerId(id);
 
-            if (!await this.CheckFriendshipStatus(loggedUserId, albumOwnerId))
+            if (!await this.CheckFriendshipStatus(loggedUserId, albumOwnerId, _userService))
             {
                 return View(GlobalConstants.AccessDeniedView);
             }
