@@ -95,5 +95,40 @@
                 .Should()
                 .NotBeNull();
         }
+
+        [Fact]
+        public async Task MakeFriendRequestShouldReturnFalseIfOneOfUsersDoesNotExist()
+        {
+            // Arrange
+            var db = MockManager.GetMockDatabase();
+
+            var firstUser = new User
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "testuser",
+                Email = "test@test.com",
+                FirstName = "John",
+                LastName = "Doe"
+            };
+
+            await db.Users.AddAsync(firstUser);
+            await db.SaveChangesAsync();
+
+            var userService = new UserService(db);
+
+            // Act
+            var result = await userService.MakeFriendRequestAsync(firstUser.UserName, "madeUpUsername");
+
+            // Assert
+            result
+                .Should()
+                .Be(false);
+
+            var friendship = await db.Friendships.FirstOrDefaultAsync();
+
+            friendship
+                .Should()
+                .BeNull();
+        }
     }
 }
