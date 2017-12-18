@@ -143,8 +143,10 @@
 
         public async Task<IEnumerable<User>> ByContainingUsernamePaginationAsync(string username, int page = 1, int pageSize = 10)
         {
+            var searchValue = username ?? "";
+
             return await _db.Users
-                .Where(u => u.UserName.ToLower().Contains(username.ToLower()))
+                .Where(u => u.UserName.ToLower().Contains(searchValue.ToLower()))
                 .OrderBy(u => u.FirstName)
                 .ThenBy(u => u.LastName)
                 .Skip((page - 1) * pageSize)

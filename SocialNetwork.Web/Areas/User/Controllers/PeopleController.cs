@@ -24,10 +24,7 @@
 
         public async Task<IActionResult> Search(string username, int page = 1)
         {
-            if (string.IsNullOrEmpty(username))
-            {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
+            username = username ?? "";
             var people = await _userService.ByContainingUsernamePaginationAsync(username, page, SearchPeoplePageSize);
 
             var viewModel = new SearchPeoplePaginationModel
