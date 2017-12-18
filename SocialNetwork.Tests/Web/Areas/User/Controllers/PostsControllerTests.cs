@@ -59,5 +59,39 @@
             // Assert
             result.AssertAccessDeniedView();
         }
+
+        [Fact]
+        public async Task EditShouldReturnNotFoundViewIfPostDoesNotExist()
+        {
+            // Arrange
+            var postService = new Mock<IPostService>();
+
+            var controller = new PostsController(postService.Object, null, null);
+
+            // Act
+            var result = await controller.Edit(5);
+
+            // Assert
+            result.AssertNotFoundView();
+        }
+
+        [Fact]
+        public async Task EditForeignPostShouldReturnAccessDeniedView()
+        {
+            // Arrange
+            var postService = new Mock<IPostService>();
+            postService
+                .Setup(s => s.ByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new Post {User = new User {UserName = "anotherUser" } });
+
+            var controller = new PostsController(postService.Object, null, null);
+            controller.LoginMockUser();
+
+            // Act
+            var result = await controller.Edit(5);
+
+            // Assert
+            result.AssertAccessDeniedView();
+        }
     }
 }
