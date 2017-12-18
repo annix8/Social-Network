@@ -2,9 +2,9 @@
 {
     using FluentAssertions;
     using Microsoft.EntityFrameworkCore;
-    using SocialNetwork.DataModel;
     using SocialNetwork.DataModel.Models;
     using SocialNetwork.Services;
+    using SocialNetwork.Tests.Utils;
     using System;
     using System.Threading.Tasks;
     using Xunit;
@@ -15,7 +15,7 @@
         public async Task ByUsernameAsyncShouldReturnOneUserWhenUserExists()
         {
             // Arrange
-            var db = GetDatabase();
+            var db = MockManager.GetMockDatabase();
 
             var firstUser = new User
             {
@@ -56,7 +56,7 @@
         public async Task MakeFriendRequestShouldMakeARecordInFriendshipTable()
         {
             // Arrange
-            var db = GetDatabase();
+            var db = MockManager.GetMockDatabase();
 
             var firstUser = new User
             {
@@ -94,15 +94,6 @@
             friendship
                 .Should()
                 .NotBeNull();
-        }
-
-        private SocialNetworkDbContext GetDatabase()
-        {
-            var dbOptions = new DbContextOptionsBuilder<SocialNetworkDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-
-            return new SocialNetworkDbContext(dbOptions);
         }
     }
 }

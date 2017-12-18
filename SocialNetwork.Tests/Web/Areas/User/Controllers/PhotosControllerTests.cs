@@ -12,6 +12,7 @@
     using SocialNetwork.Tests.Extensions;
     using FluentAssertions;
     using Microsoft.AspNetCore.Mvc;
+    using SocialNetwork.Tests.Utils;
 
     public class PhotosControllerTests
     {
@@ -20,8 +21,7 @@
         {
             // Arrange
             var pictureService = new Mock<IPictureService>();
-            var userManager = new Mock<UserManager<User>>(
-                Mock.Of<IUserStore<User>>(), null, null, null, null, null, null, null, null);
+            var userManager = MockManager.GetMockUserManger();
 
             pictureService
                 .Setup(s => s.CreateAlbumAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
@@ -90,8 +90,7 @@
             // Arrange
             var userId = Guid.NewGuid().ToString();
             var pictureService = new Mock<IPictureService>();
-            var userManager = new Mock<UserManager<User>>(
-                Mock.Of<IUserStore<User>>(), null, null, null, null, null, null, null, null);
+            var userManager = MockManager.GetMockUserManger();
 
             pictureService
                 .Setup(s => s.AlbumOwnerId(It.IsAny<int>())).
@@ -121,8 +120,7 @@
         {
             // Arrange
             var pictureService = new Mock<IPictureService>();
-            var userManager = new Mock<UserManager<User>>(
-                Mock.Of<IUserStore<User>>(), null, null, null, null, null, null, null, null);
+            var userManager = MockManager.GetMockUserManger();
 
             pictureService
                 .Setup(s => s.AlbumOwnerId(It.IsAny<int>())).

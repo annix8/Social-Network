@@ -6,6 +6,7 @@
     using SocialNetwork.DataModel.Enums;
     using SocialNetwork.Services.Contracts;
     using SocialNetwork.Tests.Extensions;
+    using SocialNetwork.Tests.Utils;
     using SocialNetwork.Web.Areas.User.Controllers;
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -36,8 +37,7 @@
             var secondUserId = "SecondUserId";
             var postService = new Mock<IPostService>();
             var userService = new Mock<IUserService>();
-            var userManager = new Mock<UserManager<User>>(
-                Mock.Of<IUserStore<User>>(), null, null, null, null, null, null, null, null);
+            var userManager = MockManager.GetMockUserManger();
 
             postService
                 .Setup(s => s.ByIdAsync(It.IsAny<int>()))
