@@ -38,6 +38,7 @@
             var userService = new Mock<IUserService>();
             var userManager = new Mock<UserManager<User>>(
                 Mock.Of<IUserStore<User>>(), null, null, null, null, null, null, null, null);
+
             postService
                 .Setup(s => s.ByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(new Post { UserId = firstUserId });
