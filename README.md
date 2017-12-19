@@ -2,6 +2,10 @@
 
 Social network for connection people, sharing posts and pictures.
 
+## Build status
+
+[![Build status](https://ci.appveyor.com/api/projects/status/puc1aheqd6n619pm?svg=true)](https://ci.appveyor.com/project/annix8/social-network)
+
 ## Getting Started
 
 Run under VS2017
