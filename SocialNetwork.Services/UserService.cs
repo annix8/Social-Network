@@ -262,9 +262,12 @@
                 {
                     _db.Pictures.RemoveRange(a.Pictures);
                 });
-            _db.Pictures.Remove(userToDelete.ProfilePicture);
+
+            if (userToDelete.ProfilePicture != null)
+                _db.Pictures.Remove(userToDelete.ProfilePicture);
+
             _db.Albums.RemoveRange(userToDelete.Albums);
-            
+
             _db.Users.Remove(userToDelete);
             await _db.SaveChangesAsync();
 
