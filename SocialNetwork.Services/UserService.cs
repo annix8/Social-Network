@@ -197,7 +197,7 @@
 
         public async Task<bool> ValidateFriendshipAcceptance(string friendshipAccepterId, string userToAcceptId)
         {
-            if(string.IsNullOrEmpty(friendshipAccepterId) || string.IsNullOrEmpty(userToAcceptId))
+            if (string.IsNullOrEmpty(friendshipAccepterId) || string.IsNullOrEmpty(userToAcceptId))
             {
                 return false;
             }
@@ -225,21 +225,46 @@
 
         public async Task<bool> DeleteAccountAsync(string usernameToDelete)
         {
-            var userToDelete = await _db.Users.FirstOrDefaultAsync(u => u.UserName == usernameToDelete);
+            var userToDelete = await _db.Users
+                .Include(pp => pp.ProfilePicture)
+                .Include(f => f.FriendRequestsAccepted)
+                .Include(f => f.FriendRequestsMade)
+                .Include(m => m.MessagesReceived)
+                .Include(m => m.MessagesSent)
+                .Include(p => p.Posts).ThenInclude(c => c.Comments)
+                .Include(a => a.Albums).ThenInclude(a => a.Pictures)
+                .FirstOrDefaultAsync(u => u.UserName == usernameToDelete);
+
+            var commentsFromUser = _db.Comments.Where(c => c.User == userToDelete);
 
             if (userToDelete == null)
             {
                 return false;
             }
 
-            var friendships = _db.Friendships
-                .Where(fr => fr.User == userToDelete || fr.Friend == userToDelete);
-            var messages = _db.Messages
-                .Where(m => m.Sender == userToDelete || m.Receiver == userToDelete);
+            _db.Friendships.RemoveRange(userToDelete.FriendRequestsAccepted);
+            _db.Friendships.RemoveRange(userToDelete.FriendRequestsMade);
+            _db.Messages.RemoveRange(userToDelete.MessagesReceived);
+            _db.Messages.RemoveRange(userToDelete.MessagesSent);
 
-            _db.Friendships.RemoveRange(friendships);
-            _db.Messages.RemoveRange(messages);
+            userToDelete.Posts
+                .ToList()
+                .ForEach(p =>
+                {
+                    _db.Comments.RemoveRange(p.Comments);
+                });
+            _db.Comments.RemoveRange(commentsFromUser);
+            _db.Posts.RemoveRange(userToDelete.Posts);
 
+            userToDelete.Albums
+                .ToList()
+                .ForEach(a =>
+                {
+                    _db.Pictures.RemoveRange(a.Pictures);
+                });
+            _db.Pictures.Remove(userToDelete.ProfilePicture);
+            _db.Albums.RemoveRange(userToDelete.Albums);
+            
             _db.Users.Remove(userToDelete);
             await _db.SaveChangesAsync();
 
